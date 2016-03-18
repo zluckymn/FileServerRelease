@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<root>
+  <connectString>server=127.0.0.1;database=master;uid=sa;pwd=dba</connectString>
+  <fileDataServerName>FileDataServer</fileDataServerName>
+
+  <hostIpInfo>192.0.0.169</hostIpInfo>
+  <hostName>master.FileServer.com</hostName>
+  <hostPort>8500</hostPort>
+  <rootDirectory>general</rootDirectory>
+
+  <dataNodeIp>192.0.0.169</dataNodeIp>
+  <dataNodeName>data.FileServer.com</dataNodeName>
+  <dataNodePort>21</dataNodePort>
+  <dtaNodeRoot>C:\yinhe\YinhooFileServer\Files</dtaNodeRoot>
+  <dataNodeUserName>123</dataNodeUserName>
+  <dataNodeUserPwd>123</dataNodeUserPwd>
+
+  <busSystemName>ZHTZ</busSystemName>
+  <busSystemDomainName>192.0.0.168:80</busSystemDomainName>
+  <busSytemGuid>73345DB5-DFE5-41F8-B37E-7D83335AZHHZ</busSytemGuid>
+  <busSystemIp>192.0.0.160</busSystemIp>
+  <busSystemInterfaceStr>BusinessInfo.A3UpdateBusinessInfo</busSystemInterfaceStr>
+  <busSystemConStr>mongodb://sa:dba@192.0.0.169/ZHHZ</busSystemConStr>
+</root>
+

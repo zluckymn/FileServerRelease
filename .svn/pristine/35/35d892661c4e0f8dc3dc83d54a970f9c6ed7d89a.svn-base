@@ -1,0 +1,445 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.IO;
+
+namespace FileServerRelease
+{
+    public class DataBaseParams
+    {
+        #region 参数
+        #region 脚本文件参数
+        public string createSqlPath;  //创建服务器的sql脚本文件
+        public string dataServerPath; //数据服务器的脚本文件
+        public string initDataPath; //数据初始化脚本文件
+        public string connectString;//sql连接字符串
+        #endregion
+
+        #region 初始化服务器参数
+        public int fileDataNameStartExpos;  //数据服务器名称在sql脚本文件的开始位置
+        public string fileDataName; //数据服务器名称
+
+        public int fileDataFileNameStartExpos; //数据服务器路径名称在sql脚本文件的开始位置
+        public string fileDataFileName;  //数据服务器路径
+
+        public int fileDataLogNameStartExpos;//日志服务器名称在sql脚本文件的开始位置
+        public string fileDataLogName;//日志服务器名称
+
+        public int fileDataLogFileNameStartExpos;//日志服务器路径名称在sql脚本中的位置
+        public string fileDataLogFileName;//日志服务器的路径名称
+        #endregion
+
+        #region 主控服务器参数
+        public int masterIpInfoStartExpos; //主控服务器ip地址位置
+        public string masterIpInfo;  //主控服务器ip
+
+        public int masterNameStartExpos;
+        public string masterName; //主控服务器名位置
+
+        public int masterPortStartExpos;
+        public string masterPort;//主控服务器端口
+
+        public int masterRootStartExpos;
+        public string masterRoot;//主控服务器根目录
+        #endregion
+
+        #region 数据服务器参数
+        public int dataNodeIdStartExpos;
+        public string dataNodeId;//插入的数据服务器ID
+
+        public int dataNodeIpInfoStartExpos;
+        public string dataNodeIpInfo;//数据服务器IP
+
+        public int dataNodeNameStartExpos;
+        public string dataNodeName;//数据服务器名称
+
+        public int dataNodePortStartExpos;
+        public string dataNodePort;//数据服务器端口
+
+        public int dataNodeUserNameStartExpos;
+        public string dataNodeUserName;//数据服务器验证用户名
+
+        public int dataNodeRootStartExpos;
+        public string dataNodeRoot;//数据服务器根目录
+
+        public int dataNodeUserPasswordStartExpos;
+        public string dataNodeUserPassword; //数据服务器验证密码
+        #endregion
+
+        #region 业务服务器参数
+        public int busSysIdStartExpos; 
+        public string busSysId; //插入的业务系统ID
+
+        public int busSysIpInfoStartExpos;
+        public string busSysIpInfo; //业务服务器IP
+
+        public int busSysNameStartExpos;
+        public string busSysName;//业务服务器名称
+
+        public int busSysGuidStartExpos;
+        public string busSysGuid;//业务服务器客户代码
+
+        public int busSysTarIpStartExpos;
+        public string busSysTarIp;//业务服务器系统IP
+
+        public int busSysTarInterfaceStrStartExpos;
+        public string busSysTarInterfaceStr;//业务服务器系统接口
+
+        public int busSysTarConStrStartExpos;
+        public string busSysTarConStr; //业务服务器连接字符串
+        #endregion
+
+        #endregion
+
+        #region 方法
+        //构造
+        public DataBaseParams()
+        {
+            //
+            createSqlPath = @"../../ParamFiles/01CreateDataBse.sql";
+            dataServerPath = @"../../ParamFiles/02FileDataServer.sql";
+            initDataPath = @"../../ParamFiles/03InitData.sql";
+
+            if (!System.IO.File.Exists(createSqlPath) || !System.IO.File.Exists(initDataPath))// ||!System.IO.File.Exists(dataServerPath) || System.IO.File.Exists(initDataPath))
+            {
+                return;
+            }
+
+            #region 读取初始化数据库参数
+
+            var mfRStream = new StreamReader(createSqlPath,Encoding.Default);
+            var fstr = mfRStream.ReadToEnd();
+            var primayExpos = fstr.IndexOf("PRIMARY");
+
+            if (primayExpos < 0)
+                return;
+
+            fileDataNameStartExpos = fstr.IndexOf("NAME", primayExpos) + 6;
+            var fileDataNameEndExpos = fstr.IndexOf("'", fileDataNameStartExpos);
+
+            fileDataName = fstr.Substring(fileDataNameStartExpos, fileDataNameEndExpos - fileDataNameStartExpos).Trim();
+
+            fileDataFileNameStartExpos = fstr.IndexOf("FILENAME", primayExpos) + 10;
+            var fileDataFileNameEndExpos = fstr.IndexOf("'", fileDataFileNameStartExpos);
+
+            fileDataFileName = fstr.Substring(fileDataFileNameStartExpos, fileDataFileNameEndExpos - fileDataFileNameStartExpos).Trim();
+
+            var logExpos = fstr.IndexOf("LOG ON");
+
+            fileDataLogNameStartExpos = fstr.IndexOf("NAME", logExpos) + 6;
+            var fileDataLogNameEndExpos = fstr.IndexOf("'", fileDataLogNameStartExpos);
+
+            fileDataLogName = fstr.Substring(fileDataLogNameStartExpos, fileDataLogNameEndExpos - fileDataLogNameStartExpos).Trim();
+
+            fileDataLogFileNameStartExpos = fstr.IndexOf("FILENAME", logExpos) + 10;
+            var fileDataLogFileNameEndExpos = fstr.IndexOf("'", fileDataLogFileNameStartExpos);
+
+            fileDataLogFileName = fstr.Substring(fileDataLogFileNameStartExpos, fileDataLogFileNameEndExpos - fileDataLogFileNameStartExpos).Trim();
+
+            mfRStream.Close();
+            #endregion
+            #region 读取初始数据脚本文件
+            var iFsStream = new StreamReader(initDataPath,Encoding.Default);
+            var ifstr = iFsStream.ReadToEnd();
+
+            #endregion
+            #region 读取主控服务器参数
+            var masterExpos = ifstr.IndexOf("MasterNodeServer ON");
+            var masterValuesStartExpos = ifstr.IndexOf("VALUES", masterExpos) + 7;
+            var masterValueEndExpos = ifstr.IndexOf("SET", masterValuesStartExpos);
+            var masterValues = ifstr.Substring(masterValuesStartExpos, masterValueEndExpos - masterValuesStartExpos);
+            var masterValueArray = masterValues.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (masterValueArray.Length > 14)
+            {
+                masterIpInfo = masterValueArray[1];
+                var explanExpos = masterIpInfo.IndexOf("-");
+                masterIpInfoStartExpos = ifstr.IndexOf(masterIpInfo, masterValuesStartExpos);
+                masterIpInfo = masterIpInfo.Remove(explanExpos).Replace("'", "").Trim();
+
+                masterName = masterValueArray[2];
+                explanExpos = masterName.IndexOf("-");
+                masterNameStartExpos = ifstr.IndexOf(masterName, masterIpInfoStartExpos);
+                masterName = masterName.Remove(explanExpos).Replace("'", "").Trim();
+
+                masterPort = masterValueArray[3];
+                explanExpos = masterPort.IndexOf("-");
+                masterPortStartExpos = ifstr.IndexOf(masterPort, masterNameStartExpos);
+                masterPort = masterPort.Remove(explanExpos).Replace("'", "").Trim();
+
+                masterRoot = masterValueArray[4];
+                explanExpos = masterRoot.IndexOf("-");
+                masterRootStartExpos = ifstr.IndexOf(masterRoot, masterNameStartExpos);
+                masterRoot = masterRoot.Remove(explanExpos).Replace("'", "").Trim();
+            }
+
+            #endregion
+
+            #region 读取数据服务器参数
+            var dataNodeExpos = ifstr.IndexOf("DataNodeServer ON");
+            var dataNodeStartExpos = ifstr.IndexOf("VALUES", dataNodeExpos) + 7;
+            var dataNodeEndExpos = ifstr.IndexOf("SET", dataNodeStartExpos);
+            var dataNodeValues = ifstr.Substring(dataNodeStartExpos, dataNodeEndExpos - dataNodeStartExpos);
+            var dataNodeArray = dataNodeValues.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (dataNodeArray.Length > 17)
+            {
+                dataNodeId = dataNodeArray[0];
+                var explanExpos = dataNodeId.IndexOf("-");
+                dataNodeIdStartExpos = ifstr.IndexOf(dataNodeId, dataNodeStartExpos);
+                dataNodeId = dataNodeId.Remove(explanExpos).Replace("'", "").Trim();
+
+                dataNodeIpInfo = dataNodeArray[1];
+                explanExpos = dataNodeIpInfo.IndexOf("-");
+                dataNodeIpInfoStartExpos = ifstr.IndexOf(dataNodeIpInfo, dataNodeIdStartExpos);
+                dataNodeIpInfo = dataNodeIpInfo.Remove(explanExpos).Replace("'", "").Trim();
+
+                dataNodeName = dataNodeArray[2];
+                explanExpos = dataNodeName.IndexOf("-");
+                dataNodeNameStartExpos = ifstr.IndexOf(dataNodeName, dataNodeIpInfoStartExpos);
+                dataNodeName = dataNodeName.Remove(explanExpos).Replace("'", "").Trim();
+
+                dataNodePort = dataNodeArray[3];
+                explanExpos = dataNodePort.IndexOf("-");
+                dataNodePortStartExpos = ifstr.IndexOf(dataNodePort, dataNodeIpInfoStartExpos);
+                dataNodePort = dataNodePort.Remove(explanExpos).Replace("'", "").Trim();
+
+                dataNodeRoot = dataNodeArray[4];
+                explanExpos = dataNodeRoot.IndexOf("-");
+                dataNodeRootStartExpos = ifstr.IndexOf(dataNodeRoot, dataNodePortStartExpos);
+                dataNodeRoot = dataNodeRoot.Remove(explanExpos).Replace("'", "").Trim();
+
+                dataNodeUserName = dataNodeArray[5];
+                explanExpos = dataNodeUserName.IndexOf("-");
+                dataNodeUserNameStartExpos = ifstr.IndexOf(dataNodeUserName, dataNodePortStartExpos);
+                dataNodeUserName = dataNodeUserName.Remove(explanExpos).Replace("'", "").Trim();
+
+                dataNodeUserPassword = dataNodeArray[6];
+                explanExpos = dataNodeUserPassword.IndexOf("-");
+                dataNodeUserPasswordStartExpos = ifstr.IndexOf(dataNodeUserPassword, dataNodeUserNameStartExpos);
+                dataNodeUserPassword = dataNodeUserPassword.Remove(explanExpos).Replace("'", "").Trim();
+            }
+
+            #endregion
+
+            #region 读取业务服务器参数
+            var busSysExpos = ifstr.IndexOf("BusinessSystem ON");
+            var busSysValuesStartExpos = ifstr.IndexOf("VALUES", busSysExpos) + 7;
+            var busSysValueEndExpos = ifstr.IndexOf("SET", busSysValuesStartExpos);
+            var busSysValues = ifstr.Substring(busSysValuesStartExpos, busSysValueEndExpos - busSysValuesStartExpos);
+            var busSysValueArray = busSysValues.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (busSysValueArray.Length > 12)
+            {
+                busSysId = busSysValueArray[0];
+                var explanExpos = busSysId.IndexOf("-");
+                busSysIdStartExpos = ifstr.IndexOf(busSysId, busSysValuesStartExpos);
+                busSysId = busSysId.Remove(explanExpos).Replace("'", "").Trim();
+
+                busSysName = busSysValueArray[1];
+                explanExpos = busSysName.IndexOf("-");
+                busSysNameStartExpos = ifstr.IndexOf(busSysName, busSysIdStartExpos);
+                busSysName = busSysName.Remove(explanExpos).Replace("'", "").Trim();
+
+                busSysIpInfo = busSysValueArray[2];
+                explanExpos = busSysIpInfo.IndexOf("-");
+                busSysIpInfoStartExpos = ifstr.IndexOf(busSysIpInfo, busSysNameStartExpos);
+                busSysIpInfo = busSysIpInfo.Remove(explanExpos).Replace("'", "").Trim();
+
+                busSysGuid = busSysValueArray[3];
+                explanExpos = busSysGuid.IndexOf("--");
+                busSysGuidStartExpos = ifstr.IndexOf(busSysGuid, busSysIpInfoStartExpos);
+                busSysGuid = busSysGuid.Remove(explanExpos).Replace("'", "").Trim();
+
+                busSysTarIp = busSysValueArray[4];
+                explanExpos = busSysTarIp.IndexOf("-");
+                busSysTarIpStartExpos = ifstr.IndexOf(busSysTarIp, busSysGuidStartExpos);
+                busSysTarIp = busSysTarIp.Remove(explanExpos).Replace("'", "").Trim();
+
+                busSysTarInterfaceStr = busSysValueArray[5];
+                explanExpos = busSysTarInterfaceStr.IndexOf("-");
+                busSysTarInterfaceStrStartExpos = ifstr.IndexOf(busSysTarInterfaceStr, busSysTarIpStartExpos);
+                busSysTarInterfaceStr = busSysTarInterfaceStr.Remove(explanExpos).Replace("'", "").Trim();
+
+                busSysTarConStr = busSysValueArray[6];
+                explanExpos = busSysTarConStr.IndexOf("-");
+                busSysTarConStrStartExpos = ifstr.IndexOf(busSysTarConStr, busSysTarInterfaceStrStartExpos);
+                busSysTarConStr = busSysTarConStr.Remove(explanExpos).Replace("'", "").Trim();
+            }
+            iFsStream.Close();
+            #endregion
+        }
+
+        public DataBaseParams(string _createSqlPath, string _dataServerPath, string _initDataPath)
+        {
+            createSqlPath = _createSqlPath;
+            dataServerPath = _dataServerPath;
+            initDataPath = _initDataPath;
+
+            if (!System.IO.File.Exists(createSqlPath) || !System.IO.File.Exists(initDataPath))// ||!System.IO.File.Exists(dataServerPath) || System.IO.File.Exists(initDataPath))
+            {
+                return;
+            }
+
+            #region 读取初始化数据库参数
+            var mfRStream = new StreamReader(createSqlPath, Encoding.Default);
+            var fstr = mfRStream.ReadToEnd();
+            var primayExpos = fstr.IndexOf("PRIMARY");
+
+            if (primayExpos < 0)
+                return;
+
+            fileDataNameStartExpos = fstr.IndexOf("NAME", primayExpos) + 6;
+            var fileDataNameEndExpos = fstr.IndexOf("'", fileDataNameStartExpos) + 1;
+
+            fileDataName = fstr.Substring(fileDataNameStartExpos, fileDataNameEndExpos - fileDataNameStartExpos).Trim();
+
+            fileDataFileNameStartExpos = fstr.IndexOf("FILENAME", primayExpos) + 10;
+            var fileDataFileNameEndExpos = fstr.IndexOf("'", fileDataFileNameStartExpos) + 1;
+
+            fileDataFileName = fstr.Substring(fileDataFileNameStartExpos, fileDataFileNameEndExpos - fileDataFileNameStartExpos).Trim();
+
+            var logExpos = fstr.IndexOf("LOG ON");
+
+            fileDataLogNameStartExpos = fstr.IndexOf("NAME", logExpos) + 6;
+            var fileDataLogNameEndExpos = fstr.IndexOf("'", fileDataLogNameStartExpos) + 1;
+
+            fileDataLogName = fstr.Substring(fileDataLogNameStartExpos, fileDataLogNameEndExpos - fileDataLogNameStartExpos).Trim();
+
+            fileDataLogFileNameStartExpos = fstr.IndexOf("FILENAME", logExpos) + 10;
+            var fileDataLogFileNameEndExpos = fstr.IndexOf("'", fileDataLogFileNameStartExpos) + 1;
+
+            fileDataLogFileName = fstr.Substring(fileDataLogFileNameStartExpos, fileDataLogFileNameEndExpos - fileDataLogFileNameStartExpos).Trim();
+
+            mfRStream.Close();
+
+            this.connectString = "";
+            #endregion
+            #region 读取初始数据脚本文件
+            var iFsStream = new StreamReader(initDataPath, Encoding.Default);
+            var ifstr = iFsStream.ReadToEnd();
+
+            #endregion
+            #region 读取主控服务器参数
+            var masterExpos = ifstr.IndexOf("MasterNodeServer ON");
+            var masterValuesStartExpos = ifstr.IndexOf("VALUES", masterExpos) + 7;
+            var masterValueEndExpos = ifstr.IndexOf("SET", masterValuesStartExpos);
+            var masterValues = ifstr.Substring(masterValuesStartExpos, masterValueEndExpos - masterValuesStartExpos);
+            var masterValueArray = masterValues.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (masterValueArray.Length > 14)
+            {
+                masterIpInfo = masterValueArray[1];
+                var explanExpos = masterIpInfo.IndexOf("-");
+                masterIpInfoStartExpos = ifstr.IndexOf(masterIpInfo, masterValuesStartExpos);
+                masterIpInfo = masterIpInfo.Remove(explanExpos).Replace("'", "").Trim();
+
+                masterName = masterValueArray[2];
+                explanExpos = masterName.IndexOf("-");
+                masterNameStartExpos = ifstr.IndexOf(masterName, masterIpInfoStartExpos);
+                masterName = masterName.Remove(explanExpos).Replace("'", "").Trim();
+
+                masterPort = masterValueArray[3];
+                explanExpos = masterPort.IndexOf("-");
+                masterPortStartExpos = ifstr.IndexOf(masterPort, masterNameStartExpos);
+                masterPort = masterPort.Remove(explanExpos).Replace("'", "").Trim();
+
+                masterRoot = masterValueArray[4];
+                explanExpos = masterRoot.IndexOf("-");
+                masterRootStartExpos = ifstr.IndexOf(masterRoot, masterNameStartExpos);
+                masterRoot = masterRoot.Remove(explanExpos).Replace("'", "").Trim();
+            }
+
+            #endregion
+
+            #region 读取数据服务器参数
+            var dataNodeExpos = ifstr.IndexOf("DataNodeServer ON");
+            var dataNodeStartExpos = ifstr.IndexOf("VALUES", dataNodeExpos) + 7;
+            var dataNodeEndExpos = ifstr.IndexOf("SET", dataNodeStartExpos);
+            var dataNodeValues = ifstr.Substring(dataNodeStartExpos, dataNodeEndExpos - dataNodeStartExpos);
+            var dataNodeArray = dataNodeValues.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (dataNodeArray.Length > 17)
+            {
+
+
+                dataNodeIpInfo = dataNodeArray[1];
+                var explanExpos = dataNodeIpInfo.IndexOf("-");
+                dataNodeIpInfoStartExpos = ifstr.IndexOf(dataNodeIpInfo, dataNodeStartExpos);
+                dataNodeIpInfo = dataNodeIpInfo.Remove(explanExpos).Replace("'", "").Trim();
+
+                dataNodeName = dataNodeArray[2];
+                explanExpos = dataNodeName.IndexOf("-");
+                dataNodeNameStartExpos = ifstr.IndexOf(dataNodeName, dataNodeIpInfoStartExpos);
+                dataNodeName = dataNodeName.Remove(explanExpos).Replace("'", "").Trim();
+
+                dataNodePort = dataNodeArray[3];
+                explanExpos = dataNodePort.IndexOf("-");
+                dataNodePortStartExpos = ifstr.IndexOf(dataNodePort, dataNodeIpInfoStartExpos);
+                dataNodePort = dataNodePort.Remove(explanExpos).Replace("'", "").Trim();
+
+                dataNodeRoot = dataNodeArray[4];
+                explanExpos = dataNodeRoot.IndexOf("-");
+                dataNodeRootStartExpos = ifstr.IndexOf(dataNodeRoot, dataNodePortStartExpos);
+                dataNodeRoot = dataNodeRoot.Remove(explanExpos).Replace("'", "").Trim();
+
+                dataNodeUserName = dataNodeArray[5];
+                explanExpos = dataNodeUserName.IndexOf("-");
+                dataNodeUserNameStartExpos = ifstr.IndexOf(dataNodeUserName, dataNodePortStartExpos);
+                dataNodeUserName = dataNodeUserName.Remove(explanExpos).Replace("'", "").Trim();
+
+                dataNodeUserPassword = dataNodeArray[6];
+                explanExpos = dataNodeUserPassword.IndexOf("-");
+                dataNodeUserPasswordStartExpos = ifstr.IndexOf(dataNodeUserPassword, dataNodeUserNameStartExpos);
+                dataNodeUserPassword = dataNodeUserPassword.Remove(explanExpos).Replace("'", "").Trim();
+            }
+
+            #endregion
+
+            #region 读取业务服务器参数
+            var busSysExpos = ifstr.IndexOf("BusinessSystem ON");
+            var busSysValuesStartExpos = ifstr.IndexOf("VALUES", busSysExpos) + 7;
+            var busSysValueEndExpos = ifstr.IndexOf("SET", busSysValuesStartExpos);
+            var busSysValues = ifstr.Substring(busSysValuesStartExpos, busSysValueEndExpos - busSysValuesStartExpos);
+            var busSysValueArray = busSysValues.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (busSysValueArray.Length > 12)
+            {
+                busSysName = busSysValueArray[1];
+                var explanExpos = busSysName.IndexOf("-");
+                busSysNameStartExpos = ifstr.IndexOf(busSysName, busSysValuesStartExpos);
+                busSysName = busSysName.Remove(explanExpos).Replace("'", "").Trim();
+
+                busSysIpInfo = busSysValueArray[2];
+                explanExpos = busSysIpInfo.IndexOf("-");
+                busSysIpInfoStartExpos = ifstr.IndexOf(busSysIpInfo, busSysNameStartExpos);
+                busSysIpInfo = busSysIpInfo.Remove(explanExpos).Replace("'", "").Trim();
+
+                busSysGuid = busSysValueArray[34];
+                explanExpos = busSysGuid.IndexOf("--");
+                busSysGuidStartExpos = ifstr.IndexOf(busSysGuid, busSysIpInfoStartExpos);
+                busSysGuid = busSysGuid.Remove(explanExpos).Replace("'", "").Trim();
+
+                busSysTarIp = busSysValueArray[4];
+                explanExpos = busSysTarIp.IndexOf("-");
+                busSysTarIpStartExpos = ifstr.IndexOf(busSysTarIp, busSysGuidStartExpos);
+                busSysTarIp = busSysTarIp.Remove(explanExpos).Replace("'", "").Trim();
+
+                busSysTarInterfaceStr = busSysValueArray[5];
+                explanExpos = busSysTarInterfaceStr.IndexOf("-");
+                busSysTarInterfaceStrStartExpos = ifstr.IndexOf(busSysTarInterfaceStr, busSysTarIpStartExpos);
+                busSysTarInterfaceStr = busSysTarInterfaceStr.Remove(explanExpos).Replace("'", "").Trim();
+
+                busSysTarConStr = busSysValueArray[6];
+                explanExpos = busSysTarConStr.IndexOf("-");
+                busSysTarConStrStartExpos = ifstr.IndexOf(busSysTarConStr, busSysTarInterfaceStrStartExpos);
+                busSysTarConStr = busSysTarConStr.Remove(explanExpos).Replace("'", "").Trim();
+            }
+            iFsStream.Close();
+            #endregion
+        }
+
+        #endregion
+    }
+}

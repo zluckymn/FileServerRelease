@@ -1,0 +1,37 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace FileServerRelease.DComCnfg
+{
+
+    static class LaunchPermissionRight
+    {
+        public const int COM_RIGHTS_EXECUTE = 1;
+        public const int COM_RIGHTS_EXECUTE_LOCAL = 2;
+        public const int COM_RIGHTS_EXECUTE_REMOTE = 4;
+        public const int COM_RIGHTS_ACTIVATE_LOCAL = 8;
+        public const int COM_RIGHTS_ACTIVATE_REMOTE = 16;
+    }
+
+    static class AccessPermissionRight
+    {
+        public const int COM_RIGHTS_ACCESS = 1;
+        public const int COM_RIGHTS_ACCESS_LOCAL = 2;
+        public const int COM_RIGHTS_ACCESS_REMOTE = 4;
+    }
+
+    static class FullPermissionRight
+    {
+        public const int FULL_ACCESS_Mask = 7;
+        public const int FULL_LAUNCH_Mask = 31;
+        public const int FULL_CONFIG_Mask = 983103;
+    }
+
+    static class BuiltinAccount
+    {
+        public const string SYSTEM = "NT AUTHORITY\\SYSTEM";
+        public const string NETWORK_SERVICE = "NT AUTHORITY\\NETWORK SERVICE";
+    }
+}

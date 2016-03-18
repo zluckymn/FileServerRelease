@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+    <configSections>
+        <sectionGroup name="userSettings" type="System.Configuration.UserSettingsGroup, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" >
+            <section name="FileServerRelease.Properties.Settings" type="System.Configuration.ClientSettingsSection, System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" allowExeDefinition="MachineToLocalUser" requirePermission="false" />
+        </sectionGroup>
+    </configSections>
+    <userSettings>
+        <FileServerRelease.Properties.Settings>
+            <setting name="PublicMasterDialogPath" serializeAs="String">
+                <value />
+            </setting>
+            <setting name="PublicFileDialogPath" serializeAs="String">
+                <value />
+            </setting>
+            <setting name="PublicFileConvertDialogPath" serializeAs="String">
+                <value />
+            </setting>
+            <setting name="PublicDWGFileConvertDialogPath" serializeAs="String">
+                <value />
+            </setting>
+            <setting name="PublicBusinessConfigDialogPath" serializeAs="String">
+                <value />
+            </setting>
+            <setting name="PublicTxtConnectString" serializeAs="String">
+                <value />
+            </setting>
+        </FileServerRelease.Properties.Settings>
+    </userSettings>
+</configuration>

@@ -1,0 +1,96 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Microsoft.Win32;
+using System.Security.AccessControl;
+using System.Security.Principal;
+using System.Collections;
+using ROOT.CIMV2.Win32;
+using System.Management;
+using System.Windows.Forms;
+
+namespace FileServerRelease.DComCnfg.PermissionAccessor
+{
+    abstract public class PermissionAccessor
+    {
+        protected DCOMApplicationSetting dCOMApplicationSetting;
+
+        private string appName;
+
+        public string AppName
+        {
+            get
+            {
+                return this.dCOMApplicationSetting.Description;
+            }
+            set
+            {
+                this.appName = value;
+            }
+        }
+
+        public PermissionAccessor(string AppId)
+        {
+            dCOMApplicationSetting = new DCOMApplicationSetting(AppId);
+        }
+
+        //设置运行DCOM对象的用户
+        public void setIdentity(string AppId, string UserName)
+        {
+            Registry.SetValue(DComKeys.AppIDRegitryKey + AppId, "RunAs", UserName);
+        }
+
+        public ManagementBaseObject[] getPermission()
+        {
+            ManagementBaseObject outParam = null;
+            uint ret = this.GetSecurityDescriptor(out outParam);
+            if (outParam != null)
+            {
+                SecurityDescriptor sd = new SecurityDescriptor(outParam);
+                return sd.DACL;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public void setPermission(string accountName, uint Mask)
+        {
+            try
+            {
+                ManagementBaseObject outParam = null;
+                uint ret = this.GetSecurityDescriptor(out outParam);
+                if (outParam != null)
+                {
+                    SecurityDescriptor new_sd = new SecurityDescriptor(outParam);
+                    new_sd.DACL = this.AddIUSRToDACL((ManagementBaseObject[])new_sd.DACL, accountName, Mask);
+                    this.SetSecurityDescriptor(new_sd);
+                }
+            }
+            catch (Exception ex)
+            { }
+        }
+
+        private ManagementBaseObject[] AddIUSRToDACL(ManagementBaseObject[] old_dacl, string accountName, uint mask)
+        {
+            //Create new dacl from old dacl  
+            List<ManagementBaseObject> new_dacl = new List<ManagementBaseObject>(old_dacl);
+            //TODO: Check if IUSR already exists, if so then only change the permissions for it.  
+            //Create IUSR element to add to new dacl  
+            ManagementObject Trustee = new ManagementClass(new ManagementPath("Win32_Trustee"), null);
+            Trustee["Name"] = accountName;
+            ManagementObject AdminACE = new ManagementClass(new ManagementPath("Win32_Ace"), null);
+            AdminACE["AccessMask"] = mask;
+            AdminACE["Trustee"] = Trustee;
+            new_dacl.Add(AdminACE);
+
+            return new_dacl.ToArray();
+        }
+
+        abstract protected uint GetSecurityDescriptor(out ManagementBaseObject outParam);
+
+        abstract protected void SetSecurityDescriptor(SecurityDescriptor sd);
+    }
+}

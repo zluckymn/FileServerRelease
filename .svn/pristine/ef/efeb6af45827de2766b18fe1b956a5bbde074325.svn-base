@@ -1,0 +1,2809 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+using System.IO;
+using System.Diagnostics;
+using System.ServiceProcess;
+using FileServerRelease.Properties;
+using System.Threading;
+using System.DirectoryServices;
+using System.Xml;
+using FileServerRelease.DComCnfg;
+using System.Management;
+using System.Management.Instrumentation;
+using ROOT.CIMV2.Win32;
+using FileServerRelease.DComCnfg.PermissionAccessor;
+using FileServerRelease.DComCnfg.PermissionAccessor.Extension;
+using System.Data.SqlClient;
+
+namespace FileServerRelease
+{
+    public partial class FileServerSetUp : Form
+    {
+        public class ServiceCls
+        {
+            private string execonfig = string.Empty;
+            private string config = string.Empty;
+            private string serviceName = string.Empty;
+            /// <summary>
+            /// 构造函数
+            /// </summary>
+            /// <param name="_installPath"></param>
+            /// <param name="_execonfig"></param>
+            /// <param name="_config"></param>
+            public ServiceCls(string _serviceName, string _installPath, string _execonfig, string _config)
+            {
+                if (Directory.Exists(_installPath) && Path.GetFileNameWithoutExtension(_installPath) != "svc_inst")
+                {
+                    var tempInstallPath = Path.GetDirectoryName(_installPath) + ".svc_inst.bat";
+                    if (File.Exists(tempInstallPath))
+                    {
+                        _installPath = tempInstallPath;
+                    }
+                }
+                installPath = _installPath; execonfig = _execonfig;
+                config = _config; serviceName = _serviceName;
+            }
+ 
+           
+
+            /// <summary>
+            /// 构造函数
+            /// </summary>
+            /// <param name="_installPath"></param>
+            /// <param name="_execonfig"></param>
+            public ServiceCls(string _serviceName, string _installPath, string _execonfig)
+            {
+                if (Directory.Exists(_installPath) && Path.GetFileNameWithoutExtension(_installPath) != "svc_inst")
+                {
+                   var  tempInstallPath = Path.GetDirectoryName(_installPath) + ".svc_inst.bat";
+                   if (File.Exists(tempInstallPath))
+                   {
+                       _installPath = tempInstallPath;
+                   }
+                }
+                installPath = _installPath; execonfig = _execonfig; serviceName = _serviceName;
+
+            }
+            public string installPath { get; set; }//安装地址
+
+            public string ServiceName { get; set; }//服务名称
+
+            /// <summary>
+            /// 获取服务状态
+            /// </summary>
+            public string serviceStatus
+            {
+                get
+                {
+                    if (ServiceObj != null)
+                    {
+                        switch (ServiceObj.Status)
+                        {
+                            case ServiceControllerStatus.ContinuePending:
+                                return "服务即将继续";
+                            case ServiceControllerStatus.Paused:
+                                return "服务已暂停";
+                            case ServiceControllerStatus.PausePending:
+                                return "服务即将暂停";
+                            case ServiceControllerStatus.Running:
+                                return "服务正在运行";
+                            case ServiceControllerStatus.StartPending:
+                                return "服务正在启动";
+                            case ServiceControllerStatus.Stopped:
+                                return "服务未运行";
+                            case ServiceControllerStatus.StopPending:
+                                return "服务正在停止";
+                            default:
+                                return string.Empty;
+
+                        }
+
+
+                    } return "服务未安装";
+
+                }
+            }//安装地址
+
+            public string getServiceBtnStatus
+            {
+                get
+                {
+                    if (ServiceObj != null)
+                    {
+                        switch (ServiceObj.Status)
+                        {
+                            case ServiceControllerStatus.ContinuePending:
+                                return "";
+                            case ServiceControllerStatus.Paused:
+                                return "启动";
+                            case ServiceControllerStatus.PausePending:
+                                return "";
+                            case ServiceControllerStatus.Running:
+                                return "停止";
+                            case ServiceControllerStatus.StartPending:
+                                return "";
+                            case ServiceControllerStatus.Stopped:
+                                return "启动";
+                            case ServiceControllerStatus.StopPending:
+                                return "";
+                            default:
+                                return "";
+
+                        }
+
+
+                    } return "";
+
+                }
+
+            }
+
+
+
+
+            public string execConfigPath//服务器配置文件地址
+            {
+                get
+                {
+                    if (!string.IsNullOrEmpty(installPath) && !string.IsNullOrEmpty(execonfig))
+                    {
+                        return string.Format("{0}/{1}", directoryPath, execonfig); ;
+                    }
+                    else
+                    {
+                        return string.Empty;
+                    }
+
+                }
+            }
+
+            public string configPath //其他配置地址
+            {
+                get
+                {
+
+                    if (!string.IsNullOrEmpty(installPath) && !string.IsNullOrEmpty(config))
+                    {
+                        return string.Format("{0}/{1}", directoryPath, config); ;
+                    }
+                    else
+                    {
+                        return string.Empty;
+                    }
+
+                }
+            }
+
+
+            public string unstallPath//卸载地址
+            {
+                get
+                {
+                    if (!string.IsNullOrEmpty(installPath))
+                    {
+                        return string.Format("{0}/svc_uinst.bat", directoryPath); ;
+                    }
+                    else
+                    {
+                        return string.Empty;
+                    }
+                }
+            }
+
+
+            public string directoryPath
+            { //所属目录
+                get
+                {
+                    if (!string.IsNullOrEmpty(installPath))
+                    {
+                        return Path.GetDirectoryName(installPath);
+                    }
+                    else
+                    {
+                        return string.Empty;
+                    }
+                }
+            }
+
+
+
+
+            public ServiceController ServiceObj
+            { //所属目录
+                get
+                {
+                    if (!string.IsNullOrEmpty(installPath))
+                    {
+                        ServiceController[] serviceArr = ServiceController.GetServices();
+                        var curService = serviceArr.Where(c => c.DisplayName == serviceName.Trim()).FirstOrDefault();
+                        return curService;
+                    }
+                    else
+                    {
+                        return null;
+                    }
+                }
+            }
+
+
+
+            /// <summary>
+            /// 打开日志
+            /// </summary>
+            public void OpenLog()
+            {
+                var logDir = string.Format(@"{0}\.log", directoryPath);
+                if (Directory.Exists(logDir))
+                {
+                    var directory = new DirectoryInfo(logDir);
+                    var latestDir = directory.GetDirectories().OrderByDescending(c => c.CreationTime).FirstOrDefault();
+                    if (latestDir != null)
+                    {
+                        ExecProcess("Explorer.exe", latestDir.FullName);
+                        var fileObj = latestDir.GetFiles().OrderByDescending(c => c.CreationTime).FirstOrDefault();
+                        if (fileObj != null)
+                        {
+                            ExecProcess("notepad.exe", fileObj.FullName);
+                        }
+
+
+                    }
+                    else
+                    {
+                        ExecProcess("Explorer.exe", logDir);
+                    }
+                }
+            }
+
+            /// <summary>
+            /// 安装服务
+            /// </summary>
+            public void installService()
+            {
+                if (!string.IsNullOrEmpty(installPath))
+                {
+                    ExecProcess(installPath);
+                }
+                else
+                {
+                    MessageBox.Show("安装地址不存在");
+                }
+            }
+
+            /// <summary>
+            /// 卸载服务
+            /// </summary>
+            public void unstallService()
+            {
+                if (!string.IsNullOrEmpty(unstallPath))
+                {
+                    ExecProcess(unstallPath);
+                }
+                else
+                {
+                    MessageBox.Show("卸载地址不存在");
+                }
+            }
+
+            /// <summary>
+            /// 卸载服务
+            /// </summary>
+            public void ShowConfigFile()
+            {
+                if (!string.IsNullOrEmpty(execonfig) && File.Exists(execConfigPath))
+                {
+                    ExecProcess("notepad.exe", execConfigPath);
+                }
+                else
+                {
+                    MessageBox.Show("配置文件地址不存在");
+                }
+                if (!string.IsNullOrEmpty(config))
+                {
+                    ExecProcess("notepad.exe", configPath);
+                }
+                else
+                {
+                    // MessageBox.Show("配置文件地址不存在");
+                }
+
+
+            }
+
+
+            /// <summary>
+            /// 重启服务
+            /// </summary>
+            public void ServiceRestart()
+            {
+                try
+                {
+                    if (ServiceObj != null)
+                    {
+                        if (ServiceObj.CanStop)
+                        {
+                            ServiceObj.Stop();
+                        }
+                        ServiceObj.Start();
+
+                    }
+                }
+                catch (InvalidOperationException ex)
+                {
+
+                    ServiceAuto();
+
+                    try
+                    {
+                        ServiceObj.Start();
+                    }
+                    catch (InvalidOperationException ex1)
+                    {
+                        MessageBox.Show(ex1.Message);
+                    }
+                    catch (Exception ex2)
+                    {
+                        MessageBox.Show(ex2.Message);
+                    }
+
+                }
+
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+            /// <summary>
+            /// 重启服务
+            /// </summary>
+            public void ServiceAuto()
+            {
+                try
+                {
+                    //ProcessStartInfo a = new ProcessStartInfo(@"c:/windows/system32/cmd.exe",);  
+                    //  //a.WindowStyle = ProcessWindowStyle.Hidden;  
+                    // Process process = Process.Start(a);  
+                    //  //sc condig 服务名 start= auto 
+
+                    ExecCmd(string.Format("  sc config {0} start= auto", serviceName));
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+
+
+            /// <summary>
+            /// 执行可执行文件
+            /// </summary>
+            /// <param name="exeFilePath"></param>
+            /// <param name="Arguments"></param>
+            public string ExecCmd(string Arguments = "")
+            {
+
+                // 执行exe文件
+                Process process = new Process();
+                process.StartInfo.FileName = "cmd.exe";
+                // 不显示闪烁窗口
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.RedirectStandardInput = true;//可能接受来自调用程序的输入信息 
+                process.StartInfo.RedirectStandardOutput = true;//由调用程序获取输出信息 
+                process.StartInfo.CreateNoWindow = true;//不显示程序窗口
+                // process.StartInfo.WorkingDirectory = "C:";
+                // 注意，参数需用引号括起来，因为路径中可能有空格
+
+                try
+                {
+                    process.Start();
+                    process.StandardInput.WriteLine(Arguments);
+                    //process.StandardInput.WriteLine("exit");
+                    // string sOutput = process.StandardOutput.ReadToEnd();
+
+                }
+                catch (OutOfMemoryException ex)
+                {
+                    return ex.Message;
+
+                }
+                catch (Exception ex)
+                {
+                    return ex.Message;
+                }
+                finally
+                {
+                    if (process != null)
+                        process.Close();
+
+                }
+                return string.Empty;
+            }
+
+
+            /// <summary>
+            /// 执行可执行文件
+            /// </summary>
+            /// <param name="exeFilePath"></param>
+            /// <param name="Arguments"></param>
+            public string ExecProcess(string exeFilePath, string Arguments = "")
+            {
+
+                // 执行exe文件
+                Process process = new Process();
+                process.StartInfo.FileName = exeFilePath;
+                // 不显示闪烁窗口
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.CreateNoWindow = true;
+                process.StartInfo.WorkingDirectory = Path.GetDirectoryName(exeFilePath);
+                // 注意，参数需用引号括起来，因为路径中可能有空格
+                if (!string.IsNullOrEmpty(Arguments))
+                {
+                    process.StartInfo.Arguments = Arguments;
+                }
+                try
+                {
+                    process.Start();
+
+
+                }
+                catch (OutOfMemoryException ex)
+                {
+                    return ex.Message;
+
+                }
+                catch (Exception ex)
+                {
+                    return ex.Message;
+                }
+                finally
+                {
+                    if (process != null)
+                        process.Close();
+
+                }
+                return string.Empty;
+            }
+
+        }
+
+
+
+        public FileServerSetUp()
+        {
+            InitializeComponent();
+        }
+        public const string masterConfig = "MasterServer.exe.config";//配置文件名
+        public const string fileServerConfig = "FileService.exe.config";//配置文件名
+        public const string fileConverConfig = "DocConvertServer.exe.config";//配置文件名
+        public const string ConfigXml = "config.xml";//配置文件名
+        public const string dwgFileConverConfig = "DWGConvertService.exe.config";//配置文件名
+
+
+
+        ServiceCls masterServiceCls = null;//主控服务
+        ServiceCls fileServiceCls = null;//文件服务器
+        ServiceCls fileConverServiceCls = null;//切图
+        ServiceCls dwgFileConverServiceCls = null;//dwg切图
+        private void MasterService_Click(object sender, EventArgs e)
+        {
+
+            if (this.MasterServerDialog.ShowDialog() == DialogResult.OK)
+            {
+                if (!string.IsNullOrEmpty(MasterServerDialog.FileName))
+                {
+                    ServiceStart("YinhooMasterService", MasterServerDialog.FileName);
+
+                    Settings.Default.PublicMasterDialogPath = MasterServerDialog.FileName;
+                    Settings.Default.Save();
+                }
+
+            }
+        }
+
+        /// <summary>
+        /// 修正dialog路径
+        /// </summary>
+        private void FixDialogPath(string filepath)
+        {
+            var dirInfo = new DirectoryInfo(Path.GetDirectoryName(filepath));
+            var parentDirectory = dirInfo.Parent;
+            if (parentDirectory != null)
+            {
+                if (String.IsNullOrEmpty(this.MasterServerDialog.InitialDirectory))
+                {
+                    this.MasterServerDialog.InitialDirectory = parentDirectory.FullName;
+                }
+                if (String.IsNullOrEmpty(this.FileServerDialog.InitialDirectory))
+                {
+                    this.FileServerDialog.InitialDirectory = parentDirectory.FullName;
+                }
+                if (String.IsNullOrEmpty(this.ConvertFileDialog.InitialDirectory))
+                {
+                    this.ConvertFileDialog.InitialDirectory = parentDirectory.FullName;
+                }
+                if (String.IsNullOrEmpty(this.DWGConvertFileDialog.InitialDirectory))
+                {
+                    this.DWGConvertFileDialog.InitialDirectory = parentDirectory.FullName;
+                }
+
+            }
+
+        }
+
+        /// <summary>
+        /// 展示路径和状态
+        /// </summary>
+        private void ShowPath()
+        {
+            if (masterServiceCls != null)
+            {
+                if (Directory.Exists(masterServiceCls.directoryPath))
+                {
+                    this.masterServerPath.Text = masterServiceCls.directoryPath;
+                    //获取配置状态
+                    if (File.Exists(masterServiceCls.execConfigPath))
+                    {
+                        var masterConfigConstr = XMLHelper.GetAttributeByXPath(masterServiceCls.execConfigPath, @"//add[@name='FileDataServerConnectionString']", "connectionString");
+                        this.MasterConfigLbl.Text = "主控配置情况：【" + masterConfigConstr+"】";
+                    }
+
+                }
+                else
+                {
+                    this.masterServerPath.Text = "路径不存在请重新选择";
+                }
+
+                this.masterServiceStatus.Text = masterServiceCls.serviceStatus;
+                var serviceObj = masterServiceCls.ServiceObj;
+                if (serviceObj != null)
+                {
+                    var ServiceBtnStatus = masterServiceCls.getServiceBtnStatus;
+                    if (!string.IsNullOrEmpty(ServiceBtnStatus))
+                    {
+                        this.button15.Text = ServiceBtnStatus;
+                        this.button15.Enabled = true;
+                    }
+                    else
+                    {
+                        this.button15.Enabled = false;
+                    }
+                }
+            }
+            if (fileServiceCls != null)
+            {
+                if (Directory.Exists(fileServiceCls.directoryPath))
+                {
+                    this.fileServerPath.Text = fileServiceCls.directoryPath;
+                    if (File.Exists(fileServiceCls.execConfigPath))
+                    {
+                        var fileConfigConstr = XMLHelper.GetAttributeByXPath(fileServiceCls.execConfigPath, @"//add[@name='FileDataServerConnectionString']", "connectionString");
+                        var masterIp = XMLHelper.GetAttributeByXPath(fileServiceCls.execConfigPath, @"//add[@key='masterIp']", "value");
+                        var dataNodeId = XMLHelper.GetAttributeByXPath(fileServiceCls.execConfigPath, @"//add[@key='dataNodeId']", "value");
+                        var isA3 = XMLHelper.GetAttributeByXPath(fileServiceCls.execConfigPath, @"//add[@key='isA3']", "value");
+                        //新增端口范围短  <add key="PortMin" value="3000"/><!--PASV被动传输最大端口--> <add key="PortMax" value="3100"/>
+                        var PortMin = XMLHelper.GetAttributeByXPath(fileServiceCls.execConfigPath, @"//add[@key='PortMin']", "value");
+                        var PortMax = XMLHelper.GetAttributeByXPath(fileServiceCls.execConfigPath, @"//add[@key='PortMax']", "value");
+
+                        this.FileServerConifgLbl.Text = "文件服务配置：" + string.Format("【{0}】\n\r \t                【主控IpmasterIp：{1}】【文件服务节点dataNodeId：{2}】【isA3:{3}】【新增端口范围，需开启端口：{4}-{5}】 ", fileConfigConstr, masterIp, dataNodeId, isA3, PortMin, PortMax);
+                    }
+                }
+                else
+                {
+                    this.fileServerPath.Text = "路径不存在请重新选择";
+                }
+
+                this.FileServiceStatus.Text = fileServiceCls.serviceStatus;
+                var serviceObj = fileServiceCls.ServiceObj;
+                if (serviceObj != null)
+                {
+                    var ServiceBtnStatus = fileServiceCls.getServiceBtnStatus;
+                    if (!string.IsNullOrEmpty(ServiceBtnStatus))
+                    {
+                        this.button16.Text = ServiceBtnStatus;
+                        this.button16.Enabled = true;
+                    }
+                    else
+                    {
+                        this.button16.Enabled = false;
+                    }
+                }
+            }
+            if (fileConverServiceCls != null)
+            {
+                if (Directory.Exists(fileConverServiceCls.directoryPath))
+                {
+                    if (File.Exists(fileConverServiceCls.execConfigPath))
+                    {
+                        this.ConvertServerPath.Text = fileConverServiceCls.directoryPath;
+                        var fileConfigConstr = XMLHelper.GetAttributeByXPath(fileConverServiceCls.execConfigPath, @"//add[@name='FileDataServerConnectionString']", "connectionString");
+                        var rootDir = XMLHelper.GetAttribue(fileConverServiceCls.configPath, "rootDir", "value");
+                        var serverId = XMLHelper.GetAttribue(fileConverServiceCls.configPath, "serverId", "value");
+                        var domain = XMLHelper.GetAttribue(fileConverServiceCls.configPath, "domain", "value");
+                        var swfTool = XMLHelper.GetAttribue(fileConverServiceCls.configPath, "swfTool", "value");
+                        var tempStr = string.Format("文件切图服务配置：【{0}】\n\r", fileConfigConstr);
+                        this.ConvertFileConfigLbl.Text = tempStr + string.Format("\t                【缩略图存放目录rootDir：{0}】 \n\r                【文件服务器节点serverId：{1} 】【缩略图外网地址：{2}】 【swfTool:{3}】 ", rootDir, serverId, domain, swfTool);
+                   
+                    //设置缩略图站点Ip端口
+                    if (!string.IsNullOrEmpty(domain))
+                    {
+                          var curDomain=domain.Replace("/","");
+                          var lastIndex= curDomain.LastIndexOf(":" );
+                          try
+                          {
+                              if (lastIndex != -1)
+                              {
+                                  if (lastIndex + 1 < curDomain.Length)
+                                  {
+                                      this.FileConvertPortText.Text = string.Format("切图服务端口:{0}", curDomain.Substring(lastIndex + 1));
+                                  }
+                              }
+                          }
+                          catch (IndexOutOfRangeException ex)
+                          { }
+                          catch (Exception ex)
+                          { }
+                    
+                    }
+                    }
+                }
+                else
+                {
+                    this.ConvertServerPath.Text = "路径不存在请重新选择";
+                }
+                this.FileConvertStatus.Text = fileConverServiceCls.serviceStatus;
+                var serviceObj = fileConverServiceCls.ServiceObj;
+                if (serviceObj != null)
+                {
+                    var ServiceBtnStatus = fileConverServiceCls.getServiceBtnStatus;
+                    if (!string.IsNullOrEmpty(ServiceBtnStatus))
+                    {
+                        this.button17.Text = ServiceBtnStatus;
+                        this.button17.Enabled = true;
+                    }
+                    else
+                    {
+                        this.button17.Enabled = false;
+                    }
+                }
+            }
+            if (dwgFileConverServiceCls != null)
+            {
+                if (Directory.Exists(dwgFileConverServiceCls.directoryPath))
+                {
+                    if (File.Exists(dwgFileConverServiceCls.execConfigPath))
+                    {
+                        var fileConfigConstr = XMLHelper.GetAttributeByXPath(dwgFileConverServiceCls.execConfigPath, @"//add[@name='FileDataServerConnectionString']", "connectionString");
+
+                        this.DwgConvertServerPath.Text = dwgFileConverServiceCls.directoryPath;
+                        var rootDir = XMLHelper.GetAttribue(dwgFileConverServiceCls.configPath, "rootDir", "value");
+                        var serverId = XMLHelper.GetAttribue(dwgFileConverServiceCls.configPath, "serverId", "value");
+                        var domain = XMLHelper.GetAttribue(dwgFileConverServiceCls.configPath, "domain", "value");
+                        var swfTool = XMLHelper.GetAttribue(dwgFileConverServiceCls.configPath, "swfTool", "value");
+                        var tempStr = string.Format("DWG切图服务配置：{0}\n\r", fileConfigConstr);
+                        this.DwgConvertConfigLbl.Text = tempStr + string.Format("\t                【缩略图存放目录rootDir：{0}】 \n\r                【文件服务器节点serverId：{1}】 【缩略图外网地址：{2}】 【swfTool:{3}】  ", rootDir, serverId, domain, swfTool);
+                    }
+                }
+                else
+                {
+                    this.DwgConvertServerPath.Text = "路径不存在请重新选择";
+                }
+
+                this.DWGConvertFileStatus.Text = dwgFileConverServiceCls.serviceStatus;
+                var serviceObj = dwgFileConverServiceCls.ServiceObj;
+                if (serviceObj != null)
+                {
+                    var ServiceBtnStatus = dwgFileConverServiceCls.getServiceBtnStatus;
+                    if (!string.IsNullOrEmpty(ServiceBtnStatus))
+                    {
+                        this.button18.Text = ServiceBtnStatus;
+                        this.button18.Enabled = true;
+                    }
+                    else
+                    {
+                        this.button18.Enabled = false;
+                    }
+                }
+            }
+
+        }
+
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (masterServiceCls != null)
+            {
+                masterServiceCls.ShowConfigFile();
+            }
+        }
+
+        private void button6_Click(object sender, EventArgs e)
+        {
+            if (masterServiceCls != null && masterServiceCls.ServiceObj == null)
+            {
+                masterServiceCls.installService();
+
+            }
+        }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            if (masterServiceCls != null && masterServiceCls.ServiceObj != null)
+            {
+                masterServiceCls.unstallService();
+            }
+        }
+
+        private void FileServer_Click(object sender, EventArgs e)
+        {
+            if (this.FileServerDialog.ShowDialog() == DialogResult.OK)
+            {
+                var fileName = FileServerDialog.FileName;
+                if (!string.IsNullOrEmpty(fileName))
+                {
+                    // fileServiceCls = new ServiceCls("YinhooFileService",fileName, fileServerConfig);
+                    ServiceStart("YinhooFileService", fileName);
+
+                    Settings.Default.PublicFileDialogPath = fileName;
+                    Settings.Default.Save();
+                }
+
+            }
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            fileServiceCls.ShowConfigFile();
+        }
+
+        private void button7_Click(object sender, EventArgs e)
+        {
+            if (fileServiceCls != null && fileServiceCls.ServiceObj == null)
+            {
+                fileServiceCls.installService();
+            }
+        }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            if (fileServiceCls != null && fileServiceCls.ServiceObj != null)
+                fileServiceCls.unstallService();
+        }
+
+        private void FileConvertServer_Click(object sender, EventArgs e)
+        {
+            if (this.ConvertFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                var fileName = ConvertFileDialog.FileName;
+                if (!string.IsNullOrEmpty(fileName))
+                {
+                    //fileConverServiceCls = new ServiceCls("YinhooFileConvertService",fileName, fileConverConfig,ConfigXml);
+                    ServiceStart("YinhooFileConvertService", fileName);
+
+                    Settings.Default.PublicFileConvertDialogPath = fileName;
+                    Settings.Default.Save();
+                }
+
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            fileConverServiceCls.ShowConfigFile();
+        }
+
+        private void button8_Click(object sender, EventArgs e)
+        {
+            if (fileConverServiceCls != null && fileConverServiceCls.ServiceObj == null)
+            {
+                fileConverServiceCls.installService();
+            }
+        }
+
+        private void button13_Click(object sender, EventArgs e)
+        {
+            if (fileConverServiceCls != null && fileConverServiceCls.ServiceObj != null)
+                fileConverServiceCls.unstallService();
+        }
+
+        private void DWGConvertService_Click(object sender, EventArgs e)
+        {
+
+            if (this.DWGConvertFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                var fileName = DWGConvertFileDialog.FileName;
+                if (!string.IsNullOrEmpty(fileName))
+                {
+                    dwgFileConverServiceCls = new ServiceCls("YinhooDWGService", fileName, dwgFileConverConfig, ConfigXml);
+                    ServiceStart("YinhooDWGService", fileName);
+
+                    Settings.Default.PublicDWGFileConvertDialogPath = fileName;
+                    Settings.Default.Save();
+                }
+
+            }
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            dwgFileConverServiceCls.ShowConfigFile();
+        }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            if (dwgFileConverServiceCls != null && dwgFileConverServiceCls.ServiceObj == null)
+                dwgFileConverServiceCls.installService();
+        }
+
+        private void button14_Click(object sender, EventArgs e)
+        {
+            if (dwgFileConverServiceCls != null && dwgFileConverServiceCls.ServiceObj != null)
+                dwgFileConverServiceCls.unstallService();
+        }
+
+
+
+        private void button15_Click(object sender, EventArgs e)
+        {
+            if (masterServiceCls != null)
+            {
+                var curServiceObj = masterServiceCls.ServiceObj;
+                ChangeService(curServiceObj);
+            }
+        }
+
+        private void ChangeService(ServiceController curServiceObj)
+        {
+            if (curServiceObj != null)
+            {
+                if (curServiceObj.Status != ServiceControllerStatus.Running)
+                {
+                    curServiceObj.Start();
+                }
+                else
+                {
+                    if (curServiceObj.CanStop)
+                    {
+                        curServiceObj.Stop();
+                    }
+                }
+            }
+            else
+            {
+                curServiceObj.Start();
+            }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            ShowPath();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="serviceName">服务名</param>
+        /// <param name="defaultDialogPath">svc_inst.bat路径</param>
+        /// <returns></returns>
+        private string GetServicePath(string serviceName)
+        {
+            var curTempPath = string.Empty;
+            ServiceController[] serviceArr = ServiceController.GetServices();
+            var curService = serviceArr.Where(c => c.DisplayName == serviceName).FirstOrDefault();
+            if (curService != null)
+            {
+                var str = curService.DisplayName;
+                Microsoft.Win32.RegistryKey _Key = Microsoft.Win32.Registry.LocalMachine.OpenSubKey(@"SYSTEM\ControlSet001\Services\" + curService.ServiceName);
+                if (_Key != null)
+                {
+                    object _ObjPath = _Key.GetValue("ImagePath");
+                    if (_ObjPath != null)
+                    {
+                        curTempPath= _ObjPath.ToString().Replace("\"","");
+                    }
+                }
+            }
+            return curTempPath;
+          
+        }
+        /// <summary>
+        ///  自动检测更新服务地址
+        /// </summary>
+        private void AutoCheckDefaultPublicDialogPathPath()
+        {
+           
+            if (!File.Exists(Settings.Default.PublicMasterDialogPath))
+            {
+                var masterPath = GetServicePath("YinhooMasterService");
+                if (!string.IsNullOrEmpty(masterPath))
+                {
+                   Settings.Default.PublicMasterDialogPath = masterPath;
+             
+                }
+            }
+            if (!File.Exists(Settings.Default.PublicFileDialogPath))
+            {
+                var YinhooFileServicePath = GetServicePath("YinhooFileService");
+                if (!string.IsNullOrEmpty(YinhooFileServicePath))
+                {
+                    Settings.Default.PublicFileDialogPath = YinhooFileServicePath;
+                 }
+            }
+            if (!File.Exists(Settings.Default.PublicFileConvertDialogPath))
+            {
+                var YinhooFileConvertServicePath = GetServicePath("YinhooFileConvertService");
+                if (!string.IsNullOrEmpty(YinhooFileConvertServicePath))
+                {
+                    Settings.Default.PublicFileConvertDialogPath = YinhooFileConvertServicePath;
+                }
+            }
+            if (!File.Exists(Settings.Default.PublicDWGFileConvertDialogPath))
+            {
+                var YinhooDWGServicePath = GetServicePath("YinhooDWGService");
+                if (!string.IsNullOrEmpty(YinhooDWGServicePath))
+                {
+                    Settings.Default.PublicDWGFileConvertDialogPath = YinhooDWGServicePath;
+                }
+            }
+
+        }
+
+
+
+        private void FileServerSetUp_Load(object sender, EventArgs e)
+        {
+
+
+            // 自动检测更新服务地址
+            AutoCheckDefaultPublicDialogPathPath();
+            
+            //设置默认启动路径
+
+            if (!String.IsNullOrEmpty(Settings.Default.PublicMasterDialogPath) && File.Exists(Settings.Default.PublicMasterDialogPath))
+            {
+                ServiceStart("YinhooMasterService", Settings.Default.PublicMasterDialogPath);
+            }
+            if (!String.IsNullOrEmpty(Settings.Default.PublicFileDialogPath))
+            {
+                ServiceStart("YinhooFileService", Settings.Default.PublicFileDialogPath);
+                //设置默认图片地址
+
+            }
+            if (!String.IsNullOrEmpty(Settings.Default.PublicFileConvertDialogPath) && File.Exists(Settings.Default.PublicFileConvertDialogPath))
+            {
+                ServiceStart("YinhooFileConvertService", Settings.Default.PublicFileConvertDialogPath);
+            }
+            if (!String.IsNullOrEmpty(Settings.Default.PublicDWGFileConvertDialogPath) && File.Exists(Settings.Default.PublicDWGFileConvertDialogPath))
+            {
+                ServiceStart("YinhooDWGService", Settings.Default.PublicDWGFileConvertDialogPath);
+            }
+
+            if (!String.IsNullOrEmpty(Settings.Default.PublicBusinessConfigDialogPath) )
+            {
+                this.BusinessCoinfgText.Text = Settings.Default.PublicBusinessConfigDialogPath;
+                ShowBusinessConfigStatus();
+            }
+            if (!String.IsNullOrEmpty(Settings.Default.PublicTxtConnectString))
+            {
+                this.txtConnectString.Text = Settings.Default.PublicTxtConnectString;
+            }
+           
+
+
+            timer1.Enabled = true;
+            timer1.Start();
+            //UpdataSystem_Click(sender, e);
+            this.beginDateTxt.Text = DateTime.Now.ToString("yyyy-MM-dd");
+            this.endDateTxt.Text = DateTime.Now.AddDays(1).ToString("yyyy-MM-dd");
+        }
+
+        /// <summary>
+        /// 展示业务系统配置状态
+        /// </summary>
+        public void ShowBusinessConfigStatus()
+        {
+            if (this.BusinessCoinfgText.Text != null && File.Exists(this.BusinessCoinfgText.Text))
+            {
+                var IsNewFileServer = XMLHelper.GetAttributeByXPath(this.BusinessCoinfgText.Text, @"//add[@key='IsNewFileServer']", "value");
+                var MasterServerAddress = XMLHelper.GetAttributeByXPath(this.BusinessCoinfgText.Text, @"//add[@key='MasterServerAddress']", "value");
+                this.BusinessConfig_ISNewFileServerText.Text = IsNewFileServer;
+                this.BusinessConfig_MasterServerAddressText.Text = MasterServerAddress;
+            }
+
+        }
+
+        /// <summary>
+        /// 服务启动
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="fileName"></param>
+        public void ServiceStart(string ServiceType, string fileName)
+        {
+            switch (ServiceType)
+            {
+                case "YinhooMasterService":
+                    masterServiceCls = new ServiceCls("YinhooMasterService", fileName, masterConfig);
+                    this.masterInstallBtn.Enabled = masterServiceCls.ServiceObj == null;
+                    this.masterUnstallBtn.Enabled = masterServiceCls.ServiceObj != null;
+                    this.MasterServerDialog.InitialDirectory = masterServiceCls.directoryPath;
+                    break;
+                case "YinhooFileService":
+                    fileServiceCls = new ServiceCls("YinhooFileService", fileName, fileServerConfig);
+                    this.FileServerInstallBtn.Enabled = fileServiceCls.ServiceObj == null;
+                    this.FileServerUnstallBtn.Enabled = fileServiceCls.ServiceObj != null;
+                    this.FileServerDialog.InitialDirectory = fileServiceCls.directoryPath;
+
+                    break;
+                case "YinhooFileConvertService":
+                    fileConverServiceCls = new ServiceCls("YinhooFileConvertService", fileName, fileConverConfig, ConfigXml);
+                    this.fileConvertIntasllBtn.Enabled = fileConverServiceCls.ServiceObj == null;
+                    this.fileConvertUntasllBtn.Enabled = fileConverServiceCls.ServiceObj != null;
+                    this.ConvertFileDialog.InitialDirectory = fileConverServiceCls.directoryPath;
+                    ///获取配置文件服务器地址
+                    if (fileConverServiceCls != null && File.Exists(fileConverServiceCls.configPath))
+                    {
+                        var Node = XMLHelper.GetNode(fileConverServiceCls.configPath, "rootDir");
+                        if (Node != null)
+                        {
+                            if (Node.Attributes["value"] != null)
+                            {
+                                this.Thumb_SitePathText.Text = Node.Attributes["value"].Value;
+                            }
+                        }
+                    }
+
+                    break;
+                case "YinhooDWGService":
+                    dwgFileConverServiceCls = new ServiceCls("YinhooDWGService", fileName, dwgFileConverConfig, ConfigXml);
+                    this.DwgConvertInstallBtn.Enabled = dwgFileConverServiceCls.ServiceObj == null;
+                    this.DwgConvertUnstallBtn.Enabled = dwgFileConverServiceCls.ServiceObj != null;
+                    this.DWGConvertFileDialog.InitialDirectory = dwgFileConverServiceCls.directoryPath;
+                    break;
+            }
+            FixDialogPath(fileName);//重置路径
+        }
+
+
+        private void button16_Click(object sender, EventArgs e)
+        {
+
+            if (fileServiceCls != null)
+            {
+                var curServiceObj = fileServiceCls.ServiceObj;
+                ChangeService(curServiceObj);
+            }
+        }
+
+        private void button17_Click(object sender, EventArgs e)
+        {
+
+            if (fileConverServiceCls != null)
+            {
+                var curServiceObj = fileConverServiceCls.ServiceObj;
+                ChangeService(curServiceObj);
+            }
+        }
+
+        private void button18_Click(object sender, EventArgs e)
+        {
+
+            if (dwgFileConverServiceCls != null)
+            {
+                var curServiceObj = dwgFileConverServiceCls.ServiceObj;
+                ChangeService(curServiceObj);
+            }
+        }
+
+
+        private void button10_Click(object sender, EventArgs e)
+        {
+            if (masterServiceCls != null)
+            {
+                if (masterServiceCls.ServiceObj == null)
+                    masterServiceCls.installService();
+                Thread.Sleep(2000);
+                if (masterServiceCls.ServiceObj != null)
+                {
+                    if (masterServiceCls.ServiceObj.Status != ServiceControllerStatus.Running)
+                    {
+                        masterServiceCls.ServiceRestart();
+                    }
+                }
+            }
+
+            if (fileServiceCls != null)
+            {
+                if (fileServiceCls.ServiceObj == null)
+                    fileServiceCls.installService();
+                Thread.Sleep(2000);
+                if (fileServiceCls.ServiceObj != null)
+                {
+                    if (fileServiceCls.ServiceObj.Status != ServiceControllerStatus.Running)
+                    {
+                        fileServiceCls.ServiceRestart();
+                    }
+                }
+            }
+
+            if (fileConverServiceCls != null)
+            {
+                if (fileConverServiceCls.ServiceObj == null)
+                    fileConverServiceCls.installService();
+                Thread.Sleep(2000);
+                if (fileConverServiceCls.ServiceObj != null)
+                {
+                    if (fileConverServiceCls.ServiceObj.Status != ServiceControllerStatus.Running)
+                    {
+                        fileConverServiceCls.ServiceRestart();
+                    }
+                }
+            }
+
+            if (dwgFileConverServiceCls != null)
+            {
+                if (dwgFileConverServiceCls.ServiceObj == null)
+                    dwgFileConverServiceCls.installService();
+                Thread.Sleep(2000);
+                if (dwgFileConverServiceCls.ServiceObj != null)
+                {
+                    if (dwgFileConverServiceCls.ServiceObj.Status != ServiceControllerStatus.Running)
+                    {
+                        dwgFileConverServiceCls.ServiceRestart();
+                    }
+                }
+            }
+
+
+
+
+        }
+
+        private void btnSaveSetting_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void InitBtn_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        #region 展示站点信息当前
+        /// <summary>
+        /// 缩略图站点创建
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ThumbSiteBtn_Click(object sender, EventArgs e)
+        {
+            //string hostIP, string portNum, string descOfWebSite, string commentOfWebSite, string webPath
+            //var hostIP = "127.0.0.1";
+            //var portNum = "8062";
+            //var descOfWebSite = "缩略图路径"; 
+            //var commentOfWebSite = "FileServerThumb2";
+            //var webPath = @"G:\115Box\文件服务器安装\FilesThumb";
+            var hostIP = this.Thumb_IPTEXT.Text;
+            var portNum = this.Thumb_portNumText.Text;
+            var descOfWebSite = this.Thumb_SiteDescText.Text;
+            var commentOfWebSite = this.Thumb_SiteCommentText.Text;
+            var webPath = string.Format(@"{0}", this.Thumb_SitePathText.Text);
+            var webSiteInfo = new IISHelper.NewWebSiteInfo(hostIP, portNum, descOfWebSite, commentOfWebSite, webPath);
+            webSiteInfo.MineDic.Add(".dwf", "drawing/x-dwf");
+            webSiteInfo.MineDic.Add(".dwg", "application/autocad");
+            webSiteInfo.MineDic.Add(".dxf", "application/dxf");
+            IISHelper helper = new IISHelper();
+            DirectoryEntry newSiteEntry = null;
+            try
+            {
+                newSiteEntry = helper.CreateNewWebSite(webSiteInfo);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return;
+            }
+            MessageBox.Show("操作成功");
+            this.Thumb_SiteInfoRichBox.Text = helper.GetSiteInfo(newSiteEntry);
+        }
+
+        #endregion
+
+        private void Thumb_SitePathText_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void BusinessCoinfgBtn_Click(object sender, EventArgs e)
+        {
+            if (this.BusinessConfig_FileDialog.ShowDialog() == DialogResult.OK)
+            {
+                if (!string.IsNullOrEmpty(BusinessConfig_FileDialog.FileName))
+                {
+                    this.BusinessCoinfgText.Text = BusinessConfig_FileDialog.FileName;
+                    if (Settings.Default.PublicBusinessConfigDialogPath != BusinessConfig_FileDialog.FileName)
+                    {
+                        Settings.Default.PublicBusinessConfigDialogPath = BusinessConfig_FileDialog.FileName;
+                        Settings.Default.Save();
+                    }
+                    ShowBusinessConfigStatus();
+                    ShowBusinessSiteMimeMap();
+                }
+
+            }
+        }
+
+        private void BusinessConfigSaveBtn_Click(object sender, EventArgs e)
+        {
+            if (File.Exists(this.BusinessCoinfgText.Text))
+            {
+                var xDoc = XMLHelper.xmlDoc(this.BusinessCoinfgText.Text);
+                var isNewFileServerNode = XMLHelper.GetNodeByXPath(xDoc, @"//add[@key='IsNewFileServer']");
+                var MasterServerAddressNode = XMLHelper.GetNodeByXPath(xDoc, @"//add[@key='MasterServerAddress']");
+
+
+                if (isNewFileServerNode != null)
+                {
+                    XMLHelper.SetAttribute(isNewFileServerNode, new AttributeParameter() { Name = "value", Value = this.BusinessConfig_ISNewFileServerText.Text });
+                }
+                else
+                {
+                    XmlParameter[] paras =
+                    {   new XmlParameter("add", "",new AttributeParameter("key","IsNewFileServer"), new AttributeParameter("value", this.BusinessConfig_ISNewFileServerText.Text))
+                    };
+                    //XMLHelper.AddNewNode("D:\\Err.xml", "Errors", paras);
+                    XMLHelper.AddNewNode(xDoc, "appSettings", paras);
+
+                }
+
+                if (MasterServerAddressNode != null)
+                {
+
+                    XMLHelper.SetAttribute(MasterServerAddressNode, new AttributeParameter() { Name = "value", Value = this.BusinessConfig_MasterServerAddressText.Text });
+                }
+                xDoc.Save(this.BusinessCoinfgText.Text);
+            }
+            MessageBox.Show("操作成功");
+        }
+
+        private void BusinessMimeMapBtn_Click(object sender, EventArgs e)
+        {
+            //添加业务站点http头
+            IISHelper helper = new IISHelper();
+            var businessCoinfgText = this.BusinessCoinfgText.Text;
+            var businessWebSitePath = Path.GetDirectoryName(businessCoinfgText);
+            if (Directory.Exists(businessWebSitePath))
+            {
+                DirectoryEntry newSiteEntry = null;
+                try
+                {
+                    newSiteEntry = helper.GetDirEntryByPath(businessWebSitePath);
+                    if (newSiteEntry != null)
+                    {
+                        var virtualDir = helper.FinVirtual(newSiteEntry);
+                        var keydic = new Dictionary<string, string>();
+                        keydic.Add(".mxt", "text/mxt");
+                        //keydic.Add(".xaml", "application/xaml+xml");
+                        //keydic.Add(".xap", "application/x-silverlight-app");
+
+                        if (virtualDir != null)
+                        {
+                            if (helper.MIMESetting(virtualDir, keydic) == true)
+                            {
+                                newSiteEntry.CommitChanges();
+                            }
+                        }
+                        this.BusinessSite_NameText.Text = helper.GetWebsiteMimeMap(newSiteEntry);
+                    }
+
+                    #region 添加httpProtocol
+                    if (File.Exists(this.BusinessCoinfgText.Text))
+                    {
+                        var xDoc = XMLHelper.xmlDoc(this.BusinessCoinfgText.Text);
+
+                        var httpProtocolNode = XMLHelper.GetNodeByXPath(xDoc, @"//system.webServer/httpProtocol/customHeaders/add[@name='.mxt']");
+                        if (httpProtocolNode == null)
+                        {
+                            var httpProtocol = XMLHelper.GetNodeByXPath(xDoc, @"//system.webServer/httpProtocol");
+                            if (httpProtocol == null)
+                            {
+                                XmlParameter[] httpProtocolparas =
+                                {   new XmlParameter("httpProtocol", "")
+                                };
+                                XMLHelper.AddNewNode(xDoc, "system.webServer", httpProtocolparas);
+                                //   xDoc.Save(this.BusinessCoinfgText.Text);
+                            }
+                            var customHeaders = XMLHelper.GetNodeByXPath(xDoc, @"//system.webServer/httpProtocol/customHeaders");
+                            if (customHeaders == null)
+                            {
+                                XmlParameter[] customHeadersparas =
+                                {   new XmlParameter("customHeaders", "")
+                                };
+                                XMLHelper.AddNewNode(xDoc, "httpProtocol", customHeadersparas);
+                                //    xDoc.Save(this.BusinessCoinfgText.Text);
+                            }
+
+                            //httpProtocol customHeaders
+                            customHeaders = XMLHelper.GetNodeByXPath(xDoc, @"//system.webServer/httpProtocol/customHeaders");
+                            if (customHeaders != null)
+                            {
+                                XmlParameter[] paras =
+                                {   new XmlParameter("add", "",new AttributeParameter("name",".mxt"), new AttributeParameter("value","text/mxt"))
+                                };
+                                //XMLHelper.AddNewNode("D:\\Err.xml", "Errors", paras);
+                                XMLHelper.AppendChild(xDoc, customHeaders, paras);
+                            }
+                            xDoc.Save(this.BusinessCoinfgText.Text);
+                        }
+                    }
+                    #endregion
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                    return;
+                }
+                MessageBox.Show("http头添加操作成功");
+            }
+
+        }
+
+        #region 数据库初始化
+
+        #region 全局变量
+        public List<BusinessSystem> busSysList = new List<BusinessSystem>();
+        public Dictionary<int, string> allDataServerDic = new Dictionary<int, string>();
+        public Dictionary<int, string> allBusSysDic = new Dictionary<int, string>();
+        #endregion
+        #region 按钮动作
+        private void btnInitMaster_Click(object sender, EventArgs e)
+        {
+            if (txtMaterServerIp.Text == "")
+            {
+                MessageBox.Show("请输入主控节点IP地址");
+                return;
+            }
+            if (txtMaterServerName.Text == "")
+            {
+                MessageBox.Show("请输入主控节点域名");
+                return;
+            }
+            if (txtMasterServerPort.Text == "")
+            {
+                MessageBox.Show("请输入主控节点端口号");
+                return;
+            }
+            if (txtMasterRootName.Text == "")
+            {
+                MessageBox.Show("请输入主控节点根目录名称");
+                return;
+            }
+            var connectString = txtConnectString.Text;
+            var startExpos = connectString.IndexOf("database") + 9;
+            var endExpos = connectString.IndexOf(";", startExpos);
+            connectString = connectString.Substring(0, startExpos) + txtFileServerName.Text + connectString.Substring(endExpos);
+            var result = CheckExitTable(connectString, "MasterNodeServer");
+            if (result == true)
+            {
+                MessageBox.Show("已存在主控节点");
+                return;
+            }
+            result = InitMaster();
+            if (result == false)
+            {
+                MessageBox.Show("初始化主控服务器失败");
+            }
+            else
+            {
+                MessageBox.Show("初始化主控服务器成功");
+            }
+            result = InitBusSysLog();
+        }
+
+        private void btnCreateDataBase_Click(object sender, EventArgs e)
+        {
+            if (txtConnectString.Text == "")
+            {
+                MessageBox.Show("请输入连接字符串");
+                return;
+            }
+            if (txtFileServerName.Text == "")
+            {
+                MessageBox.Show("请输入数据库名称");
+                return;
+            }
+            var connectString = txtConnectString.Text;
+            System.Data.SqlClient.SqlConnection connection = null;
+            try
+            {
+                var startExpos = connectString.IndexOf("database") + 9;
+                var endExpos = connectString.IndexOf(";", startExpos);
+                connectString = connectString.Substring(0, startExpos) + txtFileServerName.Text + connectString.Substring(endExpos);
+                connection = new System.Data.SqlClient.SqlConnection(connectString);
+                connection.Open();
+                MessageBox.Show("数据库已存在");
+
+                return;
+            }
+            catch
+            {
+            }
+            finally
+            {
+                connection.Close();
+            }
+            var result = InitFileServer();
+            if (result)
+                MessageBox.Show("初始化成功");
+            else
+                MessageBox.Show("初始化失败");
+        }
+
+        private void btnInitDataServer_Click(object sender, EventArgs e)
+        {
+            if (txtDataServerIp.Text == "")
+            {
+                MessageBox.Show("请输入数据服务节点IP");
+                return;
+            }
+            if (txtDataServerName.Text == "")
+            {
+                MessageBox.Show("请输入数据服务节点域名");
+                return;
+            }
+            if (txtDataServerPort.Text == "")
+            {
+                MessageBox.Show("请输入数据服务节点端口");
+                return;
+            }
+            if (txtDataServerRoot.Text == "")
+            {
+                MessageBox.Show("请输入数据服务节点根目录");
+                return;
+            }
+            if (txtDataServerUserName.Text == "")
+            {
+                MessageBox.Show("请输入数据服务节点验证用户名");
+                return;
+            }
+            if (txtDataServerPassword.Text == "")
+            {
+                MessageBox.Show("请输入数据服务节点验证密码");
+                return;
+            }
+            var connectString = txtConnectString.Text;
+            var maxId = GetMaxIdFromTable(connectString, "DataNodeServer", "dataNodeId");
+            var result = IsExistNodeServer(connectString, txtDataServerIp.Text, txtDataServerPort.Text);
+            if (result)
+            {
+                MessageBox.Show("已存在数据服务节点");
+                return;
+            }
+            maxId = maxId < 0 ? 0 : maxId;
+            result = InitDataNode(maxId);
+            if (result)
+                MessageBox.Show("初始化数据服务器成功");
+            else
+                MessageBox.Show("初始化数据服务器失败");
+        }
+
+        private void btnInitBusSys_Click(object sender, EventArgs e)
+        {
+            if (txtBusSysName.Text == "")
+            {
+                MessageBox.Show("请输入业务系统名称");
+                return;
+            }
+            if (txtBusSysInterfaceStr.Text == "")
+            {
+                MessageBox.Show("请输入业务系统数据接口");
+                return;
+            }
+            if (txtBusSysIP.Text == "")
+            {
+                MessageBox.Show("请输入业务系统域名");
+                return;
+            }
+            if (txtBusSysGuid.Text == "")
+            {
+                MessageBox.Show("请输入业务系统标识码");
+                return;
+            }
+            if (txtBusSysTargetIP.Text == "")
+            {
+                MessageBox.Show("请输入系统IP");
+                return;
+            }
+            if (txtBusSysConStr.Text == "")
+            {
+                MessageBox.Show("请输入业务系统连接字符串");
+                return;
+            }
+            var connectString = txtConnectString.Text;
+            var maxId = GetMaxIdFromTable(connectString, "BusinessSystem", "busSystemId");
+            maxId = maxId < 0 ? 0 : maxId;
+            var result = IsExistBusSystem(connectString, txtBusSysGuid.Text);
+            if (result)
+            {
+                MessageBox.Show("已存在业务系统！");
+                return;
+            }
+
+            result = InitBusSys(maxId);
+            if (result == false)
+            {
+                MessageBox.Show("初始化业务服务器失败");
+            }
+            else
+            {
+                MessageBox.Show("初始化业务服务器成功");
+            }
+            //else
+            //{
+            //    //注册业务系统
+            //    var connecction = new System.Data.SqlClient.SqlConnection(connectString);
+            //    connecction.Open();
+            //    System.Data.SqlClient.SqlCommand command = connecction.CreateCommand();
+            //    StringBuilder builder = new StringBuilder();
+            //    builder.AppendLine("USE [" + txtFileServerName.Text + "]");
+            //    builder.AppendLine("select dataNodeId from DataNodeServer where hostIp = '" + txtBusSysTargetIP.Text + "'");
+            //    command.CommandText = builder.ToString();
+            //    var dataNodeId = 0;
+            //    var cmdReader = command.ExecuteReader();
+            //    while (cmdReader.Read())
+            //    {
+            //        dataNodeId = cmdReader.GetInt32(0);
+            //    }
+            //    if (dataNodeId != 0)
+            //    {
+            //        result = InitResBusSys(dbParams, dataNodeId, int.Parse(dbParams.busSysId));
+            //        if (result)
+            //        {
+            //            MessageBox.Show("初始化业务服务器成功,已注册");
+            //        }
+            //        else
+            //        {
+            //            MessageBox.Show("初始化业务服务器成功,未注册");
+            //        }
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show("初始化业务服务器成功,未注册");
+            //    }
+
+            //}
+        }
+
+        private void InitBtn_Click_1(object sender, EventArgs e)
+        {
+            if (txtConnectString.Text == "")
+            {
+                MessageBox.Show("请输入连接字符串");
+                return;
+            }
+            if (txtFileServerName.Text == "")
+            {
+                MessageBox.Show("请输入数据库名称");
+                return;
+            } if (txtDataServerIp.Text == "")
+            {
+                MessageBox.Show("请输入数据服务节点IP");
+                return;
+            }
+            if (txtDataServerName.Text == "")
+            {
+                MessageBox.Show("请输入数据服务节点域名");
+                return;
+            }
+            if (txtDataServerPort.Text == "")
+            {
+                MessageBox.Show("请输入数据服务节点端口");
+                return;
+            }
+            if (txtDataServerRoot.Text == "")
+            {
+                MessageBox.Show("请输入数据服务节点根目录");
+                return;
+            }
+            if (txtDataServerUserName.Text == "")
+            {
+                MessageBox.Show("请输入数据服务节点验证用户名");
+                return;
+            }
+            if (txtDataServerPassword.Text == "")
+            {
+                MessageBox.Show("请输入数据服务节点验证密码");
+                return;
+            } if (txtMaterServerIp.Text == "")
+            {
+                MessageBox.Show("请输入主控节点IP地址");
+                return;
+            }
+            if (txtMaterServerName.Text == "")
+            {
+                MessageBox.Show("请输入主控节点域名");
+                return;
+            }
+            if (txtMasterServerPort.Text == "")
+            {
+                MessageBox.Show("请输入主控节点端口号");
+                return;
+            }
+            if (txtMasterRootName.Text == "")
+            {
+                MessageBox.Show("请输入主控节点根目录名称");
+                return;
+            } if (txtBusSysName.Text == "")
+            {
+                MessageBox.Show("请输入业务系统名称");
+                return;
+            }
+            if (txtBusSysInterfaceStr.Text == "")
+            {
+                MessageBox.Show("请输入业务系统数据接口");
+                return;
+            }
+            if (txtBusSysIP.Text == "")
+            {
+                MessageBox.Show("请输入业务系统域名");
+                return;
+            }
+            if (txtBusSysGuid.Text == "")
+            {
+                MessageBox.Show("请输入业务系统标识码");
+                return;
+            }
+            if (txtBusSysTargetIP.Text == "")
+            {
+                MessageBox.Show("请输入系统IP");
+                return;
+            }
+            if (txtBusSysConStr.Text == "")
+            {
+                MessageBox.Show("请输入业务系统连接字符串");
+                return;
+            }
+            var result = false;
+            result = InitFileServer();
+            if (result == false)
+            {
+                MessageBox.Show("初始化失败");
+                return;
+            }
+            else
+            {
+                MessageBox.Show("创建数据库成功");
+            }
+            result = InitMaster();
+            if (result == false)
+            {
+                MessageBox.Show("初始化失败");
+                return;
+            }
+            else
+            {
+                MessageBox.Show("主控服务器初始化成功");
+            }
+            result = InitDataNode(0);
+            if (result == false)
+            {
+                MessageBox.Show("初始化失败");
+                return;
+            }
+            else
+            {
+                MessageBox.Show("数据服务器初始化成功");
+            }
+            result = InitBusSys(0);
+            if (result == false)
+            {
+                MessageBox.Show("初始化失败");
+                return;
+            }
+            else
+            {
+                MessageBox.Show("业务系统初始化成功");
+            }
+            result = InitBusSysLog();
+            if (result == false)
+            {
+                MessageBox.Show("初始化失败");
+                return;
+            }
+            result = InitResBusSys();
+            if (result == false)
+            {
+                MessageBox.Show("初始化失败");
+            }
+            else
+            {
+                MessageBox.Show("业务服务器注册成功");
+            }
+        }
+        private void InitBtn_Layout(object sender, LayoutEventArgs e)
+        {
+            //var connectString = txtConnectString.Text;
+            //System.Data.SqlClient.SqlConnection connection = null;
+            //try
+            //{
+            //    if (!string.IsNullOrEmpty(Settings.Default.PublicTxtConnectString.ToString()))
+            //    {
+            //        var startExpos = connectString.IndexOf("database") + 9;
+            //        var endExpos = connectString.IndexOf(";", startExpos);
+            //        connectString = connectString.Substring(0, startExpos) + txtFileServerName.Text + connectString.Substring(endExpos);
+            //        connection = new System.Data.SqlClient.SqlConnection(connectString);
+            //        connection.Open();
+            //    }
+            //    InitBtn.Enabled = false;
+
+            //    return;
+            //}
+            //catch
+            //{
+            //}
+            //finally
+            //{
+            //    connection.Close();
+            //}
+        }
+        private void cmBoxBusSys_Layout(object sender, LayoutEventArgs e)
+        {
+            if (cmBoxBusSys.Items.Count < 2)
+            {
+                var itemArray = GetBusinessSystem();
+                cmBoxBusSys.Items.AddRange(itemArray);
+            }
+        }
+
+        private void cmBoxBusSys_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var name = cmBoxBusSys.SelectedItem.ToString();
+
+            var curSys = busSysList.Find(t => t.name == name);
+
+            if (curSys != null)
+            {
+                txtBusSysName.Text = curSys.name;
+                txtBusSysIP.Text = curSys.busIpAddress;
+                txtBusSysInterfaceStr.Text = curSys.interfaceStr;
+                txtBusSysGuid.Text = curSys.guid;
+                txtBusSysTargetIP.Text = curSys.sysIpAddress;
+                txtBusSysConStr.Text = curSys.connectString;
+
+            }
+            else
+            {
+                txtBusSysName.Text = "";
+                txtBusSysIP.Text = "";
+                txtBusSysInterfaceStr.Text = "";
+                txtBusSysGuid.Text = "";
+                txtBusSysTargetIP.Text = "";
+                txtBusSysConStr.Text = "";
+            }
+        }
+
+        private DateTime GetFileTraceBeginDate()
+        {
+           DateTime curBeginDate;
+           if (DateTime.TryParse(this.beginDateTxt.Text, out curBeginDate))
+           {
+               return curBeginDate;
+           }
+           return DateTime.Now;
+        }
+        private DateTime GetFileTraceEndDate()
+        {
+            DateTime curEndDate;
+            if (DateTime.TryParse(this.endDateTxt.Text, out curEndDate))
+            {
+                return curEndDate;
+            }
+            return DateTime.Now;
+        }
+
+
+        private void btnTestConnect_Click(object sender, EventArgs e)
+        {
+            if (txtConnectString.Text == "")
+            {
+                MessageBox.Show("请输入连接字符串");
+                return;
+            }
+            var connectString = txtConnectString.Text;
+            Settings.Default.PublicTxtConnectString = connectString;
+            Settings.Default.Save();
+            System.Data.SqlClient.SqlConnection connecction = null;
+            try
+            {
+                connecction = new System.Data.SqlClient.SqlConnection(connectString);
+                connecction.Open();
+                MessageBox.Show("成功连接");
+
+                System.Data.SqlClient.SqlCommand command = connecction.CreateCommand();
+                StringBuilder builder = new StringBuilder();
+
+                builder.AppendLine("USE [" + txtFileServerName.Text + "]");
+                builder.AppendLine(" select count(*) from FileTrace where status=3");
+                if (!string.IsNullOrEmpty(this.beginDateTxt.Text))
+                {
+                    builder.AppendFormat(" and createDate>='{0}'", this.beginDateTxt.Text);
+                }
+                if (!string.IsNullOrEmpty(this.endDateTxt.Text))
+                {
+                    builder.AppendFormat(" and createDate<='{0}'", this.endDateTxt.Text);
+                }
+                command.CommandText = builder.ToString();
+                var result = command.ExecuteScalar();
+                 
+                this.CutFileCountLbl.Text = string.Format("切图失败个数:{0}", result);
+
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show("连接不成功");
+            }
+            catch (Exception ex)
+            { }
+            finally
+            {
+                if (connecction != null && connecction.State != System.Data.ConnectionState.Closed)
+                {
+                    connecction.Close();
+                }
+            }
+        }
+
+        private void btnViewDataBase_Click(object sender, EventArgs e)
+        {
+            var viewForm = new DataBaseView(txtConnectString.Text, txtFileServerName.Text);
+            viewForm.Show();
+        }
+
+        private void UpdataSystem_Click(object sender, EventArgs e)
+        {
+            allDataServerDic.Clear();
+            allBusSysDic.Clear();
+            var connectString = txtConnectString.Text;
+            System.Data.SqlClient.SqlConnection connecction = null;
+            try
+            {
+                connecction = new System.Data.SqlClient.SqlConnection(connectString);
+                connecction.Open();
+                System.Data.SqlClient.SqlCommand command = connecction.CreateCommand();
+                StringBuilder builder = new StringBuilder();
+
+                builder.AppendLine("USE [" + txtFileServerName.Text + "]");
+                builder.AppendLine("select * from DataNodeServer");
+                command.CommandText = builder.ToString();
+                var dataReader = command.ExecuteReader();
+                while (dataReader.Read())
+                {
+                    allDataServerDic.Add(dataReader.GetInt32(0), dataReader.GetString(1));
+                }
+                dataReader.Close();
+                builder.Remove(0, builder.Length);
+                builder.AppendLine("USE [" + txtFileServerName.Text + "]");
+                builder.AppendLine("select * from BusinessSystem");
+                command.CommandText = builder.ToString();
+                var busReader = command.ExecuteReader();
+
+                while (busReader.Read())
+                {
+                    allBusSysDic.Add(busReader.GetInt32(0), busReader.GetString(1));
+                }
+
+                busReader.Close();
+                builder.Remove(0, builder.Length);
+                builder.AppendLine("USE [" + txtFileServerName.Text + "]");
+                builder.AppendLine("select * from RegisterBusinessSystem");
+                command.CommandText = builder.ToString();
+                var regSystemList = new Dictionary<int, regSystemData>();
+                var regReader = command.ExecuteReader();
+
+                while (regReader.Read())
+                {
+                    var regData = new regSystemData();
+                    regData.dataNodeId = regReader.GetInt32(2);
+                    regData.busSystemId = regReader.GetInt32(1);
+
+                    regSystemList.Add(regReader.GetInt32(0), regData);
+                }
+                regReader.Close();
+
+                var hasRegSys = regSystemList.Select(t => t.Value.busSystemId);
+
+                var dataServerObjects = (from c in allDataServerDic
+                                         select c.Value).ToArray();
+                var busSysObjects = (from c in allBusSysDic
+                                     where regSystemList.Select(t => t.Value.busSystemId).Contains(c.Key) == false
+                                     select c.Value).ToArray();
+
+                cmBoxDataServerList.Items.Clear();
+                cmBoxBusSysList.Items.Clear();
+                cmBoxDataServerList.Items.AddRange(dataServerObjects);
+                cmBoxBusSysList.Items.AddRange(busSysObjects);
+            }
+            catch
+            {
+                MessageBox.Show("连接不成功");
+                return;
+            }
+            finally
+            {
+                if (connecction != null && connecction.State != System.Data.ConnectionState.Closed)
+                {
+                    connecction.Close();
+                }
+            }
+        }
+
+        private void btnResigsterBusSys_Click(object sender, EventArgs e)
+        {
+            var dataServerIp = cmBoxDataServerList.Text;//= cmBoxDataServerList.SelectedValue.ToString();
+            var busSysName = cmBoxBusSysList.Text; //cmBoxBusSysList.SelectedValue.ToString();
+
+            int dataNodeId = allDataServerDic.FirstOrDefault(t => t.Value == dataServerIp).Key;
+            int busSystemId = allBusSysDic.FirstOrDefault(t => t.Value == busSysName).Key;
+
+            if (dataNodeId == 0 || busSystemId == 0)
+            {
+                MessageBox.Show("参数错误");
+                return;
+            }
+
+            var result = InitResBusSys(dataNodeId, busSystemId);
+            if (result == true)
+            {
+                MessageBox.Show("注册成功");
+                UpdataSystem_Click(sender, e);
+                cmBoxDataServerList.Text = "请选择";
+                cmBoxBusSysList.Text = "请选择";
+            }
+            else
+            {
+                MessageBox.Show("注册失败");
+            }
+        }
+        #endregion
+
+        #region 辅助函数
+        public string[] GetBusinessSystem()
+        {
+            var path = @"../../ParamFiles/BusinessSystem.xml";
+            if (!System.IO.File.Exists(path))
+            {
+                return new string[] { "请选择" };
+            }
+
+            var xmlDoc = new System.Xml.XmlDocument();
+
+            try
+            {
+                xmlDoc.Load(path);
+            }
+            catch
+            {
+                return new string[] { "请选择" };
+            }
+
+            var rootNodes = xmlDoc.SelectNodes("/BusinessSystem/System");
+            var retStr = "请选择,";
+            foreach (System.Xml.XmlNode node in rootNodes)
+            {
+                var name = node.SelectSingleNode("./Name").InnerText;
+                var busIpAddress = node.SelectSingleNode("./BusIpAddress").InnerText;
+                var guid = node.SelectSingleNode("./Guid").InnerText;
+                var sysIpAddress = node.SelectSingleNode("./SysIpAddress").InnerText;
+                var interfaceStr = node.SelectSingleNode("./InterfaceStr").InnerText;
+                var connectString = node.SelectSingleNode("./ConnectString").InnerText;
+
+                retStr += name + ",";
+
+                var tempSys = new BusinessSystem(name, busIpAddress, guid, sysIpAddress, interfaceStr, connectString);
+                busSysList.Add(tempSys);
+            }
+
+            return retStr.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        public bool InitMaster()
+        {
+            var sqlStr = string.Format("USE [{0}] \r\n", txtFileServerName.Text);
+            sqlStr += "GO \r\n";
+            sqlStr += "delete MasterNodeServer \r\n";
+            sqlStr += "SET Identity_Insert MasterNodeServer ON \r\n";
+
+            var initDataFilePath = @"../../ParamFiles/03InitData.sql";
+
+            var fs = new StreamReader(initDataFilePath, Encoding.Default);
+            var fStr = fs.ReadToEnd();
+            var sqlStartExpos = fStr.IndexOf("MasterNodeServer ON");
+            var sqlEndExpos = fStr.IndexOf("SET Identity_Insert MasterNodeServer OFF");
+
+            var tempMasterIp = txtMaterServerIp.Text;
+            var tempMasterName = txtMaterServerName.Text;
+            var tempMasterPort = txtMasterServerPort.Text;
+            var tempMasterRoot = txtMasterRootName.Text;
+
+            fs.Close();
+            var subSql = fStr.Substring(sqlStartExpos + 19, sqlEndExpos - sqlStartExpos - 19);
+
+            subSql = subSql.Replace("serverNodeIdValue", "1");
+            subSql = subSql.Replace("masterServerIpValue", tempMasterIp);
+            subSql = subSql.Replace("masterServerNameValue", tempMasterName);
+            subSql = subSql.Replace("masterServerPortValue", tempMasterPort);
+            subSql = subSql.Replace("masterServerRootValue", tempMasterRoot);
+
+            sqlStr += subSql + "SET Identity_Insert MasterNodeServer OFF\r\nGO";
+
+            var tempSqlFile = new FileStream("tempInitMaster.sql", FileMode.OpenOrCreate);
+
+            var fByte = Encoding.Default.GetBytes(sqlStr);
+            tempSqlFile.Write(fByte, 0, fByte.Length);
+            tempSqlFile.Close();
+
+            var runSql = new RunSqlFile(txtConnectString.Text);
+            return runSql.ExecuteSQLFileString(sqlStr);
+        }
+
+        public bool InitDataNode(int maxId)
+        {
+            var sqlStr = string.Format("USE [{0}] \r\n", txtFileServerName.Text);
+            sqlStr += "GO \r\n";
+            sqlStr += "SET Identity_Insert DataNodeServer ON \r\n";
+
+            var initDataFilePath = @"../../ParamFiles/03InitData.sql";
+
+            var fs = new StreamReader(initDataFilePath, Encoding.Default);
+            var fStr = fs.ReadToEnd();
+            var sqlStartExpos = fStr.IndexOf("DataNodeServer ON");
+            var sqlEndExpos = fStr.IndexOf("SET Identity_Insert DataNodeServer OFF");
+
+            var tempDataNodeIp = txtDataServerIp.Text;
+            var tempDataNodeName = txtDataServerName.Text;
+            var tempDataNodePort = txtDataServerPort.Text;
+            var tempDataNodeRoot = txtDataServerRoot.Text;
+            var tempDataNodeUserName = txtDataServerUserName.Text;
+            var tempDataNodePwd = txtDataServerPassword.Text;
+
+            fs.Close();
+            var subSql = fStr.Substring(sqlStartExpos + 17, sqlEndExpos - sqlStartExpos - 17);
+
+            subSql = subSql.Replace("dataNodeIdValue", (maxId + 1).ToString());
+            subSql = subSql.Replace("dataServerIpValue", tempDataNodeIp);
+            subSql = subSql.Replace("dataServerNameValue", tempDataNodeName);
+            subSql = subSql.Replace("dataServerPortValue", tempDataNodePort);
+            subSql = subSql.Replace("dataServerRootValue", tempDataNodeRoot);
+            subSql = subSql.Replace("dataServerUserNameValue", tempDataNodeUserName);
+            subSql = subSql.Replace("dataServerPassword", tempDataNodePwd);
+
+            sqlStr += subSql + "SET Identity_Insert DataNodeServer OFF\r\nGO";
+
+            var tempSqlFile = new FileStream("tempInitDataNode.sql", FileMode.OpenOrCreate);
+
+            var fByte = Encoding.UTF8.GetBytes(sqlStr);
+            tempSqlFile.Write(fByte, 0, fByte.Length);
+            tempSqlFile.Close();
+
+            var runSql = new RunSqlFile(txtConnectString.Text);
+            return runSql.ExecuteSQLFileString(sqlStr);
+        }
+
+        public bool InitBusSys(int maxId)
+        {
+            var sqlStr = string.Format("USE [{0}] \r\n", txtFileServerName.Text);
+            sqlStr += "GO \r\n";
+            sqlStr += "SET Identity_Insert BusinessSystem ON \r\n";
+
+            var initDataFilePath = @"../../ParamFiles/03InitData.sql";
+
+            var fs = new StreamReader(initDataFilePath, Encoding.Default);
+            var fStr = fs.ReadToEnd();
+            var sqlStartExpos = fStr.IndexOf("BusinessSystem ON");
+            var sqlEndExpos = fStr.IndexOf("SET Identity_Insert BusinessSystem OFF");
+
+            var tempBusSysName = txtBusSysName.Text;
+            var tempBusSysIp = txtBusSysIP.Text;
+            var tempBusSysGuid = txtBusSysGuid.Text;
+            var tempBusSysTargetIp = txtBusSysTargetIP.Text;
+            var tempBusSysInterfaceStr = txtBusSysInterfaceStr.Text;
+            var tempBusSysConStr = txtBusSysConStr.Text;
+
+            fs.Close();
+            var subSql = fStr.Substring(sqlStartExpos + 17, sqlEndExpos - sqlStartExpos - 17);
+
+            subSql = subSql.Replace("busSystemIdValue", (maxId + 1).ToString());
+            subSql = subSql.Replace("busSystemNameValue", tempBusSysName);
+            subSql = subSql.Replace("busSystemIpValue", tempBusSysIp);
+            subSql = subSql.Replace("busSystemGuidValue", tempBusSysGuid);
+            subSql = subSql.Replace("busSystemTargetIpValue", tempBusSysTargetIp);
+            subSql = subSql.Replace("busSystemInterfaceStrValue", tempBusSysInterfaceStr);
+            subSql = subSql.Replace("busSystemConStrValue", tempBusSysConStr);
+
+            sqlStr += subSql + "SET Identity_Insert BusinessSystem OFF\r\nGO";
+
+            var tempSqlFile = new FileStream("tempInitBusSys.sql", FileMode.OpenOrCreate);
+
+            var fByte = Encoding.UTF8.GetBytes(sqlStr);
+            tempSqlFile.Write(fByte, 0, fByte.Length);
+            tempSqlFile.Close();
+
+            var runSql = new RunSqlFile(txtConnectString.Text);
+            return runSql.ExecuteSQLFileString(sqlStr);
+        }
+
+        public bool InitResBusSys()
+        {
+            var sqlStr = string.Format("USE [{0}] \r\n", txtFileServerName.Text);
+            sqlStr += "GO \r\n";
+            sqlStr += "SET Identity_Insert RegisterBusinessSystem ON \r\n";
+
+            var initDataFilePath = @"../../ParamFiles/03InitData.sql";
+
+            var fs = new StreamReader(initDataFilePath, Encoding.Default);
+            var fStr = fs.ReadToEnd();
+            var sqlStartExpos = fStr.IndexOf("RegisterBusinessSystem ON");
+            var sqlEndExpos = fStr.IndexOf("SET Identity_Insert RegisterBusinessSystem OFF");
+
+            var subSql = fStr.Substring(sqlStartExpos + 25, sqlEndExpos - sqlStartExpos - 25);
+
+            subSql = subSql.Replace("relationIdValue", "1");
+            subSql = subSql.Replace("busSystemIdValue", "1");
+            subSql = subSql.Replace("dataNodeIdValue", "1");
+
+            sqlStr += subSql + "SET Identity_Insert RegisterBusinessSystem OFF \r\nGO";
+
+            var tempSqlFile = new FileStream("tempInitResBusSys.sql", FileMode.OpenOrCreate);
+
+            var fByte = Encoding.UTF8.GetBytes(sqlStr);
+            tempSqlFile.Write(fByte, 0, fByte.Length);
+            tempSqlFile.Close();
+
+            var runSql = new RunSqlFile(txtConnectString.Text);
+            return runSql.ExecuteSQLFileString(sqlStr);
+
+        }
+
+        public bool InitResBusSys(int dataNodeId, int busSystemId)
+        {
+            var sqlStr = string.Format("USE [{0}] \r\n", txtFileServerName.Text);
+            sqlStr += "GO \r\n";
+            sqlStr += "SET Identity_Insert RegisterBusinessSystem ON \r\n";
+
+            var initDataFilePath = @"../../ParamFiles/03InitData.sql";
+
+            var fs = new StreamReader(initDataFilePath, Encoding.Default);
+            var fStr = fs.ReadToEnd();
+            var sqlStartExpos = fStr.IndexOf("RegisterBusinessSystem ON");
+            var sqlEndExpos = fStr.IndexOf("SET Identity_Insert RegisterBusinessSystem OFF");
+
+            var subSql = fStr.Substring(sqlStartExpos + 25, sqlEndExpos - sqlStartExpos - 25);
+
+            var maxId = GetMaxIdFromTable(txtConnectString.Text, "RegisterBusinessSystem", "relationId");
+            maxId = maxId < 0 ? 1 : maxId + 1;
+
+            subSql = subSql.Replace("relationIdValue", maxId.ToString());
+            subSql = subSql.Replace("busSystemIdValue", busSystemId.ToString());
+            subSql = subSql.Replace("dataNodeIdValue", dataNodeId.ToString());
+
+            sqlStr += subSql + "SET Identity_Insert RegisterBusinessSystem OFF \r\n GO";
+
+            var tempSqlFile = new FileStream("tempInitResBusSys.sql", FileMode.OpenOrCreate);
+
+            var fByte = Encoding.UTF8.GetBytes(sqlStr);
+            tempSqlFile.Write(fByte, 0, fByte.Length);
+            tempSqlFile.Close();
+
+            var runSql = new RunSqlFile(txtConnectString.Text);
+            return runSql.ExecuteSQLFileString(sqlStr);
+
+        }
+
+        public bool InitBusSysLog()
+        {
+            var sqlStr = string.Format("USE [{0}] \r\n", txtFileServerName.Text);
+            sqlStr += "GO \r\n";
+            sqlStr += "SET Identity_Insert OperateType ON \r\n";
+
+            var initDataFilePath = @"../../ParamFiles/03InitData.sql";
+
+            var fs = new StreamReader(initDataFilePath, Encoding.Default);
+            var fStr = fs.ReadToEnd();
+            var sqlStartExpos = fStr.IndexOf("OperateType ON");
+            var sqlEndExpos = fStr.IndexOf("SET Identity_Insert OperateType OFF");
+
+            var subSql = fStr.Substring(sqlStartExpos + 14, sqlEndExpos - sqlStartExpos - 14);
+
+            sqlStr += subSql + "SET Identity_Insert OperateType OFF\r\nGO";
+
+            var tempSqlFile = new FileStream("tempInitBusSysLog.sql", FileMode.OpenOrCreate);
+
+            var fByte = Encoding.UTF8.GetBytes(sqlStr);
+            tempSqlFile.Write(fByte, 0, fByte.Length);
+            tempSqlFile.Close();
+
+            var runSql = new RunSqlFile(txtConnectString.Text);
+            return runSql.ExecuteSQLFileString(sqlStr);
+
+        }
+
+        public bool InitFileServer()
+        {
+            var fileServerName = txtFileServerName.Text;
+            var connectString = txtConnectString.Text;
+            var runSql = new RunSqlFile(connectString);
+            var createSqlPath = @"../../ParamFiles/01CreateDataBse.sql";
+
+            var fs = new StreamReader(createSqlPath, Encoding.Default);
+            var fStr = fs.ReadToEnd();
+            fStr = fStr.Replace("FileDataServer", fileServerName);
+            fs.Close();
+            var tempSqlFile = new FileStream("tempCreateDataBse.sql", FileMode.OpenOrCreate);
+            var fByte = Encoding.UTF8.GetBytes(fStr);
+            tempSqlFile.Write(fByte, 0, fByte.Length);
+            tempSqlFile.Close();
+            //查找目录
+            var dirStartExpos = fStr.IndexOf("FILENAME");
+            var dirEndExpos = fStr.IndexOf(",", dirStartExpos);
+            var dirName = fStr.Substring(dirStartExpos + 9, dirEndExpos - dirStartExpos - 9).Replace("'", "");
+
+            var removeExpos = dirName.LastIndexOf("\\");
+            dirName = dirName.Remove(removeExpos);
+
+            var myDir = new DirectoryInfo(dirName);
+
+            if (!myDir.Exists)
+            {
+                Directory.CreateDirectory(dirName);
+            }
+
+            runSql.ExecuteSQLFileString(fStr);
+
+            fs = new StreamReader(@"../../ParamFiles/02FileDataServer.sql");
+            fStr = fs.ReadToEnd();
+            fStr = string.Format("USE [{0}] \r\n", txtFileServerName.Text) + "GO \r\n" + fStr;
+            return runSql.ExecuteSQLFileString(fStr);
+            //return runSql.ExecuteSQLFile(dataParams.dataServerPath);
+        }
+
+        public bool IsExistNodeServer(string conStr, string hostIp, string port)
+        {
+            System.Data.SqlClient.SqlConnection connecction = null;
+            try
+            {
+                connecction = new System.Data.SqlClient.SqlConnection(conStr);
+
+                System.Data.SqlClient.SqlCommand command = connecction.CreateCommand();
+                connecction.Open();
+                command.CommandText = "USE [" + txtFileServerName.Text + "]";
+                command.ExecuteNonQuery();
+                command.CommandText = "select count(1) from DataNodeServer where (hostIp='" + txtDataServerIp.Text + "') and (hostPort='" + txtDataServerPort.Text + "')";
+                int count = Convert.ToInt32(command.ExecuteScalar());
+                return count > 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return true;
+            }
+            finally
+            {
+                if (connecction != null && connecction.State != System.Data.ConnectionState.Closed)
+                {
+                    connecction.Close();
+                }
+            }
+        }
+
+        public bool IsExistBusSystem(string conStr, string customCode)
+        {
+            System.Data.SqlClient.SqlConnection connecction = null;
+            try
+            {
+                connecction = new System.Data.SqlClient.SqlConnection(conStr);
+
+                System.Data.SqlClient.SqlCommand command = connecction.CreateCommand();
+                connecction.Open();
+                command.CommandText = "USE [" + txtFileServerName.Text + "]";
+                command.ExecuteNonQuery();
+                command.CommandText = "select count(1) from BusinessSystem where (customerCode='" + customCode + "')";
+                int count = Convert.ToInt32(command.ExecuteScalar());
+                return count > 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return true;
+            }
+            finally
+            {
+                if (connecction != null && connecction.State != System.Data.ConnectionState.Closed)
+                {
+                    connecction.Close();
+                }
+            }
+        }
+
+        public class regSystemData
+        {
+            public int dataNodeId { set; get; }
+            public int busSystemId { set; get; }
+        }
+        #endregion
+
+        private void tabControl1_Layout(object sender, LayoutEventArgs e)
+        {
+            //var xmldoc = XMLHelper.xmlDoc(@"../../ParamFiles/ParamDefault.xml");
+            var xmlDoc = new XmlDocument();
+            var fsream = new FileStream(@"../../ParamFiles/ParamDefault.xml", FileMode.Open);
+
+            try
+            {
+                xmlDoc.Load(fsream);
+                var allElements = xmlDoc.SelectNodes("/root");
+
+                foreach (XmlNode ele in allElements)
+                {
+                    if (string.IsNullOrEmpty(Settings.Default.PublicTxtConnectString))
+                    {
+                        txtConnectString.Text = ele.SelectSingleNode("./connectString").InnerText;
+                    }
+                    txtFileServerName.Text = ele.SelectSingleNode("./fileDataServerName").InnerText;
+
+                    txtMaterServerIp.Text = ele.SelectSingleNode("./hostIpInfo").InnerText;
+                    txtMaterServerName.Text = ele.SelectSingleNode("./hostName").InnerText;
+                    txtMasterServerPort.Text = ele.SelectSingleNode("./hostPort").InnerText;
+                    txtMasterRootName.Text = ele.SelectSingleNode("./rootDirectory").InnerText;
+
+                    txtDataServerIp.Text = ele.SelectSingleNode("./dataNodeIp").InnerText;
+                    txtDataServerName.Text = ele.SelectSingleNode("./dataNodeName").InnerText;
+                    txtDataServerPort.Text = ele.SelectSingleNode("./dataNodePort").InnerText;
+                    txtDataServerRoot.Text = ele.SelectSingleNode("./dtaNodeRoot").InnerText;
+                    txtDataServerUserName.Text = ele.SelectSingleNode("./dataNodeUserName").InnerText;
+                    txtDataServerPassword.Text = ele.SelectSingleNode("./dataNodeUserPwd").InnerText;
+
+                    txtBusSysName.Text = ele.SelectSingleNode("./busSystemName").InnerText;
+                    txtBusSysInterfaceStr.Text = ele.SelectSingleNode("./busSystemInterfaceStr").InnerText;
+                    txtBusSysIP.Text = ele.SelectSingleNode("./busSystemDomainName").InnerText;
+                    txtBusSysGuid.Text = ele.SelectSingleNode("./busSytemGuid").InnerText;
+                    txtBusSysTargetIP.Text = ele.SelectSingleNode("./busSystemIp").InnerText;
+                    txtBusSysConStr.Text = ele.SelectSingleNode("./busSystemConStr").InnerText;
+
+                }
+            }
+            catch (Exception ept)
+            {
+                return;
+            }
+            finally
+            {
+                fsream.Close();
+            }
+        }
+
+        public bool CheckExitTable(string conStr, string tableName)
+        {
+            System.Data.SqlClient.SqlConnection connecction = null;
+            try
+            {
+                connecction = new System.Data.SqlClient.SqlConnection(conStr);
+                connecction.Open();
+                var tableNameStr = "select count(1) from " + tableName;
+                System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand(tableNameStr, connecction);
+                int result = Convert.ToInt32(cmd.ExecuteScalar());
+                if (result == 0)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            finally
+            {
+                if (connecction != null && connecction.State != System.Data.ConnectionState.Closed)
+                {
+                    connecction.Close();
+                }
+            }
+        }
+
+        public int GetMaxIdFromTable(string conStr, string tableName, string primaryKey)
+        {
+            System.Data.SqlClient.SqlConnection connecction = null;
+            try
+            {
+                connecction = new System.Data.SqlClient.SqlConnection(conStr);
+
+                System.Data.SqlClient.SqlCommand command = connecction.CreateCommand();
+                connecction.Open();
+                command.CommandText = "USE [" + txtFileServerName.Text + "]";
+                command.ExecuteNonQuery();
+                command.CommandText = "select max(" + primaryKey + ") from " + tableName;
+                int maxId = Convert.ToInt32(command.ExecuteScalar());
+                return maxId;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return -1;
+            }
+            finally
+            {
+                if (connecction != null && connecction.State != System.Data.ConnectionState.Closed)
+                {
+                    connecction.Close();
+                }
+            }
+        }
+
+        #endregion
+
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (this.tabControl1.SelectedIndex == 4)
+            {
+                ShowBusinessSiteMimeMap();
+            }
+
+            if (this.tabControl1.SelectedIndex == 3)
+            {
+                ShowDComRights();
+            }
+        }
+
+        private void ShowDComRights()
+        {
+            OfficeChecker officeChecker = new OfficeChecker();
+            try
+            {
+                LaunchDGView.Rows.Clear();
+                AccessDGView.Rows.Clear();
+                ConfigDGView.Rows.Clear();
+
+                List<AppRightView> LPList = new List<AppRightView>();
+                List<AppRightView> APList = new List<AppRightView>();
+                List<AppRightView> CPList = new List<AppRightView>();
+
+                List<string> DComAppIds = officeChecker.getAppIds();
+                foreach (string AppId in DComAppIds)
+                {
+                    PermissionAccessor APAccessor = new AccessPermissionAccessor(AppId);
+                    PermissionAccessor LPAccessor = new LaunchPermissionAccessor(AppId);
+                    PermissionAccessor CPAccessor = new ConfigPermissionAccessor(AppId);
+
+                    if (APAccessor != null)
+                    {
+                        APList.AddRange(APAccessor.getRights());
+                    }
+                    if (LPAccessor != null)
+                    {
+                        LPList.AddRange(LPAccessor.getRights());
+                    }
+                    if (CPAccessor != null)
+                    {
+                        CPList.AddRange(CPAccessor.getRights());
+                    }
+
+                }
+
+
+                LaunchDGView.DataSource = new BindingSource(LPList, null);
+                LaunchDGView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+
+                AccessDGView.DataSource = new BindingSource(APList, null);
+                AccessDGView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+
+                ConfigDGView.DataSource = new BindingSource(CPList, null);
+                ConfigDGView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            }
+            catch (Exception ex)
+            {
+                StatusLbl.Text = "设置失败！请确认运行改程序的用户是否有足够的权限";
+            }
+        }
+
+        private void ShowBusinessSiteMimeMap()
+        {
+            var businessCoinfgText = this.BusinessCoinfgText.Text;
+
+            if (!string.IsNullOrEmpty(businessCoinfgText) && Directory.Exists(Path.GetDirectoryName(businessCoinfgText)))
+            {
+                var businessWebSitePath = Path.GetDirectoryName(businessCoinfgText);
+                IISHelper helper = new IISHelper();
+                var newSiteEntry = helper.GetDirEntryByPath(businessWebSitePath);
+                if (newSiteEntry != null)
+                {
+                    this.BusinessSite_NameText.Text = helper.GetWebsiteMimeMap(newSiteEntry);
+                }
+            }
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (this.masterServiceCls != null)
+            {
+                this.masterServiceCls.OpenLog();
+            }
+        }
+
+        private void linkLabel2_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (this.fileServiceCls != null)
+            {
+                this.fileServiceCls.OpenLog();
+            }
+        }
+
+        private void linkLabel3_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (this.fileConverServiceCls != null)
+            {
+                this.fileConverServiceCls.OpenLog();
+            }
+        }
+
+        private void linkLabel4_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (this.dwgFileConverServiceCls != null)
+            {
+                this.dwgFileConverServiceCls.OpenLog();
+            }
+        }
+
+        private void MMC_btn_Click(object sender, EventArgs e)
+        {
+            var Arguments = "comexp.msc";
+            ExecCMD(Arguments);
+        }
+
+        private void MasterServerDialog_FileOk(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void AccountNameBtn_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(AccountNameTBox.Text.ToString()))
+            {
+                StatusLbl.Text = "用户名必须输入";
+                return;
+            }
+
+            OfficeChecker officeChecker = new OfficeChecker();
+
+            try
+            {
+                string[] AccountNameArray = AccountNameTBox.Text.ToString().Split(new char[] { ';' });
+                List<string> DComAppIds = officeChecker.getAppIds();
+                foreach (string AppId in DComAppIds)
+                {
+                    AccessPermissionAccessor APAccessor = new AccessPermissionAccessor(AppId);
+                    LaunchPermissionAccessor LPAccessor = new LaunchPermissionAccessor(AppId);
+                    ConfigPermissionAccessor CPAccessor = new ConfigPermissionAccessor(AppId);
+                    try
+                    {
+                       if(string.IsNullOrEmpty(APAccessor.AppName)||string.IsNullOrEmpty(LPAccessor.AppName)||string.IsNullOrEmpty(CPAccessor.AppName))
+                       {
+                           continue;
+                       }
+                         
+                    }
+                    catch (System.Management.ManagementException ex)
+                    {
+                        continue;
+                    }
+                    catch (Exception ex)
+                    {
+                        continue;
+                    }
+
+                    APAccessor.setPermission(BuiltinAccount.SYSTEM, FullPermissionRight.FULL_ACCESS_Mask);
+                    LPAccessor.setPermission(BuiltinAccount.SYSTEM, FullPermissionRight.FULL_LAUNCH_Mask);
+                    CPAccessor.setPermission(BuiltinAccount.SYSTEM, FullPermissionRight.FULL_CONFIG_Mask);
+                    foreach (string AccountName in AccountNameArray)
+                    {
+                        APAccessor.setPermission(AccountName, FullPermissionRight.FULL_ACCESS_Mask);
+                        LPAccessor.setPermission(AccountName, FullPermissionRight.FULL_LAUNCH_Mask);
+                        CPAccessor.setPermission(AccountName, FullPermissionRight.FULL_CONFIG_Mask);
+                    }
+                    APAccessor.setIdentity(AppId, "Interactive User");
+                }
+                StatusLbl.Text = "设置成功！";
+            }
+            catch (Exception ex)
+            {
+                StatusLbl.Text = "设置失败！请确认填写的用户是否存在";
+            }
+        }
+
+        private void OpenFile(string appName, string arguments)
+        {
+            var Arguments = arguments;
+            // 执行exe文件
+            Process process = new Process();
+            process.StartInfo.FileName = appName;
+ 
+            // process.StartInfo.WorkingDirectory = "C:";
+            // 注意，参数需用引号括起来，因为路径中可能有空格
+
+            try
+            {
+                process.Start();
+                process.StartInfo.Arguments = arguments;
+            
+
+            }
+            catch (OutOfMemoryException ex)
+            {
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                if (process != null)
+                    process.Close();
+
+            }
+        }
+        private void ExecCMD( string arguments)
+        {
+            var Arguments = arguments;
+            // 执行exe文件
+            Process process = new Process();
+            process.StartInfo.FileName = "cmd.exe";
+           
+                // 不显示闪烁窗口
+                process.StartInfo.UseShellExecute = false;
+                process.StartInfo.RedirectStandardInput = true;//可能接受来自调用程序的输入信息 
+                process.StartInfo.RedirectStandardOutput = true;//由调用程序获取输出信息 
+                process.StartInfo.CreateNoWindow = true;//不显示程序窗口
+          
+            // process.StartInfo.WorkingDirectory = "C:";
+            // 注意，参数需用引号括起来，因为路径中可能有空格
+
+            try
+            {
+                process.Start();
+                process.StandardInput.WriteLine(Arguments);
+                //process.StandardInput.WriteLine("exit");
+                // string sOutput = process.StandardOutput.ReadToEnd();
+
+            }
+            catch (OutOfMemoryException ex)
+            {
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+            finally
+            {
+                if (process != null)
+                    process.Close();
+
+            }
+            
+        }
+
+        private void IISBtn_Click(object sender, EventArgs e)
+        {
+            ExecCMD("inetmgr");
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var directory = new DirectoryInfo(System.Environment.CurrentDirectory);
+            var hitDirectory = directory.Parent.Parent;
+            if (hitDirectory != null)
+            {
+                var helperFile = hitDirectory.FullName + "/ParamFiles/" + "服务配置功能使用说明.docx";
+                if (File.Exists(helperFile))
+                {
+                    OpenFile(helperFile, string.Empty);
+                }
+            }
+        }
+
+        private void ReCut_Click(object sender, EventArgs e)
+        {
+            if (txtConnectString.Text == "")
+            {
+                MessageBox.Show("请输入连接字符串");
+                return;
+            }
+            var connectString = txtConnectString.Text;
+           
+            System.Data.SqlClient.SqlConnection connecction = null;
+            try
+            {
+                connecction = new System.Data.SqlClient.SqlConnection(connectString);
+                connecction.Open();
+                System.Data.SqlClient.SqlCommand command = connecction.CreateCommand();
+                StringBuilder builder = new StringBuilder();
+
+                builder.AppendLine("USE [" + txtFileServerName.Text + "]");
+                builder.AppendLine("update  FileTrace set status=1 where status=3");
+                if (!string.IsNullOrEmpty(this.beginDateTxt.Text))
+                {
+                    builder.AppendFormat(" and createDate>='{0}'", this.beginDateTxt.Text);
+                }
+                if (!string.IsNullOrEmpty(this.endDateTxt.Text))
+                {
+                    builder.AppendFormat(" and createDate<='{0}'", this.endDateTxt.Text);
+                }
+                command.CommandText = builder.ToString();
+                var result = command.ExecuteNonQuery();
+                MessageBox.Show("影响个数:"+result.ToString());
+
+            }
+            catch (SqlException ex)
+            {
+                MessageBox.Show("连接不成功");
+            }
+            catch (Exception ex)
+            { }
+            finally
+            {
+                if (connecction != null && connecction.State != System.Data.ConnectionState.Closed)
+                {
+                    connecction.Close();
+                }
+            }
+        }
+
+        private void BusinessSystem_BuildSiteBtn_Click(object sender, EventArgs e)
+        {
+
+            //string hostIP, string portNum, string descOfWebSite, string commentOfWebSite, string webPath
+            //var hostIP = "127.0.0.1";
+            //var portNum = "8062";
+            //var descOfWebSite = "缩略图路径"; 
+            //var commentOfWebSite = "FileServerThumb2";
+            //var webPath = @"G:\115Box\文件服务器安装\FilesThumb";
+            var hostIP = this.BusinessSystem_IPText.Text;
+            var portNum = this.BusinessSystem_portNumText.Text;
+            var descOfWebSite = this.BusinessSystem_SiteDescText.Text;
+            var commentOfWebSite = this.BusinessSystem_SiteCommentText.Text;
+            var businessWebSitePath = Path.GetDirectoryName(this.BusinessCoinfgText.Text);
+            if (Directory.Exists(businessWebSitePath))
+            {
+                var webPath = string.Format(@"{0}", businessWebSitePath);
+                var webSiteInfo = new IISHelper.NewWebSiteInfo(hostIP, portNum, descOfWebSite, commentOfWebSite, webPath);
+                webSiteInfo.MineDic.Add(".mxt", "text/mxt");
+             
+                IISHelper helper = new IISHelper();
+                DirectoryEntry newSiteEntry = null;
+                try
+                {
+                    newSiteEntry = helper.CreateNewWebSite(webSiteInfo);
+                    BusinessMimeMapBtn_Click(sender, e);
+                }
+                catch (Exception ex)
+                {
+                   
+                    MessageBox.Show(ex.Message);
+                    return;
+                }
+                MessageBox.Show("站点操作成功");
+
+            }
+        }
+    }
+}

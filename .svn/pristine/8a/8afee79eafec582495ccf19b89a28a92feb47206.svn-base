@@ -1,0 +1,49 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace FileServerRelease
+{
+    public class AppRightView
+    {
+        private string appName;
+        public string AppName
+        {
+            get
+            {
+                return this.appName;
+            }
+            set
+            {
+                this.appName = value;
+            }
+        }
+
+        private string accountName;
+        public string AccountName
+        {
+            get
+            {
+                return this.accountName;
+            }
+            set
+            {
+                this.accountName = value;
+            }
+        }
+
+        private string accessMask;
+        public string AccessMask
+        {
+            get
+            {
+                return this.accessMask;
+            }
+            set
+            {
+                this.accessMask = value;
+            }
+        }
+    }
+}

@@ -1,0 +1,192 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Microsoft.Win32;
+using System.IO;
+using System.Diagnostics;
+
+namespace FileServerRelease.DComCnfg
+{
+    public class OfficeChecker
+    {
+        private const string RegKey = @"Software\Microsoft\Windows\CurrentVersion\App Paths";
+
+        public List<string> getAppIds()
+        {
+            List<string> result = new List<string>();
+
+            string _wordPath = GetComponentPath(OfficeComponent.Word);
+            string _excelPath = GetComponentPath(OfficeComponent.Excel);
+            string _pptPath = GetComponentPath(OfficeComponent.PowerPoint);
+            string _accessPath = GetComponentPath(OfficeComponent.PowerPoint);
+
+            //word
+            if (GetMajorVersion(_wordPath) == 11) {
+                result.Add(DComKeys.WordKeyFor2003);
+            }
+            else if (GetMajorVersion(_wordPath) ==12) {
+                result.Add(DComKeys.WordKeyFor2007);
+            }
+            else if (GetMajorVersion(_wordPath) ==14){
+                result.Add(DComKeys.WordKeyFor2010);
+            }
+            else if (GetMajorVersion(_wordPath) == 15)
+            {
+                result.Add(DComKeys.WordKeyFor2013);
+            }
+            
+
+            //excel
+            if (GetMajorVersion(_excelPath) == 11) {
+                result.Add(DComKeys.ExcelKeyFor2003);
+              
+               
+            }
+            else if (GetMajorVersion(_excelPath) == 12)
+            {
+                result.Add(DComKeys.ExcelKeyFor2007);
+            }
+            else if (GetMajorVersion(_excelPath) ==14){
+                result.Add(DComKeys.ExcelKeyFor2010);
+            }
+            else if (GetMajorVersion(_excelPath) == 15)
+            {
+                result.Add(DComKeys.ExcelKeyFor2013);
+            }
+            result.Add(DComKeys.MicrosoftExcel97_2003Sheet);
+
+            //power point
+            if (GetMajorVersion(_pptPath) == 11) {
+                result.Add(DComKeys.PowerPointKeyFor2003);
+              
+            }
+            else if (GetMajorVersion(_pptPath) == 12)
+            {
+                result.Add(DComKeys.PowerPointKeyFor2007);
+            }
+            else if (GetMajorVersion(_pptPath) ==14){
+                result.Add(DComKeys.PowerPointKeyFor2010);
+            }
+            else if (GetMajorVersion(_pptPath) == 15)
+            {
+                result.Add(DComKeys.PowerPointKeyFor2013);
+            }
+            result.Add(DComKeys.MicrosoftPowerPoint97_2003Show);
+
+
+            //Access
+            if (GetMajorVersion(_accessPath) == 11)
+            {
+                result.Add(DComKeys.AccessKeyFor2003);
+            }
+            else if (GetMajorVersion(_accessPath) == 12)
+            {
+                result.Add(DComKeys.AccessKeyFor2007);
+            }
+            else if (GetMajorVersion(_accessPath) == 14)
+            {
+                result.Add(DComKeys.AccessKeyFor2010);
+            }
+            else if (GetMajorVersion(_accessPath) == 15)
+            {
+                result.Add(DComKeys.AccessKeyFor2013);
+            }
+
+
+
+
+            return result;
+        }
+
+        /// <summary>
+        /// gets the component's path from the registry. if it can't find it - retuns an empty string
+        /// </summary>
+        /// <param name="_component"></param>
+        /// <returns></returns>
+        private string GetComponentPath(OfficeComponent _component)
+        {
+            string toReturn = string.Empty;
+            string _key = string.Empty;
+
+            switch (_component)
+            {
+                case OfficeComponent.Word:
+                    _key = "winword.exe";
+                    break;
+                case OfficeComponent.Excel:
+                    _key = "excel.exe";
+                    break;
+                case OfficeComponent.PowerPoint:
+                    _key = "powerpnt.exe";
+                    break;
+            }
+
+            //looks inside CURRENT_USER:
+            RegistryKey _mainKey = Registry.CurrentUser;
+            try
+            {
+                _mainKey = _mainKey.OpenSubKey(RegKey + "\\" + _key, false);
+                if (_mainKey != null)
+                {
+                    toReturn = _mainKey.GetValue(string.Empty).ToString();
+                }
+            }
+            catch
+            { }
+
+            //if not found, looks inside LOCAL_MACHINE:
+            _mainKey = Registry.LocalMachine;
+            if (string.IsNullOrEmpty(toReturn))
+            {
+                try
+                {
+                    _mainKey = _mainKey.OpenSubKey(RegKey + "\\" + _key, false);
+                    if (_mainKey != null)
+                    {
+                        toReturn = _mainKey.GetValue(string.Empty).ToString();
+                    }
+                }
+                catch
+                {
+                }
+            }
+
+            //closing the handle:
+            if (_mainKey != null)
+                _mainKey.Close();
+
+            return toReturn;
+        }
+
+        /// <summary>
+        /// Gets the major version of the path. if file not found (or any other exception occures
+        /// - returns 0
+        /// </summary>
+        private int GetMajorVersion(string _path)
+        {
+            int toReturn = 0;
+            if (File.Exists(_path))
+            {
+                try
+                {
+                    FileVersionInfo _fileVersion = FileVersionInfo.GetVersionInfo(_path);
+                    toReturn = _fileVersion.FileMajorPart;
+                }
+                catch
+                { }
+            }
+
+            return toReturn;
+        }
+    }
+
+    public enum OfficeComponent
+    {
+        Word,
+        Excel,
+        PowerPoint,
+        Outlook
+    }
+    
+}

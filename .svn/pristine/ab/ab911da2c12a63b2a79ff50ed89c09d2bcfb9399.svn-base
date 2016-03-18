@@ -1,0 +1,338 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.IO;
+
+namespace FileServerRelease
+{
+    /// <summary>
+    /// 文件操作后缀相关 
+    /// </summary>
+    public class FileExtension
+    {
+
+        #region 文件类型扩展名
+        /// <summary>
+        /// 图片
+        /// </summary>
+        public static string ImageFileType
+        {
+            get
+            {
+                return ",.jpg,.gif,.png,.jpeg,.bmp,.tif,.tiff,.ico,.jpeg-2000,.photocd,.svg,";
+            }
+        }
+        /// <summary>
+        ///  office文件
+        /// </summary>
+        public static string OfficeType
+        {
+            get
+            {
+                return ",.doc,.xls,.mpp,.ppt,.vsd,.docx,.xlsx,.xlsb,.vsd,.pptx,";
+            }
+        }
+        /// <summary>
+        /// DWG文件
+        /// </summary>
+        public static string DWGFileType
+        {
+            get
+            {
+                return ",.dwg,";
+            }
+        }
+        /// <summary>
+        /// pdf文件
+        /// </summary>
+        public static string PDFFileType
+        {
+            get
+            {
+                return ",.pdf,";
+            }
+        }
+        /// <summary>
+        /// 文本文件
+        /// </summary>
+        public static string TxtFileType
+        {
+            get
+            {
+                return ",.txt,.xml,.sql,";
+            }
+        }
+
+
+        /// <summary>
+        /// 任务书页面
+        /// </summary>
+        public static string BookPageFileType
+        {
+            get
+            {
+                return ",.bookpage,";
+            }
+        }
+
+        /// <summary>
+        ///标签类型
+        /// </summary>
+        public static string TagType
+        {
+            get
+            {
+                return ",.pagetag,.systag,";
+            }
+        }
+
+        /// <summary>
+        ///标签内容类型
+        /// </summary>
+        public static string TagContent
+        {
+            get
+            {
+                return ",.tagcontent,";
+            }
+        }
+
+
+
+
+        #endregion
+
+        #region 获取文件类型
+        /// <summary>
+        /// 通过扩展名，判别文件类型
+        /// </summary>
+        /// <param name="fileExt"></param>
+        /// <returns></returns>
+        public static FileType GetFileTypeByExt(string fileExt)
+        {
+            fileExt = "," + fileExt.ToLower() + ",";
+            if (FileExtension.ImageFileType.IndexOf(fileExt) >= 0)
+            {
+                return FileType.Image;
+            }
+            else if (FileExtension.DWGFileType.IndexOf(fileExt) >= 0)
+            {
+                return FileType.Dwg;
+            }
+            else if (FileExtension.OfficeType.IndexOf(fileExt) >= 0)
+            {
+                return FileType.Office;
+            }
+            else if (FileExtension.PDFFileType.IndexOf(fileExt) >= 0)
+            {
+                return FileType.Pdf;
+            }
+            else if (FileExtension.TxtFileType.IndexOf(fileExt) >= 0)
+            {
+                return FileType.Txt;
+            }
+            else if (FileExtension.BookPageFileType.IndexOf(fileExt) >= 0)
+            {
+                return FileType.BookPage;
+            }
+            else if (FileExtension.TagType.IndexOf(fileExt) >= 0)
+            {
+                return FileType.Tag;
+            }
+            else if (FileExtension.TagContent.IndexOf(fileExt) >= 0)
+            {
+                return FileType.TagContent;
+            }
+            else
+            {
+                return FileType.Other;
+            }
+        }
+
+
+        /// <summary>
+        /// 通过扩展名，判别文件类型
+        /// </summary>
+        /// <param name="fileExt"></param>
+        /// <returns></returns>
+        public static FileType StrictlyGetFileTypeByExt(string fileExt)
+        {
+
+            fileExt = Path.GetExtension(fileExt).ToLower();
+            return GetFileTypeByExt(fileExt);
+        }
+
+        /// <summary>
+        /// 获取文件的类型
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public static FileType GetFileType(string fileName)
+        {
+            string ExtName = "," + Path.GetExtension(fileName).ToLower();
+            return FileExtension.GetFileTypeByExt(ExtName);
+        }
+
+
+        /// <summary>
+        /// 获取文件的类型
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public static FileType GetFileTypeStr(string fileName)
+        {
+            string ExtName = Path.GetExtension(fileName).ToLower();
+            return FileExtension.GetFileTypeByExt(ExtName);
+        }
+        #endregion
+
+        /// <summary>
+        /// 创建路径中，不存在的文件夹
+        /// </summary>
+        /// <param name="path"></param>
+        /// <returns></returns>
+        public static string CreateFolder(string path)
+        {
+            if (Directory.Exists(path) == false)
+            {
+                Directory.CreateDirectory(path);
+            }
+            return path;
+            #region CreateDirectory 可以创建整个路径中的文件夹
+            //if (Directory.Exists(path)) {
+            //    return path;
+            //}
+            //string[] arrFolder = path.Split('\\');
+            //if (arrFolder.Length <= 1) {
+            //    arrFolder = path.Split('/');
+            //}
+            //int len = arrFolder.Length;
+            //if (len <= 1) { return path; }
+            //StringBuilder sbPath = new StringBuilder();
+            //sbPath.Append(arrFolder[0]);
+            //for (var i = 1; i <len; i++) {
+            //    sbPath.AppendFormat("/{0}", arrFolder[i]);
+            //    if (!Directory.Exists(sbPath.ToString())) {
+            //        Directory.CreateDirectory(path);
+            //    }
+            //}
+            //return path;
+            #endregion
+        }
+
+
+        /// <summary>
+        /// 判断文件是否存在
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public static bool IsExistFile(string fileName)
+        {
+            return File.Exists(fileName);
+        }
+
+        /// <summary>
+        /// 移动文件夹下的文件到指定文件夹
+        /// </summary>
+        /// <param name="sourceDir">源文件夹物理路径</param>
+        /// <param name="destDir">目标文件夹物理路径</param>
+        /// <returns></returns>
+        public static bool MoveFolderFiles(string sourceDir, string destDir)
+        {
+            if (Directory.Exists(sourceDir) == false)
+            {
+                return true;
+            }
+            destDir = FileExtension.CreateFolder(destDir);
+
+            string[] files = Directory.GetFiles(sourceDir);
+
+            foreach (string strfile in files)
+            {
+                string srcfileName = strfile.Substring(strfile.LastIndexOf("\\") + 1);
+
+                srcfileName = destDir + "\\" + srcfileName;
+
+                File.Move(strfile, srcfileName);
+            }
+
+            return true;
+        }
+        /// <summary>
+        /// 2011.2.16 添加创建文件方法 目的 用于测试数据创建 add by 郑伯锰
+        /// </summary>
+        /// <param name="content">文件内容</param>
+        /// <param name="filename">文件路径</param>
+        /// <returns></returns>
+        public static bool WriteFile(string content, string filename)
+        {
+            try
+            {
+                System.IO.StreamWriter sw = null;
+                if (File.Exists(filename))
+                {
+                    sw = new System.IO.StreamWriter(filename, true);
+                }
+                else
+                {
+                    sw = new System.IO.StreamWriter(filename);
+                }
+                sw.WriteLine(content);
+                sw.Close();
+            }
+            catch (IOException ex)
+            {
+                return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            return true;
+        }
+
+    }
+
+
+
+    public enum FileType
+    {
+        /// <summary>
+        /// 图片类型
+        /// </summary>
+        Image,
+        /// <summary>
+        /// dwg文件
+        /// </summary>
+        Dwg,
+        /// <summary>
+        /// office文件
+        /// </summary>
+        Office,
+        /// <summary>
+        /// pdf文件
+        /// </summary>
+        Pdf,
+        /// <summary>
+        /// 文本文件
+        /// </summary>
+        Txt,
+        /// <summary>
+        /// 任务书类型
+        /// </summary>
+        BookPage,
+        /// <summary>
+        /// 标签
+        /// </summary>
+        Tag,
+        /// <summary>
+        /// tag内容
+        /// </summary>
+        TagContent,
+        /// <summary>
+        /// 其他文件类型
+        /// </summary>
+        Other
+    }
+}

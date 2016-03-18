@@ -1,0 +1,939 @@
+﻿namespace ROOT.CIMV2.Win32 {
+    using System;
+    using System.ComponentModel;
+    using System.Management;
+    using System.Collections;
+    using System.Globalization;
+    
+    
+    // ShouldSerialize<PropertyName> 函数是 VS 属性浏览器用来检查某个特定属性是否必须序列化的函数。为所有 ValueType 属性(类型为 Int32、BOOL 等的属性，不能设置为空)添加这些函数。这些函数使用 Is<PropertyName>Null 函数。在属性的 TypeConverter 实现中也使用这些函数来检查属性的 NULL 值，以便在 Visual Studio 中进行拖放操作时可以在属性浏览器中显示空值。
+    // 函数 Is<PropertyName>Null() 用于检查属性是否为 NULL。
+    // 为可为空值的读/写属性添加 Reset<PropertyName> 函数。VS 设计器在属性浏览器中使用这些函数将属性设置为 NULL。
+    // 添加到 WMI 属性的类的每个属性都具有特性集，用于定义它在 Visual Studio 设计器中的行为，并定义要使用的 TypeConverter。
+    // 为 WMI 类生成的早期绑定类。Win32_DCOMApplicationSetting
+    public class DCOMApplicationSetting : System.ComponentModel.Component {
+        
+        // 用于保存驻留该类的 WMI 命名空间的私有属性。
+        private static string CreatedWmiNamespace = "root\\cimv2";
+        
+        // 用于保存创建此类的 WMI 类名称的私有属性。
+        private static string CreatedClassName = "Win32_DCOMApplicationSetting";
+        
+        // 用于保存由各种方法使用的 ManagementScope 的私有成员变量。
+        private static System.Management.ManagementScope statMgmtScope = null;
+        
+        private ManagementSystemProperties PrivateSystemProperties;
+        
+        // 基础 lateBound WMI 对象。
+        private System.Management.ManagementObject PrivateLateBoundObject;
+        
+        // 存储类的“自动提交”行为的成员变量。
+        private bool AutoCommitProp;
+        
+        // 用于保存表示实例的嵌入属性的私有变量。
+        private System.Management.ManagementBaseObject embeddedObj;
+        
+        // 所使用的当前 WMI 对象
+        private System.Management.ManagementBaseObject curObj;
+        
+        // 用于指示实例是否为嵌入对象的标志。
+        private bool isEmbedded;
+        
+        // 以下是用 WMI 对象初始化类实例的构造函数的不同重载。
+        public DCOMApplicationSetting() {
+            this.InitializeObject(null, null, null);
+        }
+        
+        public DCOMApplicationSetting(string keyAppID) {
+            this.InitializeObject(null, new System.Management.ManagementPath(DCOMApplicationSetting.ConstructPath(keyAppID)), null);
+        }
+        
+        public DCOMApplicationSetting(System.Management.ManagementScope mgmtScope, string keyAppID) {
+            this.InitializeObject(((System.Management.ManagementScope)(mgmtScope)), new System.Management.ManagementPath(DCOMApplicationSetting.ConstructPath(keyAppID)), null);
+        }
+        
+        public DCOMApplicationSetting(System.Management.ManagementPath path, System.Management.ObjectGetOptions getOptions) {
+            this.InitializeObject(null, path, getOptions);
+        }
+        
+        public DCOMApplicationSetting(System.Management.ManagementScope mgmtScope, System.Management.ManagementPath path) {
+            this.InitializeObject(mgmtScope, path, null);
+        }
+        
+        public DCOMApplicationSetting(System.Management.ManagementPath path) {
+            this.InitializeObject(null, path, null);
+        }
+        
+        public DCOMApplicationSetting(System.Management.ManagementScope mgmtScope, System.Management.ManagementPath path, System.Management.ObjectGetOptions getOptions) {
+            this.InitializeObject(mgmtScope, path, getOptions);
+        }
+        
+        public DCOMApplicationSetting(System.Management.ManagementObject theObject) {
+            Initialize();
+            if ((CheckIfProperClass(theObject) == true)) {
+                PrivateLateBoundObject = theObject;
+                PrivateSystemProperties = new ManagementSystemProperties(PrivateLateBoundObject);
+                curObj = PrivateLateBoundObject;
+            }
+            else {
+                throw new System.ArgumentException("类名不匹配。");
+            }
+        }
+        
+        public DCOMApplicationSetting(System.Management.ManagementBaseObject theObject) {
+            Initialize();
+            if ((CheckIfProperClass(theObject) == true)) {
+                embeddedObj = theObject;
+                PrivateSystemProperties = new ManagementSystemProperties(theObject);
+                curObj = embeddedObj;
+                isEmbedded = true;
+            }
+            else {
+                throw new System.ArgumentException("类名不匹配。");
+            }
+        }
+        
+        // 属性返回 WMI 类的命名空间。
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string OriginatingNamespace {
+            get {
+                return "root\\cimv2";
+            }
+        }
+        
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public string ManagementClassName {
+            get {
+                string strRet = CreatedClassName;
+                if ((curObj != null)) {
+                    if ((curObj.ClassPath != null)) {
+                        strRet = ((string)(curObj["__CLASS"]));
+                        if (((strRet == null) 
+                                    || (strRet == string.Empty))) {
+                            strRet = CreatedClassName;
+                        }
+                    }
+                }
+                return strRet;
+            }
+        }
+        
+        // 指向嵌入对象以获取 WMI 对象的 System 属性的属性。
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public ManagementSystemProperties SystemProperties {
+            get {
+                return PrivateSystemProperties;
+            }
+        }
+        
+        // 返回基础 lateBound 对象的属性。
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public System.Management.ManagementBaseObject LateBoundObject {
+            get {
+                return curObj;
+            }
+        }
+        
+        // 对象的 ManagementScope。
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public System.Management.ManagementScope Scope {
+            get {
+                if ((isEmbedded == false)) {
+                    return PrivateLateBoundObject.Scope;
+                }
+                else {
+                    return null;
+                }
+            }
+            set {
+                if ((isEmbedded == false)) {
+                    PrivateLateBoundObject.Scope = value;
+                }
+            }
+        }
+        
+        // 显示 WMI 对象的提交行为的属性。如果为 true，则每次属性被修改后都会自动保存 WMI 对象(即在修改属性后调用 Put())。
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public bool AutoCommit {
+            get {
+                return AutoCommitProp;
+            }
+            set {
+                AutoCommitProp = value;
+            }
+        }
+        
+        // 基础 WMI 对象的 ManagementPath。
+        [Browsable(true)]
+        public System.Management.ManagementPath Path {
+            get {
+                if ((isEmbedded == false)) {
+                    return PrivateLateBoundObject.Path;
+                }
+                else {
+                    return null;
+                }
+            }
+            set {
+                if ((isEmbedded == false)) {
+                    if ((CheckIfProperClass(null, value, null) != true)) {
+                        throw new System.ArgumentException("类名不匹配。");
+                    }
+                    PrivateLateBoundObject.Path = value;
+                }
+            }
+        }
+        
+        // 由各种方法使用的公共静态范围属性。
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public static System.Management.ManagementScope StaticScope {
+            get {
+                return statMgmtScope;
+            }
+            set {
+                statMgmtScope = value;
+            }
+        }
+        
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Description("The AppID property is a Globally Unique Identifier (GUID) for this DCOM applicati" +
+            "on.")]
+        public string AppID {
+            get {
+                return ((string)(curObj["AppID"]));
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public bool IsAuthenticationLevelNull {
+            get {
+                if ((curObj["AuthenticationLevel"] == null)) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }
+        
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Description(@"The AuthenticationLevel property specifies the minimum client authentication level required by this COM server. If NULL, the default values are used. Authentication levels include:
+None - no authentication is performed.
+Connect - authentication is performed only when the client establishes a relationship with the application.
+Call - authentication is performed only at the beginning of each call when the application receives the request.
+Packet - authentication is performed on all data received from the client.
+PacketIntegrity - all the data transferred between client and application is authenticated and verified.
+PacketPrivacy - The properties of the other authentication levels are used, and all data is encrypted.")]
+        [TypeConverter(typeof(WMIValueTypeConverter))]
+        public AuthenticationLevelValues AuthenticationLevel {
+            get {
+                if ((curObj["AuthenticationLevel"] == null)) {
+                    return ((AuthenticationLevelValues)(System.Convert.ToInt32(0)));
+                }
+                return ((AuthenticationLevelValues)(System.Convert.ToInt32(curObj["AuthenticationLevel"])));
+            }
+            set {
+                if ((AuthenticationLevelValues.NULL_ENUM_VALUE == value)) {
+                    curObj["AuthenticationLevel"] = null;
+                }
+                else {
+                    curObj["AuthenticationLevel"] = value;
+                }
+                if (((isEmbedded == false) 
+                            && (AutoCommitProp == true))) {
+                    PrivateLateBoundObject.Put();
+                }
+            }
+        }
+        
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Description("A short textual description (one-line string) of the CIM_Setting object.")]
+        public string Caption {
+            get {
+                return ((string)(curObj["Caption"]));
+            }
+        }
+        
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Description("The CustomSurrogate property contains the name of the custom surrogate in which t" +
+            "he in-process DCOM application is activated. If this value is NULL and the UseSu" +
+            "rrogate key is TRUE, then the system provides a surrogate process.")]
+        public string CustomSurrogate {
+            get {
+                return ((string)(curObj["CustomSurrogate"]));
+            }
+        }
+        
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Description("A textual description of the CIM_Setting object.")]
+        public string Description {
+            get {
+                return ((string)(curObj["Description"]));
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public bool IsEnableAtStorageActivationNull {
+            get {
+                if ((curObj["EnableAtStorageActivation"] == null)) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }
+        
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Description("The EnableAtStorageActivation property indicates whether the instance of the DCOM" +
+            " application retrieves the saved state of the application or begins from the sta" +
+            "te in which the application is first initialized.")]
+        [TypeConverter(typeof(WMIValueTypeConverter))]
+        public bool EnableAtStorageActivation {
+            get {
+                if ((curObj["EnableAtStorageActivation"] == null)) {
+                    return System.Convert.ToBoolean(0);
+                }
+                return ((bool)(curObj["EnableAtStorageActivation"]));
+            }
+        }
+        
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Description("The LocalService property contains the name for the services provided by the DCOM" +
+            " application.")]
+        public string LocalService {
+            get {
+                return ((string)(curObj["LocalService"]));
+            }
+        }
+        
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Description("The RemoteServerName property indicates the name of the remote server where the a" +
+            "pplication is activated.")]
+        public string RemoteServerName {
+            get {
+                return ((string)(curObj["RemoteServerName"]));
+            }
+            set {
+                curObj["RemoteServerName"] = value;
+                if (((isEmbedded == false) 
+                            && (AutoCommitProp == true))) {
+                    PrivateLateBoundObject.Put();
+                }
+            }
+        }
+        
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Description("The RunAsUser property indicates whether the application is to be run under a spe" +
+            "cific user account on activation.")]
+        public string RunAsUser {
+            get {
+                return ((string)(curObj["RunAsUser"]));
+            }
+        }
+        
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Description("The ServiceParameters property contains the command line parameters passed to the" +
+            " DCOM application. This is valid only if the application is written as a Win32 s" +
+            "ervice")]
+        public string ServiceParameters {
+            get {
+                return ((string)(curObj["ServiceParameters"]));
+            }
+        }
+        
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Description("The identifier by which the CIM_Setting object is known.")]
+        public string SettingID {
+            get {
+                return ((string)(curObj["SettingID"]));
+            }
+        }
+        
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        public bool IsUseSurrogateNull {
+            get {
+                if ((curObj["UseSurrogate"] == null)) {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }
+        
+        [Browsable(true)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Description("The UseSurrogate property specifies whether the DCOM application can be activated" +
+            " as an out-of-processserver by use of a surrogate executable.")]
+        [TypeConverter(typeof(WMIValueTypeConverter))]
+        public bool UseSurrogate {
+            get {
+                if ((curObj["UseSurrogate"] == null)) {
+                    return System.Convert.ToBoolean(0);
+                }
+                return ((bool)(curObj["UseSurrogate"]));
+            }
+            set {
+                curObj["UseSurrogate"] = value;
+                if (((isEmbedded == false) 
+                            && (AutoCommitProp == true))) {
+                    PrivateLateBoundObject.Put();
+                }
+            }
+        }
+        
+        private bool CheckIfProperClass(System.Management.ManagementScope mgmtScope, System.Management.ManagementPath path, System.Management.ObjectGetOptions OptionsParam) {
+            if (((path != null) 
+                        && (string.Compare(path.ClassName, this.ManagementClassName, true, System.Globalization.CultureInfo.InvariantCulture) == 0))) {
+                return true;
+            }
+            else {
+                return CheckIfProperClass(new System.Management.ManagementObject(mgmtScope, path, OptionsParam));
+            }
+        }
+        
+        private bool CheckIfProperClass(System.Management.ManagementBaseObject theObj) {
+            if (((theObj != null) 
+                        && (string.Compare(((string)(theObj["__CLASS"])), this.ManagementClassName, true, System.Globalization.CultureInfo.InvariantCulture) == 0))) {
+                return true;
+            }
+            else {
+                System.Array parentClasses = ((System.Array)(theObj["__DERIVATION"]));
+                if ((parentClasses != null)) {
+                    int count = 0;
+                    for (count = 0; (count < parentClasses.Length); count = (count + 1)) {
+                        if ((string.Compare(((string)(parentClasses.GetValue(count))), this.ManagementClassName, true, System.Globalization.CultureInfo.InvariantCulture) == 0)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }
+        
+        private bool ShouldSerializeAuthenticationLevel() {
+            if ((this.IsAuthenticationLevelNull == false)) {
+                return true;
+            }
+            return false;
+        }
+        
+        private void ResetAuthenticationLevel() {
+            curObj["AuthenticationLevel"] = null;
+            if (((isEmbedded == false) 
+                        && (AutoCommitProp == true))) {
+                PrivateLateBoundObject.Put();
+            }
+        }
+        
+        private bool ShouldSerializeEnableAtStorageActivation() {
+            if ((this.IsEnableAtStorageActivationNull == false)) {
+                return true;
+            }
+            return false;
+        }
+        
+        private void ResetRemoteServerName() {
+            curObj["RemoteServerName"] = null;
+            if (((isEmbedded == false) 
+                        && (AutoCommitProp == true))) {
+                PrivateLateBoundObject.Put();
+            }
+        }
+        
+        private bool ShouldSerializeUseSurrogate() {
+            if ((this.IsUseSurrogateNull == false)) {
+                return true;
+            }
+            return false;
+        }
+        
+        private void ResetUseSurrogate() {
+            curObj["UseSurrogate"] = null;
+            if (((isEmbedded == false) 
+                        && (AutoCommitProp == true))) {
+                PrivateLateBoundObject.Put();
+            }
+        }
+        
+        [Browsable(true)]
+        public void CommitObject() {
+            if ((isEmbedded == false)) {
+                PrivateLateBoundObject.Put();
+            }
+        }
+        
+        [Browsable(true)]
+        public void CommitObject(System.Management.PutOptions putOptions) {
+            if ((isEmbedded == false)) {
+                PrivateLateBoundObject.Put(putOptions);
+            }
+        }
+        
+        private void Initialize() {
+            AutoCommitProp = true;
+            isEmbedded = false;
+        }
+        
+        private static string ConstructPath(string keyAppID) {
+            string strPath = "root\\cimv2:Win32_DCOMApplicationSetting";
+            strPath = string.Concat(strPath, string.Concat(".AppID=", string.Concat("\"", string.Concat(keyAppID, "\""))));
+            return strPath;
+        }
+        
+        private void InitializeObject(System.Management.ManagementScope mgmtScope, System.Management.ManagementPath path, System.Management.ObjectGetOptions getOptions) {
+            Initialize();
+            if ((path != null)) {
+                if ((CheckIfProperClass(mgmtScope, path, getOptions) != true)) {
+                    throw new System.ArgumentException("类名不匹配。");
+                }
+            }
+            PrivateLateBoundObject = new System.Management.ManagementObject(mgmtScope, path, getOptions);
+            PrivateSystemProperties = new ManagementSystemProperties(PrivateLateBoundObject);
+            curObj = PrivateLateBoundObject;
+        }
+        
+        // GetInstances() 的不同重载帮助枚举 WMI 类的实例。
+        public static DCOMApplicationSettingCollection GetInstances() {
+            return GetInstances(null, null, null);
+        }
+        
+        public static DCOMApplicationSettingCollection GetInstances(string condition) {
+            return GetInstances(null, condition, null);
+        }
+        
+        public static DCOMApplicationSettingCollection GetInstances(string[] selectedProperties) {
+            return GetInstances(null, null, selectedProperties);
+        }
+        
+        public static DCOMApplicationSettingCollection GetInstances(string condition, string[] selectedProperties) {
+            return GetInstances(null, condition, selectedProperties);
+        }
+        
+        public static DCOMApplicationSettingCollection GetInstances(System.Management.ManagementScope mgmtScope, System.Management.EnumerationOptions enumOptions) {
+            if ((mgmtScope == null)) {
+                if ((statMgmtScope == null)) {
+                    mgmtScope = new System.Management.ManagementScope();
+                    mgmtScope.Path.NamespacePath = "root\\cimv2";
+                }
+                else {
+                    mgmtScope = statMgmtScope;
+                }
+            }
+            System.Management.ManagementPath pathObj = new System.Management.ManagementPath();
+            pathObj.ClassName = "Win32_DCOMApplicationSetting";
+            pathObj.NamespacePath = "root\\cimv2";
+            System.Management.ManagementClass clsObject = new System.Management.ManagementClass(mgmtScope, pathObj, null);
+            if ((enumOptions == null)) {
+                enumOptions = new System.Management.EnumerationOptions();
+                enumOptions.EnsureLocatable = true;
+            }
+            return new DCOMApplicationSettingCollection(clsObject.GetInstances(enumOptions));
+        }
+        
+        public static DCOMApplicationSettingCollection GetInstances(System.Management.ManagementScope mgmtScope, string condition) {
+            return GetInstances(mgmtScope, condition, null);
+        }
+        
+        public static DCOMApplicationSettingCollection GetInstances(System.Management.ManagementScope mgmtScope, string[] selectedProperties) {
+            return GetInstances(mgmtScope, null, selectedProperties);
+        }
+        
+        public static DCOMApplicationSettingCollection GetInstances(System.Management.ManagementScope mgmtScope, string condition, string[] selectedProperties) {
+            if ((mgmtScope == null)) {
+                if ((statMgmtScope == null)) {
+                    mgmtScope = new System.Management.ManagementScope();
+                    mgmtScope.Path.NamespacePath = "root\\cimv2";
+                }
+                else {
+                    mgmtScope = statMgmtScope;
+                }
+            }
+            System.Management.ManagementObjectSearcher ObjectSearcher = new System.Management.ManagementObjectSearcher(mgmtScope, new SelectQuery("Win32_DCOMApplicationSetting", condition, selectedProperties));
+            System.Management.EnumerationOptions enumOptions = new System.Management.EnumerationOptions();
+            enumOptions.EnsureLocatable = true;
+            ObjectSearcher.Options = enumOptions;
+            return new DCOMApplicationSettingCollection(ObjectSearcher.Get());
+        }
+        
+        [Browsable(true)]
+        public static DCOMApplicationSetting CreateInstance() {
+            System.Management.ManagementScope mgmtScope = null;
+            if ((statMgmtScope == null)) {
+                mgmtScope = new System.Management.ManagementScope();
+                mgmtScope.Path.NamespacePath = CreatedWmiNamespace;
+            }
+            else {
+                mgmtScope = statMgmtScope;
+            }
+            System.Management.ManagementPath mgmtPath = new System.Management.ManagementPath(CreatedClassName);
+            System.Management.ManagementClass tmpMgmtClass = new System.Management.ManagementClass(mgmtScope, mgmtPath, null);
+            return new DCOMApplicationSetting(tmpMgmtClass.CreateInstance());
+        }
+        
+        [Browsable(true)]
+        public void Delete() {
+            PrivateLateBoundObject.Delete();
+        }
+        
+        public uint GetAccessSecurityDescriptor(out System.Management.ManagementBaseObject Descriptor) {
+            if ((isEmbedded == false)) {
+                System.Management.ManagementBaseObject inParams = null;
+                bool EnablePrivileges = PrivateLateBoundObject.Scope.Options.EnablePrivileges;
+                //PrivateLateBoundObject.Scope.Options.EnablePrivileges = true;
+                System.Management.ManagementBaseObject outParams = PrivateLateBoundObject.InvokeMethod("GetAccessSecurityDescriptor", inParams, null);
+                Descriptor = ((System.Management.ManagementBaseObject)(outParams.Properties["Descriptor"].Value));
+                PrivateLateBoundObject.Scope.Options.EnablePrivileges = EnablePrivileges;
+                return System.Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
+            }
+            else {
+                Descriptor = null;
+                return System.Convert.ToUInt32(0);
+            }
+        }
+        
+        public uint GetConfigurationSecurityDescriptor(out System.Management.ManagementBaseObject Descriptor) {
+            if ((isEmbedded == false)) {
+                System.Management.ManagementBaseObject inParams = null;
+                bool EnablePrivileges = PrivateLateBoundObject.Scope.Options.EnablePrivileges;
+                PrivateLateBoundObject.Scope.Options.EnablePrivileges = true;
+                System.Management.ManagementBaseObject outParams = PrivateLateBoundObject.InvokeMethod("GetConfigurationSecurityDescriptor", inParams, null);
+                Descriptor = ((System.Management.ManagementBaseObject)(outParams.Properties["Descriptor"].Value));
+                PrivateLateBoundObject.Scope.Options.EnablePrivileges = EnablePrivileges;
+                return System.Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
+            }
+            else {
+                Descriptor = null;
+                return System.Convert.ToUInt32(0);
+            }
+        }
+        
+        public uint GetLaunchSecurityDescriptor(out System.Management.ManagementBaseObject Descriptor) {
+            if ((isEmbedded == false)) {
+                System.Management.ManagementBaseObject inParams = null;
+                bool EnablePrivileges = PrivateLateBoundObject.Scope.Options.EnablePrivileges;
+                PrivateLateBoundObject.Scope.Options.EnablePrivileges = true;
+                System.Management.ManagementBaseObject outParams = PrivateLateBoundObject.InvokeMethod("GetLaunchSecurityDescriptor", inParams, null);
+                Descriptor = ((System.Management.ManagementBaseObject)(outParams.Properties["Descriptor"].Value));
+                PrivateLateBoundObject.Scope.Options.EnablePrivileges = EnablePrivileges;
+                return System.Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
+            }
+            else {
+                Descriptor = null;
+                return System.Convert.ToUInt32(0);
+            }
+        }
+        
+        public uint SetAccessSecurityDescriptor(System.Management.ManagementBaseObject Descriptor) {
+            if ((isEmbedded == false)) {
+                System.Management.ManagementBaseObject inParams = null;
+                bool EnablePrivileges = PrivateLateBoundObject.Scope.Options.EnablePrivileges;
+                PrivateLateBoundObject.Scope.Options.EnablePrivileges = true;
+                inParams = PrivateLateBoundObject.GetMethodParameters("SetAccessSecurityDescriptor");
+                inParams["Descriptor"] = ((System.Management.ManagementBaseObject )(Descriptor));
+                System.Management.ManagementBaseObject outParams = PrivateLateBoundObject.InvokeMethod("SetAccessSecurityDescriptor", inParams, null);
+                PrivateLateBoundObject.Scope.Options.EnablePrivileges = EnablePrivileges;
+                return System.Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
+            }
+            else {
+                return System.Convert.ToUInt32(0);
+            }
+        }
+        
+        public uint SetConfigurationSecurityDescriptor(System.Management.ManagementBaseObject Descriptor) {
+            if ((isEmbedded == false)) {
+                System.Management.ManagementBaseObject inParams = null;
+                bool EnablePrivileges = PrivateLateBoundObject.Scope.Options.EnablePrivileges;
+                PrivateLateBoundObject.Scope.Options.EnablePrivileges = true;
+                inParams = PrivateLateBoundObject.GetMethodParameters("SetConfigurationSecurityDescriptor");
+                inParams["Descriptor"] = ((System.Management.ManagementBaseObject )(Descriptor));
+                System.Management.ManagementBaseObject outParams = PrivateLateBoundObject.InvokeMethod("SetConfigurationSecurityDescriptor", inParams, null);
+                PrivateLateBoundObject.Scope.Options.EnablePrivileges = EnablePrivileges;
+                return System.Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
+            }
+            else {
+                return System.Convert.ToUInt32(0);
+            }
+        }
+        
+        public uint SetLaunchSecurityDescriptor(System.Management.ManagementBaseObject Descriptor) {
+            if ((isEmbedded == false)) {
+                System.Management.ManagementBaseObject inParams = null;
+                bool EnablePrivileges = PrivateLateBoundObject.Scope.Options.EnablePrivileges;
+                PrivateLateBoundObject.Scope.Options.EnablePrivileges = true;
+                inParams = PrivateLateBoundObject.GetMethodParameters("SetLaunchSecurityDescriptor");
+                inParams["Descriptor"] = ((System.Management.ManagementBaseObject )(Descriptor));
+                System.Management.ManagementBaseObject outParams = PrivateLateBoundObject.InvokeMethod("SetLaunchSecurityDescriptor", inParams, null);
+                PrivateLateBoundObject.Scope.Options.EnablePrivileges = EnablePrivileges;
+                return System.Convert.ToUInt32(outParams.Properties["ReturnValue"].Value);
+            }
+            else {
+                return System.Convert.ToUInt32(0);
+            }
+        }
+        
+        public enum AuthenticationLevelValues {
+            
+            None = 1,
+            
+            Connect = 2,
+            
+            Call = 3,
+            
+            Packet = 4,
+            
+            PacketIntegrity = 5,
+            
+            PacketPrivacy = 6,
+            
+            NULL_ENUM_VALUE = 0,
+        }
+        
+        // 用于枚举该类的实例的枚举数实现。
+        public class DCOMApplicationSettingCollection : object, ICollection {
+            
+            private ManagementObjectCollection privColObj;
+            
+            public DCOMApplicationSettingCollection(ManagementObjectCollection objCollection) {
+                privColObj = objCollection;
+            }
+            
+            public virtual int Count {
+                get {
+                    return privColObj.Count;
+                }
+            }
+            
+            public virtual bool IsSynchronized {
+                get {
+                    return privColObj.IsSynchronized;
+                }
+            }
+            
+            public virtual object SyncRoot {
+                get {
+                    return this;
+                }
+            }
+            
+            public virtual void CopyTo(System.Array array, int index) {
+                privColObj.CopyTo(array, index);
+                int nCtr;
+                for (nCtr = 0; (nCtr < array.Length); nCtr = (nCtr + 1)) {
+                    array.SetValue(new DCOMApplicationSetting(((System.Management.ManagementObject)(array.GetValue(nCtr)))), nCtr);
+                }
+            }
+            
+            public virtual System.Collections.IEnumerator GetEnumerator() {
+                return new DCOMApplicationSettingEnumerator(privColObj.GetEnumerator());
+            }
+            
+            public class DCOMApplicationSettingEnumerator : object, System.Collections.IEnumerator {
+                
+                private ManagementObjectCollection.ManagementObjectEnumerator privObjEnum;
+                
+                public DCOMApplicationSettingEnumerator(ManagementObjectCollection.ManagementObjectEnumerator objEnum) {
+                    privObjEnum = objEnum;
+                }
+                
+                public virtual object Current {
+                    get {
+                        return new DCOMApplicationSetting(((System.Management.ManagementObject)(privObjEnum.Current)));
+                    }
+                }
+                
+                public virtual bool MoveNext() {
+                    return privObjEnum.MoveNext();
+                }
+                
+                public virtual void Reset() {
+                    privObjEnum.Reset();
+                }
+            }
+        }
+        
+        // 处理 ValueType 属性的空值的 TypeConverter
+        public class WMIValueTypeConverter : TypeConverter {
+            
+            private TypeConverter baseConverter;
+            
+            private System.Type baseType;
+            
+            public WMIValueTypeConverter(System.Type inBaseType) {
+                baseConverter = TypeDescriptor.GetConverter(inBaseType);
+                baseType = inBaseType;
+            }
+            
+            public override bool CanConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Type srcType) {
+                return baseConverter.CanConvertFrom(context, srcType);
+            }
+            
+            public override bool CanConvertTo(System.ComponentModel.ITypeDescriptorContext context, System.Type destinationType) {
+                return baseConverter.CanConvertTo(context, destinationType);
+            }
+            
+            public override object ConvertFrom(System.ComponentModel.ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value) {
+                return baseConverter.ConvertFrom(context, culture, value);
+            }
+            
+            public override object CreateInstance(System.ComponentModel.ITypeDescriptorContext context, System.Collections.IDictionary dictionary) {
+                return baseConverter.CreateInstance(context, dictionary);
+            }
+            
+            public override bool GetCreateInstanceSupported(System.ComponentModel.ITypeDescriptorContext context) {
+                return baseConverter.GetCreateInstanceSupported(context);
+            }
+            
+            public override PropertyDescriptorCollection GetProperties(System.ComponentModel.ITypeDescriptorContext context, object value, System.Attribute[] attributeVar) {
+                return baseConverter.GetProperties(context, value, attributeVar);
+            }
+            
+            public override bool GetPropertiesSupported(System.ComponentModel.ITypeDescriptorContext context) {
+                return baseConverter.GetPropertiesSupported(context);
+            }
+            
+            public override System.ComponentModel.TypeConverter.StandardValuesCollection GetStandardValues(System.ComponentModel.ITypeDescriptorContext context) {
+                return baseConverter.GetStandardValues(context);
+            }
+            
+            public override bool GetStandardValuesExclusive(System.ComponentModel.ITypeDescriptorContext context) {
+                return baseConverter.GetStandardValuesExclusive(context);
+            }
+            
+            public override bool GetStandardValuesSupported(System.ComponentModel.ITypeDescriptorContext context) {
+                return baseConverter.GetStandardValuesSupported(context);
+            }
+            
+            public override object ConvertTo(System.ComponentModel.ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, System.Type destinationType) {
+                if ((baseType.BaseType == typeof(System.Enum))) {
+                    if ((value.GetType() == destinationType)) {
+                        return value;
+                    }
+                    if ((((value == null) 
+                                && (context != null)) 
+                                && (context.PropertyDescriptor.ShouldSerializeValue(context.Instance) == false))) {
+                        return  "NULL_ENUM_VALUE" ;
+                    }
+                    return baseConverter.ConvertTo(context, culture, value, destinationType);
+                }
+                if (((baseType == typeof(bool)) 
+                            && (baseType.BaseType == typeof(System.ValueType)))) {
+                    if ((((value == null) 
+                                && (context != null)) 
+                                && (context.PropertyDescriptor.ShouldSerializeValue(context.Instance) == false))) {
+                        return "";
+                    }
+                    return baseConverter.ConvertTo(context, culture, value, destinationType);
+                }
+                if (((context != null) 
+                            && (context.PropertyDescriptor.ShouldSerializeValue(context.Instance) == false))) {
+                    return "";
+                }
+                return baseConverter.ConvertTo(context, culture, value, destinationType);
+            }
+        }
+        
+        // 表示 WMI 系统属性的嵌入类。
+        [TypeConverter(typeof(System.ComponentModel.ExpandableObjectConverter))]
+        public class ManagementSystemProperties {
+            
+            private System.Management.ManagementBaseObject PrivateLateBoundObject;
+            
+            public ManagementSystemProperties(System.Management.ManagementBaseObject ManagedObject) {
+                PrivateLateBoundObject = ManagedObject;
+            }
+            
+            [Browsable(true)]
+            public int GENUS {
+                get {
+                    return ((int)(PrivateLateBoundObject["__GENUS"]));
+                }
+            }
+            
+            [Browsable(true)]
+            public string CLASS {
+                get {
+                    return ((string)(PrivateLateBoundObject["__CLASS"]));
+                }
+            }
+            
+            [Browsable(true)]
+            public string SUPERCLASS {
+                get {
+                    return ((string)(PrivateLateBoundObject["__SUPERCLASS"]));
+                }
+            }
+            
+            [Browsable(true)]
+            public string DYNASTY {
+                get {
+                    return ((string)(PrivateLateBoundObject["__DYNASTY"]));
+                }
+            }
+            
+            [Browsable(true)]
+            public string RELPATH {
+                get {
+                    return ((string)(PrivateLateBoundObject["__RELPATH"]));
+                }
+            }
+            
+            [Browsable(true)]
+            public int PROPERTY_COUNT {
+                get {
+                    return ((int)(PrivateLateBoundObject["__PROPERTY_COUNT"]));
+                }
+            }
+            
+            [Browsable(true)]
+            public string[] DERIVATION {
+                get {
+                    return ((string[])(PrivateLateBoundObject["__DERIVATION"]));
+                }
+            }
+            
+            [Browsable(true)]
+            public string SERVER {
+                get {
+                    return ((string)(PrivateLateBoundObject["__SERVER"]));
+                }
+            }
+            
+            [Browsable(true)]
+            public string NAMESPACE {
+                get {
+                    return ((string)(PrivateLateBoundObject["__NAMESPACE"]));
+                }
+            }
+            
+            [Browsable(true)]
+            public string PATH {
+                get {
+                    return ((string)(PrivateLateBoundObject["__PATH"]));
+                }
+            }
+        }
+    }
+}

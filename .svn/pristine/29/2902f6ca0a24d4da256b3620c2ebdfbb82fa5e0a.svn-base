@@ -1,0 +1,102 @@
+
+USE [FileDataServer]
+GO
+delete RegisterBusinessSystem
+delete BusinessSystem
+delete DataNodeServer
+delete MasterNodeServer
+delete OperateType
+--主控节点
+SET Identity_Insert MasterNodeServer ON
+INSERT INTO MasterNodeServer([serverNodeId],[hostIp],[hostName],[hostPort],[rootDirectory],[connectionTime],[startTime],[IsConnected],[isRunning],[type],[createData],[updateData],[status],[remark],[connectionCount],[IsAuthonzated],[isPrimServer],[SessionTimeout]) 
+VALUES( 
+serverNodeIdValue                           --主控Id
+, 'masterServerIpValue'           --主控地址
+, 'masterServerNameValue'          --主控域名
+, 'masterServerPortValue'                    --主控端口号
+, 'masterServerRootValue'                 --根目录（放弃，该用业务系统CustomerCode为目录）
+, getdate()                 --连接时间（暂无使用）
+, getdate()                 --开始时间（暂无使用）
+, 1                         --是否连接
+, 1                         --是否运行
+, 0                         --创建类型（暂无使用）
+, getdate()                 --创建时间
+, getdate()                 --更新时间
+, 0                         --状态
+, NULL                      --备注
+, NULL                      --连接数
+, 0                         --是否需要验证(0--不需要，1--需要)(暂无使用)
+, 1                         --是否为主服务器（0--不是，1--是）(暂无使用)
+, 1200                      --客户端连接超时时间，单位秒，默认1200
+)
+SET Identity_Insert MasterNodeServer OFF
+
+--数据服务节点
+SET Identity_Insert DataNodeServer ON
+INSERT INTO DataNodeServer([dataNodeId],[hostIp],[hostName],[hostPort],[rootDirectory],[userName],[passWord],[connectionTime],[startTime],[IsConnected],[isRunning],[type],[createData],[updateData],[status],[remark],[connectionCount],[IsAuthonzated],[isPrimServer]) 
+VALUES( 
+dataNodeIdValue                              --数据服务节点
+, 'dataServerIpValue'              --IP地址
+, 'dataServerNameValue'        --域名
+, 'dataServerPortValue'                         --端口
+, 'dataServerRootValue'  --根目录
+, 'dataServerUserNameValue'                       --验证用户名
+, 'dataServerPassword'                       --验证密码
+, getdate()                    --连接时间（暂无使用）
+, getdate()                    --开始时间（暂无使用）
+, 1                            --是否连接(0--不连接 1--连接)
+, 1                            --是否运行(0--不运行 1--运行)
+, 0                            --创建类型（暂无使用）
+, getdate()                    --创建时间
+, getdate()                   --更新时间
+, 0                           --状态
+, NULL                        --备注
+, 0                           --连接数
+, 0                           --是否需要验证(0--不需要 1--需要)(暂无使用)
+, 0                           --是否为主服务器（0--不是 1--是）(暂无使用)
+)
+SET Identity_Insert DataNodeServer OFF
+
+--业务系统
+SET Identity_Insert BusinessSystem ON
+INSERT INTO BusinessSystem([busSystemId],[name],[domainName],[customerCode],[systemIp],[interfaceClass],[dataBaseConnStr],[status],[order],[remark],[createDate],[updateTime],[systemPath]) 
+VALUES( 
+busSystemIdValue                               --业务系统Id
+,'busSystemNameValue'         --业务系统名称
+, 'busSystemIpValue'              --业务系统域名
+, 'busSystemGuidValue'   --客户唯一标示码（参照http://wiki2.yinhooserv.com/pages/viewpage.action?pageId=8946171）
+, 'busSystemTargetIpValue'          --系统IP
+, 'busSystemInterfaceStrValue'   --业务系统数据接口对象(数据回写接口实现)
+, 'busSystemConStrValue'  --业务系统数据库连接字符串
+, 0                              --状态
+, NULL                     --排序(暂无使用)
+, NULL                     --备注
+, getdate()                --创建时间
+, getdate()                --更新时间
+, NULL                     --系统路径（暂无使用）
+)
+SET Identity_Insert BusinessSystem OFF
+
+--注册业务系统
+SET Identity_Insert RegisterBusinessSystem ON
+INSERT INTO RegisterBusinessSystem(relationId,busSystemId,dataNodeId,createDate,[status],remark)
+VALUES(
+relationIdValue
+,busSystemIdValue             --业务系统Id
+,dataNodeIdValue             --数据节点ID 
+,getdate()     --创建时间
+,0             --是否使用 0：表示使用中1：表示删除
+,null
+)
+
+SET Identity_Insert RegisterBusinessSystem OFF
+
+
+--日志操作类型
+SET Identity_Insert OperateType ON
+INSERT INTO OperateType([opTypeId],[name],[code]) VALUES( 1, '连接', 'connect')
+INSERT INTO OperateType([opTypeId],[name],[code]) VALUES( 2, '断开', 'disconnect')
+INSERT INTO OperateType([opTypeId],[name],[code]) VALUES( 3, '超时断开', 'timeOutDisconnect')
+INSERT INTO OperateType([opTypeId],[name],[code]) VALUES( 4, '上传', 'upload')
+INSERT INTO OperateType([opTypeId],[name],[code]) VALUES( 5, '下载', 'downLoad')
+SET Identity_Insert OperateType OFF

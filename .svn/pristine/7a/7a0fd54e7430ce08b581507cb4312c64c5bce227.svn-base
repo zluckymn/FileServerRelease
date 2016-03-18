@@ -1,0 +1,2173 @@
+﻿namespace FileServerRelease
+{
+    partial class FileServerSetUp
+    {
+        /// <summary>
+        /// 必需的设计器变量。
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// 清理所有正在使用的资源。
+        /// </summary>
+        /// <param name="disposing">如果应释放托管资源，为 true；否则为 false。</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows 窗体设计器生成的代码
+
+        /// <summary>
+        /// 设计器支持所需的方法 - 不要
+        /// 使用代码编辑器修改此方法的内容。
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FileServerSetUp));
+            this.MasterServerDialog = new System.Windows.Forms.OpenFileDialog();
+            this.FileServerDialog = new System.Windows.Forms.OpenFileDialog();
+            this.ConvertFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.DWGConvertFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.BusinessConfig_FileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.BusinessSystem_BuildSiteBtn = new System.Windows.Forms.Button();
+            this.BusinessSystem_ConfigGroup = new System.Windows.Forms.GroupBox();
+            this.BusinessConfig_ISNewFileServerLbl = new System.Windows.Forms.Label();
+            this.BusinessConfig_MasterServerAddressLbl = new System.Windows.Forms.Label();
+            this.BusinessConfig_ISNewFileServerText = new System.Windows.Forms.TextBox();
+            this.BusinessConfig_MasterServerAddressText = new System.Windows.Forms.TextBox();
+            this.BusinessSystem_SiteInfo = new System.Windows.Forms.GroupBox();
+            this.BusinessSystem_SiteDescLbl = new System.Windows.Forms.Label();
+            this.BusinessSystem_SiteCommentText = new System.Windows.Forms.TextBox();
+            this.BusinessSystem_IPLbl = new System.Windows.Forms.Label();
+            this.BusinessSystem_SiteCommentLbl = new System.Windows.Forms.Label();
+            this.BusinessSystem_IPText = new System.Windows.Forms.TextBox();
+            this.BusinessSystem_SiteDescText = new System.Windows.Forms.TextBox();
+            this.BusinessSystem_portNumLbl = new System.Windows.Forms.Label();
+            this.BusinessSystem_portNumText = new System.Windows.Forms.TextBox();
+            this.BusinessSite_NameText = new System.Windows.Forms.TextBox();
+            this.BusinessCoinfgText = new System.Windows.Forms.TextBox();
+            this.BusinessMimeMapBtn = new System.Windows.Forms.Button();
+            this.BusinessConfigSaveBtn = new System.Windows.Forms.Button();
+            this.BusinessSite_NameLbl = new System.Windows.Forms.Label();
+            this.BusinessCoinfgLbl = new System.Windows.Forms.Label();
+            this.BusinessCoinfgBtn = new System.Windows.Forms.Button();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.DCOMHELP = new System.Windows.Forms.Button();
+            this.label27 = new System.Windows.Forms.Label();
+            this.DCOMDescri = new System.Windows.Forms.Label();
+            this.label26 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.LaunchDGView = new System.Windows.Forms.DataGridView();
+            this.ConfigDGView = new System.Windows.Forms.DataGridView();
+            this.AccessDGView = new System.Windows.Forms.DataGridView();
+            this.StatusLbl = new System.Windows.Forms.Label();
+            this.AccountNameLbl = new System.Windows.Forms.Label();
+            this.AccountNameBtn = new System.Windows.Forms.Button();
+            this.AccountNameTBox = new System.Windows.Forms.TextBox();
+            this.MMC_btn = new System.Windows.Forms.Button();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.IISBtn = new System.Windows.Forms.Button();
+            this.Thumb_SiteInfo = new System.Windows.Forms.GroupBox();
+            this.Thumb_SiteInfoRichBox = new System.Windows.Forms.RichTextBox();
+            this.Thumb_CreateParam = new System.Windows.Forms.GroupBox();
+            this.FileConvertPortText = new System.Windows.Forms.Label();
+            this.Thumb_SitePathText = new System.Windows.Forms.TextBox();
+            this.Thumb_SitePathLbl = new System.Windows.Forms.Label();
+            this.Thumb_SiteCommentText = new System.Windows.Forms.TextBox();
+            this.Thumb_SiteCommentLbl = new System.Windows.Forms.Label();
+            this.Thumb_SiteDescText = new System.Windows.Forms.TextBox();
+            this.Thumb_SiteDescLbl = new System.Windows.Forms.Label();
+            this.Thumb_portNumText = new System.Windows.Forms.TextBox();
+            this.Thumb_portNumLbl = new System.Windows.Forms.Label();
+            this.Thumb_IPTEXT = new System.Windows.Forms.TextBox();
+            this.label28Caution = new System.Windows.Forms.Label();
+            this.Thumb_IPLbl = new System.Windows.Forms.Label();
+            this.ThumbSiteBtn = new System.Windows.Forms.Button();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.DwgConvertConfigLbl = new System.Windows.Forms.Label();
+            this.ConvertFileConfigLbl = new System.Windows.Forms.Label();
+            this.FileServerConifgLbl = new System.Windows.Forms.Label();
+            this.MasterConfigLbl = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this.button10 = new System.Windows.Forms.Button();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.linkLabel4 = new System.Windows.Forms.LinkLabel();
+            this.button18 = new System.Windows.Forms.Button();
+            this.DwgConvertUnstallBtn = new System.Windows.Forms.Button();
+            this.DwgConvertInstallBtn = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.DwgConvertServerPath = new System.Windows.Forms.Label();
+            this.DWGConvertService = new System.Windows.Forms.Button();
+            this.DWGConvertFileStatus = new System.Windows.Forms.Label();
+            this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.label28 = new System.Windows.Forms.Label();
+            this.linkLabel3 = new System.Windows.Forms.LinkLabel();
+            this.button17 = new System.Windows.Forms.Button();
+            this.fileConvertUntasllBtn = new System.Windows.Forms.Button();
+            this.fileConvertIntasllBtn = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.FileConvertServer = new System.Windows.Forms.Button();
+            this.FileConvertStatus = new System.Windows.Forms.Label();
+            this.ConvertServerPath = new System.Windows.Forms.Label();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
+            this.button16 = new System.Windows.Forms.Button();
+            this.FileServerUnstallBtn = new System.Windows.Forms.Button();
+            this.FileServerInstallBtn = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.FileServer = new System.Windows.Forms.Button();
+            this.FileServiceStatus = new System.Windows.Forms.Label();
+            this.fileServerPath = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.button15 = new System.Windows.Forms.Button();
+            this.masterUnstallBtn = new System.Windows.Forms.Button();
+            this.masterInstallBtn = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.MasterService = new System.Windows.Forms.Button();
+            this.masterServiceStatus = new System.Windows.Forms.Label();
+            this.masterServerPath = new System.Windows.Forms.Label();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.endDateTxt = new System.Windows.Forms.TextBox();
+            this.beginDateTxt = new System.Windows.Forms.TextBox();
+            this.ReCut = new System.Windows.Forms.Button();
+            this.label29 = new System.Windows.Forms.Label();
+            this.CutFileCountLbl = new System.Windows.Forms.Label();
+            this.btnViewDataBase = new System.Windows.Forms.Button();
+            this.groupBoxInitData = new System.Windows.Forms.GroupBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.btnResigsterBusSys = new System.Windows.Forms.Button();
+            this.cmBoxBusSysList = new System.Windows.Forms.ComboBox();
+            this.cmBoxBusSys = new System.Windows.Forms.ComboBox();
+            this.cmBoxDataServerList = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.btnUpdataSystem = new System.Windows.Forms.Button();
+            this.btnInitBusSys = new System.Windows.Forms.Button();
+            this.btnInitDataServer = new System.Windows.Forms.Button();
+            this.groupBox7 = new System.Windows.Forms.GroupBox();
+            this.txtBusSysName = new System.Windows.Forms.TextBox();
+            this.txtBusSysInterfaceStr = new System.Windows.Forms.TextBox();
+            this.txtBusSysIP = new System.Windows.Forms.TextBox();
+            this.txtBusSysGuid = new System.Windows.Forms.TextBox();
+            this.txtBusSysTargetIP = new System.Windows.Forms.TextBox();
+            this.txtBusSysConStr = new System.Windows.Forms.TextBox();
+            this.label25 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.label17 = new System.Windows.Forms.Label();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.txtDataServerIp = new System.Windows.Forms.TextBox();
+            this.txtDataServerName = new System.Windows.Forms.TextBox();
+            this.txtDataServerPort = new System.Windows.Forms.TextBox();
+            this.txtDataServerRoot = new System.Windows.Forms.TextBox();
+            this.txtDataServerUserName = new System.Windows.Forms.TextBox();
+            this.txtDataServerPassword = new System.Windows.Forms.TextBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.btnInitMaster = new System.Windows.Forms.Button();
+            this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.txtMaterServerName = new System.Windows.Forms.TextBox();
+            this.txtMasterServerPort = new System.Windows.Forms.TextBox();
+            this.txtMasterRootName = new System.Windows.Forms.TextBox();
+            this.txtMaterServerIp = new System.Windows.Forms.TextBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.label13 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.InitBtn = new System.Windows.Forms.Button();
+            this.btnCreateDataBase = new System.Windows.Forms.Button();
+            this.groupBoxCreate = new System.Windows.Forms.GroupBox();
+            this.btnTestConnect = new System.Windows.Forms.Button();
+            this.txtConnectString = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.txtFileServerName = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
+            this.CheckCutConditionBtn = new System.Windows.Forms.Button();
+            this.tabPage6.SuspendLayout();
+            this.BusinessSystem_ConfigGroup.SuspendLayout();
+            this.BusinessSystem_SiteInfo.SuspendLayout();
+            this.tabPage5.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LaunchDGView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ConfigDGView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.AccessDGView)).BeginInit();
+            this.tabPage3.SuspendLayout();
+            this.Thumb_SiteInfo.SuspendLayout();
+            this.Thumb_CreateParam.SuspendLayout();
+            this.tabPage2.SuspendLayout();
+            this.groupBox4.SuspendLayout();
+            this.groupBox3.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
+            this.groupBoxInitData.SuspendLayout();
+            this.groupBox7.SuspendLayout();
+            this.groupBox6.SuspendLayout();
+            this.groupBox5.SuspendLayout();
+            this.groupBoxCreate.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.tabPage4.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // MasterServerDialog
+            // 
+            this.MasterServerDialog.FileName = "openFileDialog1";
+            this.MasterServerDialog.Filter = "安装文件|svc_inst.bat";
+            this.MasterServerDialog.FileOk += new System.ComponentModel.CancelEventHandler(this.MasterServerDialog_FileOk);
+            // 
+            // FileServerDialog
+            // 
+            this.FileServerDialog.FileName = "openFileDialog2";
+            this.FileServerDialog.Filter = "安装文件|svc_inst.bat";
+            // 
+            // ConvertFileDialog
+            // 
+            this.ConvertFileDialog.FileName = "openFileDialog3";
+            this.ConvertFileDialog.Filter = "安装文件|svc_inst.bat";
+            // 
+            // DWGConvertFileDialog
+            // 
+            this.DWGConvertFileDialog.FileName = "openFileDialog4";
+            this.DWGConvertFileDialog.Filter = "安装文件|svc_inst.bat";
+            // 
+            // timer1
+            // 
+            this.timer1.Interval = 1000;
+            this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
+            // 
+            // BusinessConfig_FileDialog
+            // 
+            this.BusinessConfig_FileDialog.FileName = "openFileDialog1";
+            this.BusinessConfig_FileDialog.Filter = "配置文件(*.config,*.xml)|*.config|*.xml|";
+            // 
+            // tabPage6
+            // 
+            this.tabPage6.Controls.Add(this.BusinessSystem_BuildSiteBtn);
+            this.tabPage6.Controls.Add(this.BusinessSystem_ConfigGroup);
+            this.tabPage6.Controls.Add(this.BusinessSystem_SiteInfo);
+            this.tabPage6.Controls.Add(this.BusinessSite_NameText);
+            this.tabPage6.Controls.Add(this.BusinessCoinfgText);
+            this.tabPage6.Controls.Add(this.BusinessMimeMapBtn);
+            this.tabPage6.Controls.Add(this.BusinessConfigSaveBtn);
+            this.tabPage6.Controls.Add(this.BusinessSite_NameLbl);
+            this.tabPage6.Controls.Add(this.BusinessCoinfgLbl);
+            this.tabPage6.Controls.Add(this.BusinessCoinfgBtn);
+            this.tabPage6.Location = new System.Drawing.Point(4, 22);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Size = new System.Drawing.Size(824, 474);
+            this.tabPage6.TabIndex = 5;
+            this.tabPage6.Text = "业务系统配置";
+            this.tabPage6.UseVisualStyleBackColor = true;
+            // 
+            // BusinessSystem_BuildSiteBtn
+            // 
+            this.BusinessSystem_BuildSiteBtn.Location = new System.Drawing.Point(132, 431);
+            this.BusinessSystem_BuildSiteBtn.Name = "BusinessSystem_BuildSiteBtn";
+            this.BusinessSystem_BuildSiteBtn.Size = new System.Drawing.Size(75, 23);
+            this.BusinessSystem_BuildSiteBtn.TabIndex = 17;
+            this.BusinessSystem_BuildSiteBtn.Text = "创建站点";
+            this.BusinessSystem_BuildSiteBtn.UseVisualStyleBackColor = true;
+            this.BusinessSystem_BuildSiteBtn.Click += new System.EventHandler(this.BusinessSystem_BuildSiteBtn_Click);
+            // 
+            // BusinessSystem_ConfigGroup
+            // 
+            this.BusinessSystem_ConfigGroup.Controls.Add(this.BusinessConfig_ISNewFileServerLbl);
+            this.BusinessSystem_ConfigGroup.Controls.Add(this.BusinessConfig_MasterServerAddressLbl);
+            this.BusinessSystem_ConfigGroup.Controls.Add(this.BusinessConfig_ISNewFileServerText);
+            this.BusinessSystem_ConfigGroup.Controls.Add(this.BusinessConfig_MasterServerAddressText);
+            this.BusinessSystem_ConfigGroup.Location = new System.Drawing.Point(11, 104);
+            this.BusinessSystem_ConfigGroup.Name = "BusinessSystem_ConfigGroup";
+            this.BusinessSystem_ConfigGroup.Size = new System.Drawing.Size(306, 200);
+            this.BusinessSystem_ConfigGroup.TabIndex = 16;
+            this.BusinessSystem_ConfigGroup.TabStop = false;
+            this.BusinessSystem_ConfigGroup.Text = "业务系统配置信息";
+            // 
+            // BusinessConfig_ISNewFileServerLbl
+            // 
+            this.BusinessConfig_ISNewFileServerLbl.AutoSize = true;
+            this.BusinessConfig_ISNewFileServerLbl.Location = new System.Drawing.Point(6, 43);
+            this.BusinessConfig_ISNewFileServerLbl.Name = "BusinessConfig_ISNewFileServerLbl";
+            this.BusinessConfig_ISNewFileServerLbl.Size = new System.Drawing.Size(101, 12);
+            this.BusinessConfig_ISNewFileServerLbl.TabIndex = 2;
+            this.BusinessConfig_ISNewFileServerLbl.Text = "IsNewFileServer:";
+            // 
+            // BusinessConfig_MasterServerAddressLbl
+            // 
+            this.BusinessConfig_MasterServerAddressLbl.AutoSize = true;
+            this.BusinessConfig_MasterServerAddressLbl.Location = new System.Drawing.Point(5, 111);
+            this.BusinessConfig_MasterServerAddressLbl.Name = "BusinessConfig_MasterServerAddressLbl";
+            this.BusinessConfig_MasterServerAddressLbl.Size = new System.Drawing.Size(95, 12);
+            this.BusinessConfig_MasterServerAddressLbl.TabIndex = 2;
+            this.BusinessConfig_MasterServerAddressLbl.Text = "MasterServerIP:";
+            // 
+            // BusinessConfig_ISNewFileServerText
+            // 
+            this.BusinessConfig_ISNewFileServerText.Location = new System.Drawing.Point(111, 40);
+            this.BusinessConfig_ISNewFileServerText.Name = "BusinessConfig_ISNewFileServerText";
+            this.BusinessConfig_ISNewFileServerText.Size = new System.Drawing.Size(174, 21);
+            this.BusinessConfig_ISNewFileServerText.TabIndex = 4;
+            this.BusinessConfig_ISNewFileServerText.Text = "1";
+            // 
+            // BusinessConfig_MasterServerAddressText
+            // 
+            this.BusinessConfig_MasterServerAddressText.Location = new System.Drawing.Point(111, 108);
+            this.BusinessConfig_MasterServerAddressText.Name = "BusinessConfig_MasterServerAddressText";
+            this.BusinessConfig_MasterServerAddressText.Size = new System.Drawing.Size(174, 21);
+            this.BusinessConfig_MasterServerAddressText.TabIndex = 4;
+            // 
+            // BusinessSystem_SiteInfo
+            // 
+            this.BusinessSystem_SiteInfo.Controls.Add(this.BusinessSystem_SiteDescLbl);
+            this.BusinessSystem_SiteInfo.Controls.Add(this.BusinessSystem_SiteCommentText);
+            this.BusinessSystem_SiteInfo.Controls.Add(this.BusinessSystem_IPLbl);
+            this.BusinessSystem_SiteInfo.Controls.Add(this.BusinessSystem_SiteCommentLbl);
+            this.BusinessSystem_SiteInfo.Controls.Add(this.BusinessSystem_IPText);
+            this.BusinessSystem_SiteInfo.Controls.Add(this.BusinessSystem_SiteDescText);
+            this.BusinessSystem_SiteInfo.Controls.Add(this.BusinessSystem_portNumLbl);
+            this.BusinessSystem_SiteInfo.Controls.Add(this.BusinessSystem_portNumText);
+            this.BusinessSystem_SiteInfo.Location = new System.Drawing.Point(387, 104);
+            this.BusinessSystem_SiteInfo.Name = "BusinessSystem_SiteInfo";
+            this.BusinessSystem_SiteInfo.Size = new System.Drawing.Size(301, 200);
+            this.BusinessSystem_SiteInfo.TabIndex = 15;
+            this.BusinessSystem_SiteInfo.TabStop = false;
+            this.BusinessSystem_SiteInfo.Text = "业务系统站点信息";
+            // 
+            // BusinessSystem_SiteDescLbl
+            // 
+            this.BusinessSystem_SiteDescLbl.AutoSize = true;
+            this.BusinessSystem_SiteDescLbl.Location = new System.Drawing.Point(25, 119);
+            this.BusinessSystem_SiteDescLbl.Name = "BusinessSystem_SiteDescLbl";
+            this.BusinessSystem_SiteDescLbl.Size = new System.Drawing.Size(59, 12);
+            this.BusinessSystem_SiteDescLbl.TabIndex = 6;
+            this.BusinessSystem_SiteDescLbl.Text = "站点描述:";
+            // 
+            // BusinessSystem_SiteCommentText
+            // 
+            this.BusinessSystem_SiteCommentText.Location = new System.Drawing.Point(91, 161);
+            this.BusinessSystem_SiteCommentText.Name = "BusinessSystem_SiteCommentText";
+            this.BusinessSystem_SiteCommentText.Size = new System.Drawing.Size(188, 21);
+            this.BusinessSystem_SiteCommentText.TabIndex = 12;
+            this.BusinessSystem_SiteCommentText.Text = "A3Host";
+            // 
+            // BusinessSystem_IPLbl
+            // 
+            this.BusinessSystem_IPLbl.AutoSize = true;
+            this.BusinessSystem_IPLbl.Location = new System.Drawing.Point(25, 28);
+            this.BusinessSystem_IPLbl.Name = "BusinessSystem_IPLbl";
+            this.BusinessSystem_IPLbl.Size = new System.Drawing.Size(23, 12);
+            this.BusinessSystem_IPLbl.TabIndex = 9;
+            this.BusinessSystem_IPLbl.Text = "IP:";
+            // 
+            // BusinessSystem_SiteCommentLbl
+            // 
+            this.BusinessSystem_SiteCommentLbl.AutoSize = true;
+            this.BusinessSystem_SiteCommentLbl.Location = new System.Drawing.Point(25, 161);
+            this.BusinessSystem_SiteCommentLbl.Name = "BusinessSystem_SiteCommentLbl";
+            this.BusinessSystem_SiteCommentLbl.Size = new System.Drawing.Size(47, 12);
+            this.BusinessSystem_SiteCommentLbl.TabIndex = 5;
+            this.BusinessSystem_SiteCommentLbl.Text = "站点名:";
+            // 
+            // BusinessSystem_IPText
+            // 
+            this.BusinessSystem_IPText.Location = new System.Drawing.Point(91, 25);
+            this.BusinessSystem_IPText.Name = "BusinessSystem_IPText";
+            this.BusinessSystem_IPText.Size = new System.Drawing.Size(188, 21);
+            this.BusinessSystem_IPText.TabIndex = 11;
+            this.BusinessSystem_IPText.Text = "127.0.0.1";
+            // 
+            // BusinessSystem_SiteDescText
+            // 
+            this.BusinessSystem_SiteDescText.Location = new System.Drawing.Point(91, 116);
+            this.BusinessSystem_SiteDescText.Name = "BusinessSystem_SiteDescText";
+            this.BusinessSystem_SiteDescText.Size = new System.Drawing.Size(188, 21);
+            this.BusinessSystem_SiteDescText.TabIndex = 13;
+            this.BusinessSystem_SiteDescText.Text = "A3业务站点";
+            // 
+            // BusinessSystem_portNumLbl
+            // 
+            this.BusinessSystem_portNumLbl.AutoSize = true;
+            this.BusinessSystem_portNumLbl.Location = new System.Drawing.Point(25, 76);
+            this.BusinessSystem_portNumLbl.Name = "BusinessSystem_portNumLbl";
+            this.BusinessSystem_portNumLbl.Size = new System.Drawing.Size(35, 12);
+            this.BusinessSystem_portNumLbl.TabIndex = 7;
+            this.BusinessSystem_portNumLbl.Text = "端口:";
+            // 
+            // BusinessSystem_portNumText
+            // 
+            this.BusinessSystem_portNumText.Location = new System.Drawing.Point(91, 67);
+            this.BusinessSystem_portNumText.Name = "BusinessSystem_portNumText";
+            this.BusinessSystem_portNumText.Size = new System.Drawing.Size(188, 21);
+            this.BusinessSystem_portNumText.TabIndex = 14;
+            this.BusinessSystem_portNumText.Text = "8030";
+            // 
+            // BusinessSite_NameText
+            // 
+            this.BusinessSite_NameText.Location = new System.Drawing.Point(76, 324);
+            this.BusinessSite_NameText.Name = "BusinessSite_NameText";
+            this.BusinessSite_NameText.ReadOnly = true;
+            this.BusinessSite_NameText.Size = new System.Drawing.Size(612, 21);
+            this.BusinessSite_NameText.TabIndex = 4;
+            // 
+            // BusinessCoinfgText
+            // 
+            this.BusinessCoinfgText.Location = new System.Drawing.Point(109, 57);
+            this.BusinessCoinfgText.Name = "BusinessCoinfgText";
+            this.BusinessCoinfgText.Size = new System.Drawing.Size(579, 21);
+            this.BusinessCoinfgText.TabIndex = 1;
+            // 
+            // BusinessMimeMapBtn
+            // 
+            this.BusinessMimeMapBtn.Location = new System.Drawing.Point(399, 431);
+            this.BusinessMimeMapBtn.Name = "BusinessMimeMapBtn";
+            this.BusinessMimeMapBtn.Size = new System.Drawing.Size(175, 23);
+            this.BusinessMimeMapBtn.TabIndex = 3;
+            this.BusinessMimeMapBtn.Text = "添加业务系统站点HTTP头";
+            this.BusinessMimeMapBtn.UseVisualStyleBackColor = true;
+            this.BusinessMimeMapBtn.Click += new System.EventHandler(this.BusinessMimeMapBtn_Click);
+            // 
+            // BusinessConfigSaveBtn
+            // 
+            this.BusinessConfigSaveBtn.Location = new System.Drawing.Point(264, 431);
+            this.BusinessConfigSaveBtn.Name = "BusinessConfigSaveBtn";
+            this.BusinessConfigSaveBtn.Size = new System.Drawing.Size(75, 23);
+            this.BusinessConfigSaveBtn.TabIndex = 3;
+            this.BusinessConfigSaveBtn.Text = "保存配置";
+            this.BusinessConfigSaveBtn.UseVisualStyleBackColor = true;
+            this.BusinessConfigSaveBtn.Click += new System.EventHandler(this.BusinessConfigSaveBtn_Click);
+            // 
+            // BusinessSite_NameLbl
+            // 
+            this.BusinessSite_NameLbl.AutoSize = true;
+            this.BusinessSite_NameLbl.Location = new System.Drawing.Point(17, 333);
+            this.BusinessSite_NameLbl.Name = "BusinessSite_NameLbl";
+            this.BusinessSite_NameLbl.Size = new System.Drawing.Size(53, 12);
+            this.BusinessSite_NameLbl.TabIndex = 2;
+            this.BusinessSite_NameLbl.Text = "MimeMap:";
+            // 
+            // BusinessCoinfgLbl
+            // 
+            this.BusinessCoinfgLbl.AutoSize = true;
+            this.BusinessCoinfgLbl.Location = new System.Drawing.Point(2, 61);
+            this.BusinessCoinfgLbl.Name = "BusinessCoinfgLbl";
+            this.BusinessCoinfgLbl.Size = new System.Drawing.Size(101, 12);
+            this.BusinessCoinfgLbl.TabIndex = 2;
+            this.BusinessCoinfgLbl.Text = "业务站点Config：";
+            // 
+            // BusinessCoinfgBtn
+            // 
+            this.BusinessCoinfgBtn.Location = new System.Drawing.Point(703, 55);
+            this.BusinessCoinfgBtn.Name = "BusinessCoinfgBtn";
+            this.BusinessCoinfgBtn.Size = new System.Drawing.Size(75, 23);
+            this.BusinessCoinfgBtn.TabIndex = 0;
+            this.BusinessCoinfgBtn.Text = "请选择";
+            this.BusinessCoinfgBtn.UseVisualStyleBackColor = true;
+            this.BusinessCoinfgBtn.Click += new System.EventHandler(this.BusinessCoinfgBtn_Click);
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Controls.Add(this.DCOMHELP);
+            this.tabPage5.Controls.Add(this.label27);
+            this.tabPage5.Controls.Add(this.DCOMDescri);
+            this.tabPage5.Controls.Add(this.label26);
+            this.tabPage5.Controls.Add(this.label8);
+            this.tabPage5.Controls.Add(this.label7);
+            this.tabPage5.Controls.Add(this.LaunchDGView);
+            this.tabPage5.Controls.Add(this.ConfigDGView);
+            this.tabPage5.Controls.Add(this.AccessDGView);
+            this.tabPage5.Controls.Add(this.StatusLbl);
+            this.tabPage5.Controls.Add(this.AccountNameLbl);
+            this.tabPage5.Controls.Add(this.AccountNameBtn);
+            this.tabPage5.Controls.Add(this.AccountNameTBox);
+            this.tabPage5.Controls.Add(this.MMC_btn);
+            this.tabPage5.Location = new System.Drawing.Point(4, 22);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Size = new System.Drawing.Size(824, 474);
+            this.tabPage5.TabIndex = 4;
+            this.tabPage5.Text = "服务配置";
+            this.tabPage5.UseVisualStyleBackColor = true;
+            // 
+            // DCOMHELP
+            // 
+            this.DCOMHELP.Location = new System.Drawing.Point(588, 445);
+            this.DCOMHELP.Name = "DCOMHELP";
+            this.DCOMHELP.Size = new System.Drawing.Size(75, 23);
+            this.DCOMHELP.TabIndex = 49;
+            this.DCOMHELP.Text = "帮助";
+            this.DCOMHELP.UseVisualStyleBackColor = true;
+            this.DCOMHELP.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(72, 23);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(77, 12);
+            this.label27.TabIndex = 48;
+            this.label27.Text = "操作结果 ： ";
+            // 
+            // DCOMDescri
+            // 
+            this.DCOMDescri.ForeColor = System.Drawing.Color.Red;
+            this.DCOMDescri.Location = new System.Drawing.Point(3, 353);
+            this.DCOMDescri.Name = "DCOMDescri";
+            this.DCOMDescri.Size = new System.Drawing.Size(181, 86);
+            this.DCOMDescri.TabIndex = 47;
+            this.DCOMDescri.Text = "*注意\r\naccessMask字段表示对应\r\n“默认访问”\"本地激活\"\r\n\"远程启动\"\"本地激活\"\"远程激活\"\r\n权限项，1:激活0:未激活";
+            // 
+            // label26
+            // 
+            this.label26.AutoSize = true;
+            this.label26.Location = new System.Drawing.Point(70, 323);
+            this.label26.Name = "label26";
+            this.label26.Size = new System.Drawing.Size(71, 12);
+            this.label26.TabIndex = 46;
+            this.label26.Text = "配置权限 : ";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(70, 201);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(71, 12);
+            this.label8.TabIndex = 45;
+            this.label8.Text = "访问权限 : ";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(72, 75);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(107, 12);
+            this.label7.TabIndex = 44;
+            this.label7.Text = "启动和激活权限 ：";
+            // 
+            // LaunchDGView
+            // 
+            this.LaunchDGView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.LaunchDGView.Location = new System.Drawing.Point(190, 75);
+            this.LaunchDGView.Name = "LaunchDGView";
+            this.LaunchDGView.RowTemplate.Height = 23;
+            this.LaunchDGView.Size = new System.Drawing.Size(614, 120);
+            this.LaunchDGView.TabIndex = 43;
+            // 
+            // ConfigDGView
+            // 
+            this.ConfigDGView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.ConfigDGView.Location = new System.Drawing.Point(190, 323);
+            this.ConfigDGView.Name = "ConfigDGView";
+            this.ConfigDGView.RowTemplate.Height = 23;
+            this.ConfigDGView.Size = new System.Drawing.Size(614, 116);
+            this.ConfigDGView.TabIndex = 42;
+            // 
+            // AccessDGView
+            // 
+            this.AccessDGView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.AccessDGView.Location = new System.Drawing.Point(190, 201);
+            this.AccessDGView.Name = "AccessDGView";
+            this.AccessDGView.RowTemplate.Height = 23;
+            this.AccessDGView.Size = new System.Drawing.Size(614, 116);
+            this.AccessDGView.TabIndex = 41;
+            // 
+            // StatusLbl
+            // 
+            this.StatusLbl.AutoSize = true;
+            this.StatusLbl.Location = new System.Drawing.Point(179, 23);
+            this.StatusLbl.Name = "StatusLbl";
+            this.StatusLbl.Size = new System.Drawing.Size(0, 12);
+            this.StatusLbl.TabIndex = 4;
+            // 
+            // AccountNameLbl
+            // 
+            this.AccountNameLbl.AutoSize = true;
+            this.AccountNameLbl.Location = new System.Drawing.Point(70, 51);
+            this.AccountNameLbl.Name = "AccountNameLbl";
+            this.AccountNameLbl.Size = new System.Drawing.Size(53, 12);
+            this.AccountNameLbl.TabIndex = 3;
+            this.AccountNameLbl.Text = "用户名: ";
+            // 
+            // AccountNameBtn
+            // 
+            this.AccountNameBtn.Location = new System.Drawing.Point(729, 40);
+            this.AccountNameBtn.Name = "AccountNameBtn";
+            this.AccountNameBtn.Size = new System.Drawing.Size(75, 23);
+            this.AccountNameBtn.TabIndex = 2;
+            this.AccountNameBtn.Text = "一键设置";
+            this.AccountNameBtn.UseVisualStyleBackColor = true;
+            this.AccountNameBtn.Click += new System.EventHandler(this.AccountNameBtn_Click);
+            // 
+            // AccountNameTBox
+            // 
+            this.AccountNameTBox.Location = new System.Drawing.Point(190, 48);
+            this.AccountNameTBox.Name = "AccountNameTBox";
+            this.AccountNameTBox.Size = new System.Drawing.Size(351, 21);
+            this.AccountNameTBox.TabIndex = 1;
+            this.AccountNameTBox.Text = "SYSTEM";
+            // 
+            // MMC_btn
+            // 
+            this.MMC_btn.Location = new System.Drawing.Point(716, 445);
+            this.MMC_btn.Name = "MMC_btn";
+            this.MMC_btn.Size = new System.Drawing.Size(88, 23);
+            this.MMC_btn.TabIndex = 0;
+            this.MMC_btn.Text = "打开组件服务";
+            this.MMC_btn.UseVisualStyleBackColor = true;
+            this.MMC_btn.Click += new System.EventHandler(this.MMC_btn_Click);
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Controls.Add(this.IISBtn);
+            this.tabPage3.Controls.Add(this.Thumb_SiteInfo);
+            this.tabPage3.Controls.Add(this.Thumb_CreateParam);
+            this.tabPage3.Controls.Add(this.ThumbSiteBtn);
+            this.tabPage3.Location = new System.Drawing.Point(4, 22);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(824, 497);
+            this.tabPage3.TabIndex = 2;
+            this.tabPage3.Text = "缩略图部署";
+            this.tabPage3.UseVisualStyleBackColor = true;
+            // 
+            // IISBtn
+            // 
+            this.IISBtn.Location = new System.Drawing.Point(523, 402);
+            this.IISBtn.Name = "IISBtn";
+            this.IISBtn.Size = new System.Drawing.Size(75, 23);
+            this.IISBtn.TabIndex = 2;
+            this.IISBtn.Text = "打开IIS";
+            this.IISBtn.UseVisualStyleBackColor = true;
+            this.IISBtn.Click += new System.EventHandler(this.IISBtn_Click);
+            // 
+            // Thumb_SiteInfo
+            // 
+            this.Thumb_SiteInfo.Controls.Add(this.Thumb_SiteInfoRichBox);
+            this.Thumb_SiteInfo.Location = new System.Drawing.Point(423, 3);
+            this.Thumb_SiteInfo.Name = "Thumb_SiteInfo";
+            this.Thumb_SiteInfo.Size = new System.Drawing.Size(398, 316);
+            this.Thumb_SiteInfo.TabIndex = 1;
+            this.Thumb_SiteInfo.TabStop = false;
+            this.Thumb_SiteInfo.Text = "站点信息";
+            // 
+            // Thumb_SiteInfoRichBox
+            // 
+            this.Thumb_SiteInfoRichBox.Location = new System.Drawing.Point(6, 20);
+            this.Thumb_SiteInfoRichBox.Name = "Thumb_SiteInfoRichBox";
+            this.Thumb_SiteInfoRichBox.Size = new System.Drawing.Size(386, 290);
+            this.Thumb_SiteInfoRichBox.TabIndex = 0;
+            this.Thumb_SiteInfoRichBox.Text = "";
+            // 
+            // Thumb_CreateParam
+            // 
+            this.Thumb_CreateParam.Controls.Add(this.FileConvertPortText);
+            this.Thumb_CreateParam.Controls.Add(this.Thumb_SitePathText);
+            this.Thumb_CreateParam.Controls.Add(this.Thumb_SitePathLbl);
+            this.Thumb_CreateParam.Controls.Add(this.Thumb_SiteCommentText);
+            this.Thumb_CreateParam.Controls.Add(this.Thumb_SiteCommentLbl);
+            this.Thumb_CreateParam.Controls.Add(this.Thumb_SiteDescText);
+            this.Thumb_CreateParam.Controls.Add(this.Thumb_SiteDescLbl);
+            this.Thumb_CreateParam.Controls.Add(this.Thumb_portNumText);
+            this.Thumb_CreateParam.Controls.Add(this.Thumb_portNumLbl);
+            this.Thumb_CreateParam.Controls.Add(this.Thumb_IPTEXT);
+            this.Thumb_CreateParam.Controls.Add(this.label28Caution);
+            this.Thumb_CreateParam.Controls.Add(this.Thumb_IPLbl);
+            this.Thumb_CreateParam.Location = new System.Drawing.Point(16, 3);
+            this.Thumb_CreateParam.Name = "Thumb_CreateParam";
+            this.Thumb_CreateParam.Size = new System.Drawing.Size(367, 316);
+            this.Thumb_CreateParam.TabIndex = 1;
+            this.Thumb_CreateParam.TabStop = false;
+            this.Thumb_CreateParam.Text = "站点参数";
+            // 
+            // FileConvertPortText
+            // 
+            this.FileConvertPortText.AutoSize = true;
+            this.FileConvertPortText.Location = new System.Drawing.Point(239, 72);
+            this.FileConvertPortText.Name = "FileConvertPortText";
+            this.FileConvertPortText.Size = new System.Drawing.Size(0, 12);
+            this.FileConvertPortText.TabIndex = 2;
+            // 
+            // Thumb_SitePathText
+            // 
+            this.Thumb_SitePathText.Location = new System.Drawing.Point(80, 207);
+            this.Thumb_SitePathText.Name = "Thumb_SitePathText";
+            this.Thumb_SitePathText.Size = new System.Drawing.Size(281, 21);
+            this.Thumb_SitePathText.TabIndex = 1;
+            this.Thumb_SitePathText.Text = "D:\\FilesThumb";
+            this.Thumb_SitePathText.TextChanged += new System.EventHandler(this.Thumb_SitePathText_TextChanged);
+            // 
+            // Thumb_SitePathLbl
+            // 
+            this.Thumb_SitePathLbl.AutoSize = true;
+            this.Thumb_SitePathLbl.ForeColor = System.Drawing.Color.Red;
+            this.Thumb_SitePathLbl.Location = new System.Drawing.Point(15, 210);
+            this.Thumb_SitePathLbl.Name = "Thumb_SitePathLbl";
+            this.Thumb_SitePathLbl.Size = new System.Drawing.Size(59, 12);
+            this.Thumb_SitePathLbl.TabIndex = 0;
+            this.Thumb_SitePathLbl.Text = "站点路径:";
+            // 
+            // Thumb_SiteCommentText
+            // 
+            this.Thumb_SiteCommentText.Location = new System.Drawing.Point(80, 163);
+            this.Thumb_SiteCommentText.Name = "Thumb_SiteCommentText";
+            this.Thumb_SiteCommentText.Size = new System.Drawing.Size(153, 21);
+            this.Thumb_SiteCommentText.TabIndex = 1;
+            this.Thumb_SiteCommentText.Text = "FileServerThumb";
+            // 
+            // Thumb_SiteCommentLbl
+            // 
+            this.Thumb_SiteCommentLbl.AutoSize = true;
+            this.Thumb_SiteCommentLbl.Location = new System.Drawing.Point(15, 165);
+            this.Thumb_SiteCommentLbl.Name = "Thumb_SiteCommentLbl";
+            this.Thumb_SiteCommentLbl.Size = new System.Drawing.Size(47, 12);
+            this.Thumb_SiteCommentLbl.TabIndex = 0;
+            this.Thumb_SiteCommentLbl.Text = "站点名:";
+            // 
+            // Thumb_SiteDescText
+            // 
+            this.Thumb_SiteDescText.Location = new System.Drawing.Point(80, 118);
+            this.Thumb_SiteDescText.Name = "Thumb_SiteDescText";
+            this.Thumb_SiteDescText.Size = new System.Drawing.Size(153, 21);
+            this.Thumb_SiteDescText.TabIndex = 1;
+            this.Thumb_SiteDescText.Text = "缩略图站点";
+            // 
+            // Thumb_SiteDescLbl
+            // 
+            this.Thumb_SiteDescLbl.AutoSize = true;
+            this.Thumb_SiteDescLbl.Location = new System.Drawing.Point(15, 121);
+            this.Thumb_SiteDescLbl.Name = "Thumb_SiteDescLbl";
+            this.Thumb_SiteDescLbl.Size = new System.Drawing.Size(59, 12);
+            this.Thumb_SiteDescLbl.TabIndex = 0;
+            this.Thumb_SiteDescLbl.Text = "站点描述:";
+            // 
+            // Thumb_portNumText
+            // 
+            this.Thumb_portNumText.Location = new System.Drawing.Point(80, 69);
+            this.Thumb_portNumText.Name = "Thumb_portNumText";
+            this.Thumb_portNumText.Size = new System.Drawing.Size(153, 21);
+            this.Thumb_portNumText.TabIndex = 1;
+            this.Thumb_portNumText.Text = "8060";
+            // 
+            // Thumb_portNumLbl
+            // 
+            this.Thumb_portNumLbl.AutoSize = true;
+            this.Thumb_portNumLbl.Location = new System.Drawing.Point(15, 78);
+            this.Thumb_portNumLbl.Name = "Thumb_portNumLbl";
+            this.Thumb_portNumLbl.Size = new System.Drawing.Size(35, 12);
+            this.Thumb_portNumLbl.TabIndex = 0;
+            this.Thumb_portNumLbl.Text = "端口:";
+            // 
+            // Thumb_IPTEXT
+            // 
+            this.Thumb_IPTEXT.Location = new System.Drawing.Point(80, 27);
+            this.Thumb_IPTEXT.Name = "Thumb_IPTEXT";
+            this.Thumb_IPTEXT.Size = new System.Drawing.Size(153, 21);
+            this.Thumb_IPTEXT.TabIndex = 1;
+            this.Thumb_IPTEXT.Text = "127.0.0.1";
+            // 
+            // label28Caution
+            // 
+            this.label28Caution.AutoSize = true;
+            this.label28Caution.ForeColor = System.Drawing.Color.Red;
+            this.label28Caution.Location = new System.Drawing.Point(15, 93);
+            this.label28Caution.Name = "label28Caution";
+            this.label28Caution.Size = new System.Drawing.Size(323, 12);
+            this.label28Caution.TabIndex = 0;
+            this.label28Caution.Text = "*如端口与切图服务端口是否一致，如发生变变化请对应变更";
+            // 
+            // Thumb_IPLbl
+            // 
+            this.Thumb_IPLbl.AutoSize = true;
+            this.Thumb_IPLbl.ForeColor = System.Drawing.Color.Red;
+            this.Thumb_IPLbl.Location = new System.Drawing.Point(15, 34);
+            this.Thumb_IPLbl.Name = "Thumb_IPLbl";
+            this.Thumb_IPLbl.Size = new System.Drawing.Size(23, 12);
+            this.Thumb_IPLbl.TabIndex = 0;
+            this.Thumb_IPLbl.Text = "IP:";
+            // 
+            // ThumbSiteBtn
+            // 
+            this.ThumbSiteBtn.Location = new System.Drawing.Point(313, 402);
+            this.ThumbSiteBtn.Name = "ThumbSiteBtn";
+            this.ThumbSiteBtn.Size = new System.Drawing.Size(135, 23);
+            this.ThumbSiteBtn.TabIndex = 0;
+            this.ThumbSiteBtn.Text = "创建/查看缩略图站点";
+            this.ThumbSiteBtn.UseVisualStyleBackColor = true;
+            this.ThumbSiteBtn.Click += new System.EventHandler(this.ThumbSiteBtn_Click);
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Controls.Add(this.DwgConvertConfigLbl);
+            this.tabPage2.Controls.Add(this.ConvertFileConfigLbl);
+            this.tabPage2.Controls.Add(this.FileServerConifgLbl);
+            this.tabPage2.Controls.Add(this.MasterConfigLbl);
+            this.tabPage2.Controls.Add(this.label1);
+            this.tabPage2.Controls.Add(this.button10);
+            this.tabPage2.Controls.Add(this.groupBox4);
+            this.tabPage2.Controls.Add(this.groupBox3);
+            this.tabPage2.Controls.Add(this.groupBox2);
+            this.tabPage2.Controls.Add(this.groupBox1);
+            this.tabPage2.Location = new System.Drawing.Point(4, 22);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage2.Size = new System.Drawing.Size(824, 497);
+            this.tabPage2.TabIndex = 1;
+            this.tabPage2.Text = "程序部署";
+            this.tabPage2.UseVisualStyleBackColor = true;
+            // 
+            // DwgConvertConfigLbl
+            // 
+            this.DwgConvertConfigLbl.Location = new System.Drawing.Point(-2, 388);
+            this.DwgConvertConfigLbl.Name = "DwgConvertConfigLbl";
+            this.DwgConvertConfigLbl.Size = new System.Drawing.Size(802, 53);
+            this.DwgConvertConfigLbl.TabIndex = 7;
+            this.DwgConvertConfigLbl.Text = "label26";
+            // 
+            // ConvertFileConfigLbl
+            // 
+            this.ConvertFileConfigLbl.Location = new System.Drawing.Point(-2, 338);
+            this.ConvertFileConfigLbl.Name = "ConvertFileConfigLbl";
+            this.ConvertFileConfigLbl.Size = new System.Drawing.Size(802, 50);
+            this.ConvertFileConfigLbl.TabIndex = 7;
+            this.ConvertFileConfigLbl.Text = "label26";
+            // 
+            // FileServerConifgLbl
+            // 
+            this.FileServerConifgLbl.Location = new System.Drawing.Point(-2, 308);
+            this.FileServerConifgLbl.Name = "FileServerConifgLbl";
+            this.FileServerConifgLbl.Size = new System.Drawing.Size(802, 30);
+            this.FileServerConifgLbl.TabIndex = 7;
+            this.FileServerConifgLbl.Text = "label26";
+            // 
+            // MasterConfigLbl
+            // 
+            this.MasterConfigLbl.Location = new System.Drawing.Point(-2, 294);
+            this.MasterConfigLbl.Name = "MasterConfigLbl";
+            this.MasterConfigLbl.Size = new System.Drawing.Size(807, 28);
+            this.MasterConfigLbl.TabIndex = 7;
+            this.MasterConfigLbl.Text = "主控配置";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.Red;
+            this.label1.Location = new System.Drawing.Point(206, 455);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(149, 12);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "安装前请保证路径配置正确";
+            // 
+            // button10
+            // 
+            this.button10.Location = new System.Drawing.Point(384, 444);
+            this.button10.Name = "button10";
+            this.button10.Size = new System.Drawing.Size(75, 23);
+            this.button10.TabIndex = 3;
+            this.button10.Text = "一键安装";
+            this.button10.UseVisualStyleBackColor = true;
+            this.button10.Click += new System.EventHandler(this.button10_Click);
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.linkLabel4);
+            this.groupBox4.Controls.Add(this.button18);
+            this.groupBox4.Controls.Add(this.DwgConvertUnstallBtn);
+            this.groupBox4.Controls.Add(this.DwgConvertInstallBtn);
+            this.groupBox4.Controls.Add(this.button5);
+            this.groupBox4.Controls.Add(this.DwgConvertServerPath);
+            this.groupBox4.Controls.Add(this.DWGConvertService);
+            this.groupBox4.Controls.Add(this.DWGConvertFileStatus);
+            this.groupBox4.Location = new System.Drawing.Point(610, 6);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(206, 285);
+            this.groupBox4.TabIndex = 2;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "DWG切图YinhooDWGConvertServer";
+            // 
+            // linkLabel4
+            // 
+            this.linkLabel4.AutoSize = true;
+            this.linkLabel4.Location = new System.Drawing.Point(64, 205);
+            this.linkLabel4.Name = "linkLabel4";
+            this.linkLabel4.Size = new System.Drawing.Size(53, 12);
+            this.linkLabel4.TabIndex = 7;
+            this.linkLabel4.TabStop = true;
+            this.linkLabel4.Text = "查看日志";
+            this.linkLabel4.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel4_LinkClicked);
+            // 
+            // button18
+            // 
+            this.button18.Location = new System.Drawing.Point(19, 182);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(136, 23);
+            this.button18.TabIndex = 6;
+            this.button18.Text = "重新启动";
+            this.button18.UseVisualStyleBackColor = true;
+            this.button18.Click += new System.EventHandler(this.button18_Click);
+            // 
+            // DwgConvertUnstallBtn
+            // 
+            this.DwgConvertUnstallBtn.Location = new System.Drawing.Point(19, 144);
+            this.DwgConvertUnstallBtn.Name = "DwgConvertUnstallBtn";
+            this.DwgConvertUnstallBtn.Size = new System.Drawing.Size(136, 23);
+            this.DwgConvertUnstallBtn.TabIndex = 0;
+            this.DwgConvertUnstallBtn.Text = "卸载";
+            this.DwgConvertUnstallBtn.UseVisualStyleBackColor = true;
+            this.DwgConvertUnstallBtn.Click += new System.EventHandler(this.button14_Click);
+            // 
+            // DwgConvertInstallBtn
+            // 
+            this.DwgConvertInstallBtn.Location = new System.Drawing.Point(19, 109);
+            this.DwgConvertInstallBtn.Name = "DwgConvertInstallBtn";
+            this.DwgConvertInstallBtn.Size = new System.Drawing.Size(136, 23);
+            this.DwgConvertInstallBtn.TabIndex = 0;
+            this.DwgConvertInstallBtn.Text = " 安装";
+            this.DwgConvertInstallBtn.UseVisualStyleBackColor = true;
+            this.DwgConvertInstallBtn.Click += new System.EventHandler(this.button9_Click);
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(19, 74);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(136, 23);
+            this.button5.TabIndex = 0;
+            this.button5.Text = "配置修改";
+            this.button5.UseVisualStyleBackColor = true;
+            this.button5.Click += new System.EventHandler(this.button5_Click);
+            // 
+            // DwgConvertServerPath
+            // 
+            this.DwgConvertServerPath.Location = new System.Drawing.Point(0, 242);
+            this.DwgConvertServerPath.Name = "DwgConvertServerPath";
+            this.DwgConvertServerPath.Size = new System.Drawing.Size(206, 38);
+            this.DwgConvertServerPath.TabIndex = 5;
+            this.DwgConvertServerPath.Text = " 主控路径";
+            // 
+            // DWGConvertService
+            // 
+            this.DWGConvertService.Location = new System.Drawing.Point(19, 41);
+            this.DWGConvertService.Name = "DWGConvertService";
+            this.DWGConvertService.Size = new System.Drawing.Size(136, 23);
+            this.DWGConvertService.TabIndex = 0;
+            this.DWGConvertService.Text = "打开目录";
+            this.DWGConvertService.UseVisualStyleBackColor = true;
+            this.DWGConvertService.Click += new System.EventHandler(this.DWGConvertService_Click);
+            // 
+            // DWGConvertFileStatus
+            // 
+            this.DWGConvertFileStatus.AutoSize = true;
+            this.DWGConvertFileStatus.Location = new System.Drawing.Point(64, 217);
+            this.DWGConvertFileStatus.Name = "DWGConvertFileStatus";
+            this.DWGConvertFileStatus.Size = new System.Drawing.Size(41, 12);
+            this.DWGConvertFileStatus.TabIndex = 5;
+            this.DWGConvertFileStatus.Text = "status";
+            // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.label28);
+            this.groupBox3.Controls.Add(this.linkLabel3);
+            this.groupBox3.Controls.Add(this.button17);
+            this.groupBox3.Controls.Add(this.fileConvertUntasllBtn);
+            this.groupBox3.Controls.Add(this.fileConvertIntasllBtn);
+            this.groupBox3.Controls.Add(this.button4);
+            this.groupBox3.Controls.Add(this.FileConvertServer);
+            this.groupBox3.Controls.Add(this.FileConvertStatus);
+            this.groupBox3.Controls.Add(this.ConvertServerPath);
+            this.groupBox3.Location = new System.Drawing.Point(406, 6);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(198, 285);
+            this.groupBox3.TabIndex = 2;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "文件切图YinhooFileConvertServer ";
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.ForeColor = System.Drawing.Color.Red;
+            this.label28.Location = new System.Drawing.Point(17, 26);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(143, 12);
+            this.label28.TabIndex = 8;
+            this.label28.Text = "*服务请使用权限用户登录";
+            // 
+            // linkLabel3
+            // 
+            this.linkLabel3.AutoSize = true;
+            this.linkLabel3.Location = new System.Drawing.Point(63, 205);
+            this.linkLabel3.Name = "linkLabel3";
+            this.linkLabel3.Size = new System.Drawing.Size(53, 12);
+            this.linkLabel3.TabIndex = 7;
+            this.linkLabel3.TabStop = true;
+            this.linkLabel3.Text = "查看日志";
+            this.linkLabel3.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel3_LinkClicked);
+            // 
+            // button17
+            // 
+            this.button17.Location = new System.Drawing.Point(19, 182);
+            this.button17.Name = "button17";
+            this.button17.Size = new System.Drawing.Size(136, 23);
+            this.button17.TabIndex = 6;
+            this.button17.Text = "重新启动";
+            this.button17.UseVisualStyleBackColor = true;
+            this.button17.Click += new System.EventHandler(this.button17_Click);
+            // 
+            // fileConvertUntasllBtn
+            // 
+            this.fileConvertUntasllBtn.Location = new System.Drawing.Point(19, 144);
+            this.fileConvertUntasllBtn.Name = "fileConvertUntasllBtn";
+            this.fileConvertUntasllBtn.Size = new System.Drawing.Size(136, 23);
+            this.fileConvertUntasllBtn.TabIndex = 0;
+            this.fileConvertUntasllBtn.Text = "卸载";
+            this.fileConvertUntasllBtn.UseVisualStyleBackColor = true;
+            this.fileConvertUntasllBtn.Click += new System.EventHandler(this.button13_Click);
+            // 
+            // fileConvertIntasllBtn
+            // 
+            this.fileConvertIntasllBtn.Location = new System.Drawing.Point(19, 109);
+            this.fileConvertIntasllBtn.Name = "fileConvertIntasllBtn";
+            this.fileConvertIntasllBtn.Size = new System.Drawing.Size(136, 23);
+            this.fileConvertIntasllBtn.TabIndex = 0;
+            this.fileConvertIntasllBtn.Text = " 安装";
+            this.fileConvertIntasllBtn.UseVisualStyleBackColor = true;
+            this.fileConvertIntasllBtn.Click += new System.EventHandler(this.button8_Click);
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(19, 74);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(136, 23);
+            this.button4.TabIndex = 0;
+            this.button4.Text = "配置修改";
+            this.button4.UseVisualStyleBackColor = true;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // FileConvertServer
+            // 
+            this.FileConvertServer.Location = new System.Drawing.Point(19, 41);
+            this.FileConvertServer.Name = "FileConvertServer";
+            this.FileConvertServer.Size = new System.Drawing.Size(136, 23);
+            this.FileConvertServer.TabIndex = 0;
+            this.FileConvertServer.Text = "打开目录";
+            this.FileConvertServer.UseVisualStyleBackColor = true;
+            this.FileConvertServer.Click += new System.EventHandler(this.FileConvertServer_Click);
+            // 
+            // FileConvertStatus
+            // 
+            this.FileConvertStatus.AutoSize = true;
+            this.FileConvertStatus.Location = new System.Drawing.Point(63, 217);
+            this.FileConvertStatus.Name = "FileConvertStatus";
+            this.FileConvertStatus.Size = new System.Drawing.Size(41, 12);
+            this.FileConvertStatus.TabIndex = 5;
+            this.FileConvertStatus.Text = "status";
+            // 
+            // ConvertServerPath
+            // 
+            this.ConvertServerPath.Location = new System.Drawing.Point(6, 242);
+            this.ConvertServerPath.Name = "ConvertServerPath";
+            this.ConvertServerPath.Size = new System.Drawing.Size(184, 38);
+            this.ConvertServerPath.TabIndex = 5;
+            this.ConvertServerPath.Text = " 主控路径";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.linkLabel2);
+            this.groupBox2.Controls.Add(this.button16);
+            this.groupBox2.Controls.Add(this.FileServerUnstallBtn);
+            this.groupBox2.Controls.Add(this.FileServerInstallBtn);
+            this.groupBox2.Controls.Add(this.button3);
+            this.groupBox2.Controls.Add(this.FileServer);
+            this.groupBox2.Controls.Add(this.FileServiceStatus);
+            this.groupBox2.Controls.Add(this.fileServerPath);
+            this.groupBox2.Location = new System.Drawing.Point(203, 6);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(198, 285);
+            this.groupBox2.TabIndex = 1;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "文件服务YinhooFileServer";
+            // 
+            // linkLabel2
+            // 
+            this.linkLabel2.AutoSize = true;
+            this.linkLabel2.Location = new System.Drawing.Point(59, 205);
+            this.linkLabel2.Name = "linkLabel2";
+            this.linkLabel2.Size = new System.Drawing.Size(53, 12);
+            this.linkLabel2.TabIndex = 7;
+            this.linkLabel2.TabStop = true;
+            this.linkLabel2.Text = "查看日志";
+            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel2_LinkClicked);
+            // 
+            // button16
+            // 
+            this.button16.Location = new System.Drawing.Point(16, 182);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(136, 23);
+            this.button16.TabIndex = 6;
+            this.button16.Text = "重新启动";
+            this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
+            // 
+            // FileServerUnstallBtn
+            // 
+            this.FileServerUnstallBtn.Location = new System.Drawing.Point(16, 144);
+            this.FileServerUnstallBtn.Name = "FileServerUnstallBtn";
+            this.FileServerUnstallBtn.Size = new System.Drawing.Size(136, 23);
+            this.FileServerUnstallBtn.TabIndex = 0;
+            this.FileServerUnstallBtn.Text = "卸载";
+            this.FileServerUnstallBtn.UseVisualStyleBackColor = true;
+            this.FileServerUnstallBtn.Click += new System.EventHandler(this.button12_Click);
+            // 
+            // FileServerInstallBtn
+            // 
+            this.FileServerInstallBtn.Location = new System.Drawing.Point(16, 109);
+            this.FileServerInstallBtn.Name = "FileServerInstallBtn";
+            this.FileServerInstallBtn.Size = new System.Drawing.Size(136, 23);
+            this.FileServerInstallBtn.TabIndex = 0;
+            this.FileServerInstallBtn.Text = " 安装";
+            this.FileServerInstallBtn.UseVisualStyleBackColor = true;
+            this.FileServerInstallBtn.Click += new System.EventHandler(this.button7_Click);
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(16, 74);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(136, 23);
+            this.button3.TabIndex = 0;
+            this.button3.Text = "配置修改";
+            this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // FileServer
+            // 
+            this.FileServer.Location = new System.Drawing.Point(16, 41);
+            this.FileServer.Name = "FileServer";
+            this.FileServer.Size = new System.Drawing.Size(136, 23);
+            this.FileServer.TabIndex = 0;
+            this.FileServer.Text = "打开目录";
+            this.FileServer.UseVisualStyleBackColor = true;
+            this.FileServer.Click += new System.EventHandler(this.FileServer_Click);
+            // 
+            // FileServiceStatus
+            // 
+            this.FileServiceStatus.AutoSize = true;
+            this.FileServiceStatus.Location = new System.Drawing.Point(59, 217);
+            this.FileServiceStatus.Name = "FileServiceStatus";
+            this.FileServiceStatus.Size = new System.Drawing.Size(41, 12);
+            this.FileServiceStatus.TabIndex = 5;
+            this.FileServiceStatus.Text = "status";
+            // 
+            // fileServerPath
+            // 
+            this.fileServerPath.Location = new System.Drawing.Point(12, 242);
+            this.fileServerPath.Name = "fileServerPath";
+            this.fileServerPath.Size = new System.Drawing.Size(180, 40);
+            this.fileServerPath.TabIndex = 5;
+            this.fileServerPath.Text = " 主控路径";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.linkLabel1);
+            this.groupBox1.Controls.Add(this.button15);
+            this.groupBox1.Controls.Add(this.masterUnstallBtn);
+            this.groupBox1.Controls.Add(this.masterInstallBtn);
+            this.groupBox1.Controls.Add(this.button2);
+            this.groupBox1.Controls.Add(this.MasterService);
+            this.groupBox1.Controls.Add(this.masterServiceStatus);
+            this.groupBox1.Controls.Add(this.masterServerPath);
+            this.groupBox1.Location = new System.Drawing.Point(6, 6);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(190, 285);
+            this.groupBox1.TabIndex = 1;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "主控服务YinhooMasterService";
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(63, 205);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(53, 12);
+            this.linkLabel1.TabIndex = 7;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "查看日志";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
+            // 
+            // button15
+            // 
+            this.button15.Location = new System.Drawing.Point(22, 182);
+            this.button15.Name = "button15";
+            this.button15.Size = new System.Drawing.Size(136, 23);
+            this.button15.TabIndex = 6;
+            this.button15.Text = "重新启动";
+            this.button15.UseVisualStyleBackColor = true;
+            this.button15.Click += new System.EventHandler(this.button15_Click);
+            // 
+            // masterUnstallBtn
+            // 
+            this.masterUnstallBtn.Location = new System.Drawing.Point(22, 144);
+            this.masterUnstallBtn.Name = "masterUnstallBtn";
+            this.masterUnstallBtn.Size = new System.Drawing.Size(136, 23);
+            this.masterUnstallBtn.TabIndex = 0;
+            this.masterUnstallBtn.Text = "卸载";
+            this.masterUnstallBtn.UseVisualStyleBackColor = true;
+            this.masterUnstallBtn.Click += new System.EventHandler(this.button11_Click);
+            // 
+            // masterInstallBtn
+            // 
+            this.masterInstallBtn.Location = new System.Drawing.Point(22, 109);
+            this.masterInstallBtn.Name = "masterInstallBtn";
+            this.masterInstallBtn.Size = new System.Drawing.Size(136, 23);
+            this.masterInstallBtn.TabIndex = 0;
+            this.masterInstallBtn.Text = " 安装";
+            this.masterInstallBtn.UseVisualStyleBackColor = true;
+            this.masterInstallBtn.Click += new System.EventHandler(this.button6_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(22, 74);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(136, 23);
+            this.button2.TabIndex = 0;
+            this.button2.Text = "配置修改";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // MasterService
+            // 
+            this.MasterService.Location = new System.Drawing.Point(22, 41);
+            this.MasterService.Name = "MasterService";
+            this.MasterService.Size = new System.Drawing.Size(136, 23);
+            this.MasterService.TabIndex = 0;
+            this.MasterService.Text = "打开目录";
+            this.MasterService.UseVisualStyleBackColor = true;
+            this.MasterService.Click += new System.EventHandler(this.MasterService_Click);
+            // 
+            // masterServiceStatus
+            // 
+            this.masterServiceStatus.AutoSize = true;
+            this.masterServiceStatus.Location = new System.Drawing.Point(63, 217);
+            this.masterServiceStatus.Name = "masterServiceStatus";
+            this.masterServiceStatus.Size = new System.Drawing.Size(41, 12);
+            this.masterServiceStatus.TabIndex = 5;
+            this.masterServiceStatus.Text = "status";
+            // 
+            // masterServerPath
+            // 
+            this.masterServerPath.Location = new System.Drawing.Point(5, 242);
+            this.masterServerPath.Name = "masterServerPath";
+            this.masterServerPath.Size = new System.Drawing.Size(179, 40);
+            this.masterServerPath.TabIndex = 5;
+            this.masterServerPath.Text = " 主控路径";
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.CheckCutConditionBtn);
+            this.tabPage1.Controls.Add(this.endDateTxt);
+            this.tabPage1.Controls.Add(this.beginDateTxt);
+            this.tabPage1.Controls.Add(this.ReCut);
+            this.tabPage1.Controls.Add(this.label29);
+            this.tabPage1.Controls.Add(this.CutFileCountLbl);
+            this.tabPage1.Controls.Add(this.btnViewDataBase);
+            this.tabPage1.Controls.Add(this.groupBoxInitData);
+            this.tabPage1.Controls.Add(this.label9);
+            this.tabPage1.Controls.Add(this.InitBtn);
+            this.tabPage1.Controls.Add(this.btnCreateDataBase);
+            this.tabPage1.Controls.Add(this.groupBoxCreate);
+            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(824, 497);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "系统环境配置安装";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // endDateTxt
+            // 
+            this.endDateTxt.Location = new System.Drawing.Point(294, 450);
+            this.endDateTxt.Name = "endDateTxt";
+            this.endDateTxt.Size = new System.Drawing.Size(100, 21);
+            this.endDateTxt.TabIndex = 41;
+            // 
+            // beginDateTxt
+            // 
+            this.beginDateTxt.Location = new System.Drawing.Point(171, 451);
+            this.beginDateTxt.Name = "beginDateTxt";
+            this.beginDateTxt.Size = new System.Drawing.Size(100, 21);
+            this.beginDateTxt.TabIndex = 41;
+            // 
+            // ReCut
+            // 
+            this.ReCut.ForeColor = System.Drawing.Color.Red;
+            this.ReCut.Location = new System.Drawing.Point(399, 445);
+            this.ReCut.Name = "ReCut";
+            this.ReCut.Size = new System.Drawing.Size(75, 23);
+            this.ReCut.TabIndex = 40;
+            this.ReCut.Text = "重新切图";
+            this.ReCut.UseVisualStyleBackColor = true;
+            this.ReCut.Click += new System.EventHandler(this.ReCut_Click);
+            // 
+            // label29
+            // 
+            this.label29.AutoSize = true;
+            this.label29.Location = new System.Drawing.Point(277, 456);
+            this.label29.Name = "label29";
+            this.label29.Size = new System.Drawing.Size(11, 12);
+            this.label29.TabIndex = 39;
+            this.label29.Text = "-";
+            // 
+            // CutFileCountLbl
+            // 
+            this.CutFileCountLbl.AutoSize = true;
+            this.CutFileCountLbl.ForeColor = System.Drawing.Color.Red;
+            this.CutFileCountLbl.Location = new System.Drawing.Point(0, 475);
+            this.CutFileCountLbl.Name = "CutFileCountLbl";
+            this.CutFileCountLbl.Size = new System.Drawing.Size(91, 19);
+            this.CutFileCountLbl.TabIndex = 39;
+            this.CutFileCountLbl.Text = "切图失败个数：";
+            this.CutFileCountLbl.TextAlign = System.Drawing.ContentAlignment.TopRight;
+            this.CutFileCountLbl.UseCompatibleTextRendering = true;
+            this.CutFileCountLbl.DoubleClick += new System.EventHandler(this.CutFileCountLbl_DoubleClick);
+            // 
+            // btnViewDataBase
+            // 
+            this.btnViewDataBase.Location = new System.Drawing.Point(489, 448);
+            this.btnViewDataBase.Name = "btnViewDataBase";
+            this.btnViewDataBase.Size = new System.Drawing.Size(108, 23);
+            this.btnViewDataBase.TabIndex = 38;
+            this.btnViewDataBase.Text = "查看已有系统";
+            this.btnViewDataBase.UseVisualStyleBackColor = true;
+            this.btnViewDataBase.Click += new System.EventHandler(this.btnViewDataBase_Click);
+            // 
+            // groupBoxInitData
+            // 
+            this.groupBoxInitData.Controls.Add(this.label6);
+            this.groupBoxInitData.Controls.Add(this.label4);
+            this.groupBoxInitData.Controls.Add(this.btnResigsterBusSys);
+            this.groupBoxInitData.Controls.Add(this.cmBoxBusSysList);
+            this.groupBoxInitData.Controls.Add(this.cmBoxBusSys);
+            this.groupBoxInitData.Controls.Add(this.cmBoxDataServerList);
+            this.groupBoxInitData.Controls.Add(this.label2);
+            this.groupBoxInitData.Controls.Add(this.btnUpdataSystem);
+            this.groupBoxInitData.Controls.Add(this.btnInitBusSys);
+            this.groupBoxInitData.Controls.Add(this.btnInitDataServer);
+            this.groupBoxInitData.Controls.Add(this.groupBox7);
+            this.groupBoxInitData.Controls.Add(this.groupBox6);
+            this.groupBoxInitData.Controls.Add(this.btnInitMaster);
+            this.groupBoxInitData.Controls.Add(this.groupBox5);
+            this.groupBoxInitData.Location = new System.Drawing.Point(6, 74);
+            this.groupBoxInitData.Name = "groupBoxInitData";
+            this.groupBoxInitData.Size = new System.Drawing.Size(743, 368);
+            this.groupBoxInitData.TabIndex = 10;
+            this.groupBoxInitData.TabStop = false;
+            this.groupBoxInitData.Text = "初始化数据";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(234, 347);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(65, 12);
+            this.label6.TabIndex = 44;
+            this.label6.Text = "业务系统：";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(6, 346);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(89, 12);
+            this.label4.TabIndex = 43;
+            this.label4.Text = "数据服务节点：";
+            // 
+            // btnResigsterBusSys
+            // 
+            this.btnResigsterBusSys.Location = new System.Drawing.Point(627, 341);
+            this.btnResigsterBusSys.Name = "btnResigsterBusSys";
+            this.btnResigsterBusSys.Size = new System.Drawing.Size(104, 23);
+            this.btnResigsterBusSys.TabIndex = 39;
+            this.btnResigsterBusSys.Text = "注册业务系统";
+            this.btnResigsterBusSys.UseVisualStyleBackColor = true;
+            this.btnResigsterBusSys.Click += new System.EventHandler(this.btnResigsterBusSys_Click);
+            // 
+            // cmBoxBusSysList
+            // 
+            this.cmBoxBusSysList.DisplayMember = "请选择";
+            this.cmBoxBusSysList.FormattingEnabled = true;
+            this.cmBoxBusSysList.Location = new System.Drawing.Point(353, 344);
+            this.cmBoxBusSysList.Name = "cmBoxBusSysList";
+            this.cmBoxBusSysList.Size = new System.Drawing.Size(156, 20);
+            this.cmBoxBusSysList.TabIndex = 42;
+            this.cmBoxBusSysList.Text = "请选择";
+            // 
+            // cmBoxBusSys
+            // 
+            this.cmBoxBusSys.DisplayMember = "请选择";
+            this.cmBoxBusSys.FormattingEnabled = true;
+            this.cmBoxBusSys.Location = new System.Drawing.Point(95, 209);
+            this.cmBoxBusSys.Name = "cmBoxBusSys";
+            this.cmBoxBusSys.Size = new System.Drawing.Size(121, 20);
+            this.cmBoxBusSys.TabIndex = 37;
+            this.cmBoxBusSys.Text = "请选择";
+            this.cmBoxBusSys.SelectedIndexChanged += new System.EventHandler(this.cmBoxBusSys_SelectedIndexChanged);
+            this.cmBoxBusSys.Layout += new System.Windows.Forms.LayoutEventHandler(this.cmBoxBusSys_Layout);
+            // 
+            // cmBoxDataServerList
+            // 
+            this.cmBoxDataServerList.DisplayMember = "请选择";
+            this.cmBoxDataServerList.FormattingEnabled = true;
+            this.cmBoxDataServerList.Location = new System.Drawing.Point(108, 343);
+            this.cmBoxDataServerList.Name = "cmBoxDataServerList";
+            this.cmBoxDataServerList.Size = new System.Drawing.Size(105, 20);
+            this.cmBoxDataServerList.TabIndex = 41;
+            this.cmBoxDataServerList.Text = "请选择";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(10, 208);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(83, 12);
+            this.label2.TabIndex = 36;
+            this.label2.Text = "选择业务系统:";
+            // 
+            // btnUpdataSystem
+            // 
+            this.btnUpdataSystem.Location = new System.Drawing.Point(522, 340);
+            this.btnUpdataSystem.Name = "btnUpdataSystem";
+            this.btnUpdataSystem.Size = new System.Drawing.Size(95, 23);
+            this.btnUpdataSystem.TabIndex = 40;
+            this.btnUpdataSystem.Text = "更新数据服务节点";
+            this.btnUpdataSystem.UseVisualStyleBackColor = true;
+            this.btnUpdataSystem.Click += new System.EventHandler(this.UpdataSystem_Click);
+            // 
+            // btnInitBusSys
+            // 
+            this.btnInitBusSys.Location = new System.Drawing.Point(656, 255);
+            this.btnInitBusSys.Name = "btnInitBusSys";
+            this.btnInitBusSys.Size = new System.Drawing.Size(75, 49);
+            this.btnInitBusSys.TabIndex = 35;
+            this.btnInitBusSys.Text = "初始化业务系统";
+            this.btnInitBusSys.UseVisualStyleBackColor = true;
+            this.btnInitBusSys.Click += new System.EventHandler(this.btnInitBusSys_Click);
+            // 
+            // btnInitDataServer
+            // 
+            this.btnInitDataServer.Location = new System.Drawing.Point(656, 123);
+            this.btnInitDataServer.Name = "btnInitDataServer";
+            this.btnInitDataServer.Size = new System.Drawing.Size(75, 67);
+            this.btnInitDataServer.TabIndex = 34;
+            this.btnInitDataServer.Text = "初始化数据服务节点";
+            this.btnInitDataServer.UseVisualStyleBackColor = true;
+            this.btnInitDataServer.Click += new System.EventHandler(this.btnInitDataServer_Click);
+            // 
+            // groupBox7
+            // 
+            this.groupBox7.Controls.Add(this.txtBusSysName);
+            this.groupBox7.Controls.Add(this.txtBusSysInterfaceStr);
+            this.groupBox7.Controls.Add(this.txtBusSysIP);
+            this.groupBox7.Controls.Add(this.txtBusSysGuid);
+            this.groupBox7.Controls.Add(this.txtBusSysTargetIP);
+            this.groupBox7.Controls.Add(this.txtBusSysConStr);
+            this.groupBox7.Controls.Add(this.label25);
+            this.groupBox7.Controls.Add(this.label24);
+            this.groupBox7.Controls.Add(this.label23);
+            this.groupBox7.Controls.Add(this.label22);
+            this.groupBox7.Controls.Add(this.label18);
+            this.groupBox7.Controls.Add(this.label17);
+            this.groupBox7.Location = new System.Drawing.Point(6, 227);
+            this.groupBox7.Name = "groupBox7";
+            this.groupBox7.Size = new System.Drawing.Size(617, 104);
+            this.groupBox7.TabIndex = 33;
+            this.groupBox7.TabStop = false;
+            this.groupBox7.Text = "业务系统";
+            // 
+            // txtBusSysName
+            // 
+            this.txtBusSysName.Location = new System.Drawing.Point(103, 17);
+            this.txtBusSysName.Name = "txtBusSysName";
+            this.txtBusSysName.Size = new System.Drawing.Size(100, 21);
+            this.txtBusSysName.TabIndex = 35;
+            // 
+            // txtBusSysInterfaceStr
+            // 
+            this.txtBusSysInterfaceStr.Location = new System.Drawing.Point(346, 17);
+            this.txtBusSysInterfaceStr.Name = "txtBusSysInterfaceStr";
+            this.txtBusSysInterfaceStr.Size = new System.Drawing.Size(245, 21);
+            this.txtBusSysInterfaceStr.TabIndex = 34;
+            // 
+            // txtBusSysIP
+            // 
+            this.txtBusSysIP.Location = new System.Drawing.Point(103, 43);
+            this.txtBusSysIP.Name = "txtBusSysIP";
+            this.txtBusSysIP.Size = new System.Drawing.Size(100, 21);
+            this.txtBusSysIP.TabIndex = 33;
+            // 
+            // txtBusSysGuid
+            // 
+            this.txtBusSysGuid.Location = new System.Drawing.Point(346, 45);
+            this.txtBusSysGuid.Name = "txtBusSysGuid";
+            this.txtBusSysGuid.Size = new System.Drawing.Size(245, 21);
+            this.txtBusSysGuid.TabIndex = 32;
+            // 
+            // txtBusSysTargetIP
+            // 
+            this.txtBusSysTargetIP.Location = new System.Drawing.Point(102, 73);
+            this.txtBusSysTargetIP.Name = "txtBusSysTargetIP";
+            this.txtBusSysTargetIP.Size = new System.Drawing.Size(100, 21);
+            this.txtBusSysTargetIP.TabIndex = 31;
+            // 
+            // txtBusSysConStr
+            // 
+            this.txtBusSysConStr.Location = new System.Drawing.Point(379, 73);
+            this.txtBusSysConStr.Name = "txtBusSysConStr";
+            this.txtBusSysConStr.Size = new System.Drawing.Size(212, 21);
+            this.txtBusSysConStr.TabIndex = 30;
+            // 
+            // label25
+            // 
+            this.label25.AutoSize = true;
+            this.label25.Location = new System.Drawing.Point(7, 78);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(53, 12);
+            this.label25.TabIndex = 29;
+            this.label25.Text = "系统IP：";
+            // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.ForeColor = System.Drawing.Color.Red;
+            this.label24.Location = new System.Drawing.Point(225, 48);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(101, 12);
+            this.label24.TabIndex = 28;
+            this.label24.Text = "客户唯一标识码：";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(225, 20);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(113, 12);
+            this.label23.TabIndex = 27;
+            this.label23.Text = "业务系统数据接口：";
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.ForeColor = System.Drawing.Color.Red;
+            this.label22.Location = new System.Drawing.Point(223, 78);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(161, 12);
+            this.label22.TabIndex = 26;
+            this.label22.Text = "业务系统数据库连接字符串：";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.ForeColor = System.Drawing.Color.Red;
+            this.label18.Location = new System.Drawing.Point(8, 20);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(89, 12);
+            this.label18.TabIndex = 25;
+            this.label18.Text = "业务系统名称：";
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(8, 48);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(89, 12);
+            this.label17.TabIndex = 24;
+            this.label17.Text = "业务系统域名：";
+            // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.txtDataServerIp);
+            this.groupBox6.Controls.Add(this.txtDataServerName);
+            this.groupBox6.Controls.Add(this.txtDataServerPort);
+            this.groupBox6.Controls.Add(this.txtDataServerRoot);
+            this.groupBox6.Controls.Add(this.txtDataServerUserName);
+            this.groupBox6.Controls.Add(this.txtDataServerPassword);
+            this.groupBox6.Controls.Add(this.label21);
+            this.groupBox6.Controls.Add(this.label20);
+            this.groupBox6.Controls.Add(this.label19);
+            this.groupBox6.Controls.Add(this.label16);
+            this.groupBox6.Controls.Add(this.label14);
+            this.groupBox6.Controls.Add(this.label12);
+            this.groupBox6.Location = new System.Drawing.Point(6, 99);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Size = new System.Drawing.Size(604, 106);
+            this.groupBox6.TabIndex = 32;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "数据服务节点";
+            // 
+            // txtDataServerIp
+            // 
+            this.txtDataServerIp.Location = new System.Drawing.Point(116, 24);
+            this.txtDataServerIp.Name = "txtDataServerIp";
+            this.txtDataServerIp.Size = new System.Drawing.Size(100, 21);
+            this.txtDataServerIp.TabIndex = 41;
+            // 
+            // txtDataServerName
+            // 
+            this.txtDataServerName.Location = new System.Drawing.Point(347, 24);
+            this.txtDataServerName.Name = "txtDataServerName";
+            this.txtDataServerName.Size = new System.Drawing.Size(239, 21);
+            this.txtDataServerName.TabIndex = 40;
+            // 
+            // txtDataServerPort
+            // 
+            this.txtDataServerPort.Location = new System.Drawing.Point(116, 52);
+            this.txtDataServerPort.Name = "txtDataServerPort";
+            this.txtDataServerPort.Size = new System.Drawing.Size(100, 21);
+            this.txtDataServerPort.TabIndex = 39;
+            // 
+            // txtDataServerRoot
+            // 
+            this.txtDataServerRoot.Location = new System.Drawing.Point(353, 52);
+            this.txtDataServerRoot.Name = "txtDataServerRoot";
+            this.txtDataServerRoot.Size = new System.Drawing.Size(233, 21);
+            this.txtDataServerRoot.TabIndex = 38;
+            // 
+            // txtDataServerUserName
+            // 
+            this.txtDataServerUserName.Location = new System.Drawing.Point(162, 79);
+            this.txtDataServerUserName.Name = "txtDataServerUserName";
+            this.txtDataServerUserName.Size = new System.Drawing.Size(54, 21);
+            this.txtDataServerUserName.TabIndex = 37;
+            // 
+            // txtDataServerPassword
+            // 
+            this.txtDataServerPassword.Location = new System.Drawing.Point(374, 79);
+            this.txtDataServerPassword.Name = "txtDataServerPassword";
+            this.txtDataServerPassword.Size = new System.Drawing.Size(212, 21);
+            this.txtDataServerPassword.TabIndex = 36;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(228, 82);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(137, 12);
+            this.label21.TabIndex = 35;
+            this.label21.Text = "数据服务节点验证密码：";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(7, 82);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(149, 12);
+            this.label20.TabIndex = 34;
+            this.label20.Text = "数据服务节点验证用户名：";
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.ForeColor = System.Drawing.Color.Red;
+            this.label19.Location = new System.Drawing.Point(227, 55);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(125, 12);
+            this.label19.TabIndex = 33;
+            this.label19.Text = "数据服务节点根目录：";
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(228, 27);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(113, 12);
+            this.label16.TabIndex = 32;
+            this.label16.Text = "数据服务节点域名：";
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(7, 55);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(113, 12);
+            this.label14.TabIndex = 31;
+            this.label14.Text = "数据服务节点端口：";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.ForeColor = System.Drawing.Color.Red;
+            this.label12.Location = new System.Drawing.Point(9, 27);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(101, 12);
+            this.label12.TabIndex = 30;
+            this.label12.Text = "数据服务节点IP：";
+            // 
+            // btnInitMaster
+            // 
+            this.btnInitMaster.Location = new System.Drawing.Point(656, 35);
+            this.btnInitMaster.Name = "btnInitMaster";
+            this.btnInitMaster.Size = new System.Drawing.Size(75, 57);
+            this.btnInitMaster.TabIndex = 31;
+            this.btnInitMaster.Text = "初始化主控节点";
+            this.btnInitMaster.UseVisualStyleBackColor = true;
+            this.btnInitMaster.Click += new System.EventHandler(this.btnInitMaster_Click);
+            // 
+            // groupBox5
+            // 
+            this.groupBox5.Controls.Add(this.txtMaterServerName);
+            this.groupBox5.Controls.Add(this.txtMasterServerPort);
+            this.groupBox5.Controls.Add(this.txtMasterRootName);
+            this.groupBox5.Controls.Add(this.txtMaterServerIp);
+            this.groupBox5.Controls.Add(this.label10);
+            this.groupBox5.Controls.Add(this.label15);
+            this.groupBox5.Controls.Add(this.label13);
+            this.groupBox5.Controls.Add(this.label11);
+            this.groupBox5.Location = new System.Drawing.Point(6, 16);
+            this.groupBox5.Name = "groupBox5";
+            this.groupBox5.Size = new System.Drawing.Size(567, 79);
+            this.groupBox5.TabIndex = 30;
+            this.groupBox5.TabStop = false;
+            this.groupBox5.Text = "主控节点";
+            // 
+            // txtMaterServerName
+            // 
+            this.txtMaterServerName.Location = new System.Drawing.Point(296, 19);
+            this.txtMaterServerName.Name = "txtMaterServerName";
+            this.txtMaterServerName.Size = new System.Drawing.Size(248, 21);
+            this.txtMaterServerName.TabIndex = 40;
+            // 
+            // txtMasterServerPort
+            // 
+            this.txtMasterServerPort.Location = new System.Drawing.Point(107, 48);
+            this.txtMasterServerPort.Name = "txtMasterServerPort";
+            this.txtMasterServerPort.Size = new System.Drawing.Size(100, 21);
+            this.txtMasterServerPort.TabIndex = 39;
+            // 
+            // txtMasterRootName
+            // 
+            this.txtMasterRootName.Location = new System.Drawing.Point(296, 48);
+            this.txtMasterRootName.Name = "txtMasterRootName";
+            this.txtMasterRootName.Size = new System.Drawing.Size(248, 21);
+            this.txtMasterRootName.TabIndex = 38;
+            // 
+            // txtMaterServerIp
+            // 
+            this.txtMaterServerIp.Location = new System.Drawing.Point(107, 19);
+            this.txtMaterServerIp.Name = "txtMaterServerIp";
+            this.txtMaterServerIp.Size = new System.Drawing.Size(100, 21);
+            this.txtMaterServerIp.TabIndex = 37;
+            this.txtMaterServerIp.Text = global::FileServerRelease.Properties.Settings.Default.PublicFileConvertDialogPath;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.ForeColor = System.Drawing.Color.Red;
+            this.label10.Location = new System.Drawing.Point(15, 22);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(89, 12);
+            this.label10.TabIndex = 33;
+            this.label10.Text = "主控节点地址：";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(15, 51);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(77, 12);
+            this.label15.TabIndex = 36;
+            this.label15.Text = "主控端口号：";
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(220, 52);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(77, 12);
+            this.label13.TabIndex = 35;
+            this.label13.Text = "根目录名称：";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(220, 22);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(65, 12);
+            this.label11.TabIndex = 34;
+            this.label11.Text = "主控域名：";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(299, 353);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(41, 12);
+            this.label9.TabIndex = 9;
+            this.label9.Text = "label9";
+            // 
+            // InitBtn
+            // 
+            this.InitBtn.ForeColor = System.Drawing.Color.Red;
+            this.InitBtn.Location = new System.Drawing.Point(630, 451);
+            this.InitBtn.Name = "InitBtn";
+            this.InitBtn.Size = new System.Drawing.Size(115, 23);
+            this.InitBtn.TabIndex = 8;
+            this.InitBtn.Text = "一键初始化(慎用)";
+            this.InitBtn.UseVisualStyleBackColor = true;
+            this.InitBtn.Click += new System.EventHandler(this.InitBtn_Click_1);
+            this.InitBtn.Layout += new System.Windows.Forms.LayoutEventHandler(this.InitBtn_Layout);
+            // 
+            // btnCreateDataBase
+            // 
+            this.btnCreateDataBase.Location = new System.Drawing.Point(662, 26);
+            this.btnCreateDataBase.Name = "btnCreateDataBase";
+            this.btnCreateDataBase.Size = new System.Drawing.Size(75, 23);
+            this.btnCreateDataBase.TabIndex = 7;
+            this.btnCreateDataBase.Text = "创建数据库";
+            this.btnCreateDataBase.UseVisualStyleBackColor = true;
+            this.btnCreateDataBase.Click += new System.EventHandler(this.btnCreateDataBase_Click);
+            // 
+            // groupBoxCreate
+            // 
+            this.groupBoxCreate.Controls.Add(this.btnTestConnect);
+            this.groupBoxCreate.Controls.Add(this.txtConnectString);
+            this.groupBoxCreate.Controls.Add(this.label3);
+            this.groupBoxCreate.Controls.Add(this.txtFileServerName);
+            this.groupBoxCreate.Controls.Add(this.label5);
+            this.groupBoxCreate.Location = new System.Drawing.Point(6, 6);
+            this.groupBoxCreate.Name = "groupBoxCreate";
+            this.groupBoxCreate.Size = new System.Drawing.Size(623, 65);
+            this.groupBoxCreate.TabIndex = 6;
+            this.groupBoxCreate.TabStop = false;
+            this.groupBoxCreate.Text = "创建数据库";
+            // 
+            // btnTestConnect
+            // 
+            this.btnTestConnect.Location = new System.Drawing.Point(498, 15);
+            this.btnTestConnect.Name = "btnTestConnect";
+            this.btnTestConnect.Size = new System.Drawing.Size(119, 23);
+            this.btnTestConnect.TabIndex = 8;
+            this.btnTestConnect.Text = "测试连接";
+            this.btnTestConnect.UseVisualStyleBackColor = true;
+            this.btnTestConnect.Click += new System.EventHandler(this.btnTestConnect_Click);
+            // 
+            // txtConnectString
+            // 
+            this.txtConnectString.Location = new System.Drawing.Point(87, 17);
+            this.txtConnectString.Name = "txtConnectString";
+            this.txtConnectString.Size = new System.Drawing.Size(408, 21);
+            this.txtConnectString.TabIndex = 7;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.ForeColor = System.Drawing.Color.Black;
+            this.label3.Location = new System.Drawing.Point(10, 20);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(77, 12);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "连接字符串：";
+            // 
+            // txtFileServerName
+            // 
+            this.txtFileServerName.Location = new System.Drawing.Point(109, 39);
+            this.txtFileServerName.Name = "txtFileServerName";
+            this.txtFileServerName.Size = new System.Drawing.Size(129, 21);
+            this.txtFileServerName.TabIndex = 5;
+            this.txtFileServerName.Text = "FileDataServer";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.ForeColor = System.Drawing.Color.Black;
+            this.label5.Location = new System.Drawing.Point(8, 43);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(89, 12);
+            this.label5.TabIndex = 2;
+            this.label5.Text = "主数据库名称：";
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage5);
+            this.tabControl1.Controls.Add(this.tabPage6);
+            this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Location = new System.Drawing.Point(12, 12);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(832, 523);
+            this.tabControl1.TabIndex = 0;
+            this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
+            this.tabControl1.Layout += new System.Windows.Forms.LayoutEventHandler(this.tabControl1_Layout);
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Controls.Add(this.richTextBox1);
+            this.tabPage4.Location = new System.Drawing.Point(4, 22);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(824, 474);
+            this.tabPage4.TabIndex = 6;
+            this.tabPage4.Text = "常见问题处理";
+            this.tabPage4.UseVisualStyleBackColor = true;
+            // 
+            // richTextBox1
+            // 
+            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.richTextBox1.Location = new System.Drawing.Point(0, 0);
+            this.richTextBox1.Name = "richTextBox1";
+            this.richTextBox1.Size = new System.Drawing.Size(824, 474);
+            this.richTextBox1.TabIndex = 0;
+            this.richTextBox1.Text = resources.GetString("richTextBox1.Text");
+            // 
+            // CheckCutConditionBtn
+            // 
+            this.CheckCutConditionBtn.Location = new System.Drawing.Point(7, 448);
+            this.CheckCutConditionBtn.Name = "CheckCutConditionBtn";
+            this.CheckCutConditionBtn.Size = new System.Drawing.Size(86, 23);
+            this.CheckCutConditionBtn.TabIndex = 42;
+            this.CheckCutConditionBtn.Text = "查看切图情况";
+            this.CheckCutConditionBtn.UseVisualStyleBackColor = true;
+            this.CheckCutConditionBtn.Click += new System.EventHandler(this.button1_Click_1);
+            // 
+            // FileServerSetUp
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(844, 539);
+            this.Controls.Add(this.tabControl1);
+            this.Name = "FileServerSetUp";
+            this.Text = "文件服务器快速发布";
+            this.Load += new System.EventHandler(this.FileServerSetUp_Load);
+            this.tabPage6.ResumeLayout(false);
+            this.tabPage6.PerformLayout();
+            this.BusinessSystem_ConfigGroup.ResumeLayout(false);
+            this.BusinessSystem_ConfigGroup.PerformLayout();
+            this.BusinessSystem_SiteInfo.ResumeLayout(false);
+            this.BusinessSystem_SiteInfo.PerformLayout();
+            this.tabPage5.ResumeLayout(false);
+            this.tabPage5.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.LaunchDGView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ConfigDGView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.AccessDGView)).EndInit();
+            this.tabPage3.ResumeLayout(false);
+            this.Thumb_SiteInfo.ResumeLayout(false);
+            this.Thumb_CreateParam.ResumeLayout(false);
+            this.Thumb_CreateParam.PerformLayout();
+            this.tabPage2.ResumeLayout(false);
+            this.tabPage2.PerformLayout();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
+            this.groupBoxInitData.ResumeLayout(false);
+            this.groupBoxInitData.PerformLayout();
+            this.groupBox7.ResumeLayout(false);
+            this.groupBox7.PerformLayout();
+            this.groupBox6.ResumeLayout(false);
+            this.groupBox6.PerformLayout();
+            this.groupBox5.ResumeLayout(false);
+            this.groupBox5.PerformLayout();
+            this.groupBoxCreate.ResumeLayout(false);
+            this.groupBoxCreate.PerformLayout();
+            this.tabControl1.ResumeLayout(false);
+            this.tabPage4.ResumeLayout(false);
+            this.ResumeLayout(false);
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.OpenFileDialog MasterServerDialog;
+        private System.Windows.Forms.OpenFileDialog FileServerDialog;
+        private System.Windows.Forms.OpenFileDialog ConvertFileDialog;
+        private System.Windows.Forms.OpenFileDialog DWGConvertFileDialog;
+        private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.OpenFileDialog BusinessConfig_FileDialog;
+        private System.Windows.Forms.TabPage tabPage6;
+        private System.Windows.Forms.Button BusinessSystem_BuildSiteBtn;
+        private System.Windows.Forms.GroupBox BusinessSystem_ConfigGroup;
+        private System.Windows.Forms.Label BusinessConfig_ISNewFileServerLbl;
+        private System.Windows.Forms.Label BusinessConfig_MasterServerAddressLbl;
+        private System.Windows.Forms.TextBox BusinessConfig_ISNewFileServerText;
+        private System.Windows.Forms.TextBox BusinessConfig_MasterServerAddressText;
+        private System.Windows.Forms.GroupBox BusinessSystem_SiteInfo;
+        private System.Windows.Forms.Label BusinessSystem_SiteDescLbl;
+        private System.Windows.Forms.TextBox BusinessSystem_SiteCommentText;
+        private System.Windows.Forms.Label BusinessSystem_IPLbl;
+        private System.Windows.Forms.Label BusinessSystem_SiteCommentLbl;
+        private System.Windows.Forms.TextBox BusinessSystem_IPText;
+        private System.Windows.Forms.TextBox BusinessSystem_SiteDescText;
+        private System.Windows.Forms.Label BusinessSystem_portNumLbl;
+        private System.Windows.Forms.TextBox BusinessSystem_portNumText;
+        private System.Windows.Forms.TextBox BusinessSite_NameText;
+        private System.Windows.Forms.TextBox BusinessCoinfgText;
+        private System.Windows.Forms.Button BusinessMimeMapBtn;
+        private System.Windows.Forms.Button BusinessConfigSaveBtn;
+        private System.Windows.Forms.Label BusinessSite_NameLbl;
+        private System.Windows.Forms.Label BusinessCoinfgLbl;
+        private System.Windows.Forms.Button BusinessCoinfgBtn;
+        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.Label label26;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.DataGridView LaunchDGView;
+        private System.Windows.Forms.DataGridView ConfigDGView;
+        private System.Windows.Forms.DataGridView AccessDGView;
+        private System.Windows.Forms.Label StatusLbl;
+        private System.Windows.Forms.Label AccountNameLbl;
+        private System.Windows.Forms.Button AccountNameBtn;
+        private System.Windows.Forms.TextBox AccountNameTBox;
+        private System.Windows.Forms.Button MMC_btn;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.GroupBox Thumb_SiteInfo;
+        private System.Windows.Forms.RichTextBox Thumb_SiteInfoRichBox;
+        private System.Windows.Forms.GroupBox Thumb_CreateParam;
+        private System.Windows.Forms.TextBox Thumb_SitePathText;
+        private System.Windows.Forms.Label Thumb_SitePathLbl;
+        private System.Windows.Forms.TextBox Thumb_SiteCommentText;
+        private System.Windows.Forms.Label Thumb_SiteCommentLbl;
+        private System.Windows.Forms.TextBox Thumb_SiteDescText;
+        private System.Windows.Forms.Label Thumb_SiteDescLbl;
+        private System.Windows.Forms.TextBox Thumb_portNumText;
+        private System.Windows.Forms.Label Thumb_portNumLbl;
+        private System.Windows.Forms.TextBox Thumb_IPTEXT;
+        private System.Windows.Forms.Label Thumb_IPLbl;
+        private System.Windows.Forms.Button ThumbSiteBtn;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.Label DwgConvertConfigLbl;
+        private System.Windows.Forms.Label ConvertFileConfigLbl;
+        private System.Windows.Forms.Label FileServerConifgLbl;
+        private System.Windows.Forms.Label MasterConfigLbl;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.LinkLabel linkLabel4;
+        private System.Windows.Forms.Button button18;
+        private System.Windows.Forms.Button DwgConvertUnstallBtn;
+        private System.Windows.Forms.Button DwgConvertInstallBtn;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Label DwgConvertServerPath;
+        private System.Windows.Forms.Button DWGConvertService;
+        private System.Windows.Forms.Label DWGConvertFileStatus;
+        private System.Windows.Forms.GroupBox groupBox3;
+        private System.Windows.Forms.LinkLabel linkLabel3;
+        private System.Windows.Forms.Button button17;
+        private System.Windows.Forms.Button fileConvertUntasllBtn;
+        private System.Windows.Forms.Button fileConvertIntasllBtn;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button FileConvertServer;
+        private System.Windows.Forms.Label FileConvertStatus;
+        private System.Windows.Forms.Label ConvertServerPath;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.LinkLabel linkLabel2;
+        private System.Windows.Forms.Button button16;
+        private System.Windows.Forms.Button FileServerUnstallBtn;
+        private System.Windows.Forms.Button FileServerInstallBtn;
+        private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button FileServer;
+        private System.Windows.Forms.Label FileServiceStatus;
+        private System.Windows.Forms.Label fileServerPath;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.Button button15;
+        private System.Windows.Forms.Button masterUnstallBtn;
+        private System.Windows.Forms.Button masterInstallBtn;
+        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button MasterService;
+        private System.Windows.Forms.Label masterServiceStatus;
+        private System.Windows.Forms.Label masterServerPath;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.Button btnViewDataBase;
+        private System.Windows.Forms.GroupBox groupBoxInitData;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnResigsterBusSys;
+        private System.Windows.Forms.ComboBox cmBoxBusSysList;
+        private System.Windows.Forms.ComboBox cmBoxBusSys;
+        private System.Windows.Forms.ComboBox cmBoxDataServerList;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnUpdataSystem;
+        private System.Windows.Forms.Button btnInitBusSys;
+        private System.Windows.Forms.Button btnInitDataServer;
+        private System.Windows.Forms.GroupBox groupBox7;
+        private System.Windows.Forms.TextBox txtBusSysName;
+        private System.Windows.Forms.TextBox txtBusSysInterfaceStr;
+        private System.Windows.Forms.TextBox txtBusSysIP;
+        private System.Windows.Forms.TextBox txtBusSysGuid;
+        private System.Windows.Forms.TextBox txtBusSysTargetIP;
+        private System.Windows.Forms.TextBox txtBusSysConStr;
+        private System.Windows.Forms.Label label25;
+        private System.Windows.Forms.Label label24;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.TextBox txtDataServerIp;
+        private System.Windows.Forms.TextBox txtDataServerName;
+        private System.Windows.Forms.TextBox txtDataServerPort;
+        private System.Windows.Forms.TextBox txtDataServerRoot;
+        private System.Windows.Forms.TextBox txtDataServerUserName;
+        private System.Windows.Forms.TextBox txtDataServerPassword;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Button btnInitMaster;
+        private System.Windows.Forms.GroupBox groupBox5;
+        private System.Windows.Forms.TextBox txtMaterServerName;
+        private System.Windows.Forms.TextBox txtMasterServerPort;
+        private System.Windows.Forms.TextBox txtMasterRootName;
+        private System.Windows.Forms.TextBox txtMaterServerIp;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Button InitBtn;
+        private System.Windows.Forms.Button btnCreateDataBase;
+        private System.Windows.Forms.GroupBox groupBoxCreate;
+        private System.Windows.Forms.Button btnTestConnect;
+        private System.Windows.Forms.TextBox txtConnectString;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtFileServerName;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.Label DCOMDescri;
+        private System.Windows.Forms.Label label27;
+        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.Label label28Caution;
+        private System.Windows.Forms.Button IISBtn;
+        private System.Windows.Forms.Label FileConvertPortText;
+        private System.Windows.Forms.Label label28;
+        private System.Windows.Forms.Button DCOMHELP;
+        private System.Windows.Forms.Label CutFileCountLbl;
+        private System.Windows.Forms.TextBox endDateTxt;
+        private System.Windows.Forms.TextBox beginDateTxt;
+        private System.Windows.Forms.Button ReCut;
+        private System.Windows.Forms.Label label29;
+        private System.Windows.Forms.Button CheckCutConditionBtn;
+    }
+}
+

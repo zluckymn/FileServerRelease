@@ -1,0 +1,36 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace FileServerRelease.DComCnfg
+{
+    class DComKeys
+    {
+        public static string AppIDRegitryKey = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Classes\\AppID\\";
+        public static string PowerPointKeyFor2003 = "{048EB43E-2059-422F-95E0-557DA96038AF}";
+        public static string WordKeyFor2003 = "{00020906-0000-0000-C000-000000000046}";
+        public static string ExcelKeyFor2003 = "{00020812-0000-0000-C000-000000000046}";
+        public static string AccessKeyFor2003 = "{73A4C9C1-D68D-11D0-98BF-00A0C90DC8D9}";
+      
+            
+
+        public static string PowerPointKeyFor2007 = "{048EB43E-2059-422F-95E0-557DA96038AF}";
+        public static string WordKeyFor2007 = "{00020906-0000-0000-C000-000000000046}";
+        public static string ExcelKeyFor2007 = "{00020812-0000-0000-C000-000000000046}";
+        public static string AccessKeyFor2007 = "{73A4C9C1-D68D-11D0-98BF-00A0C90DC8D9}";
+
+        public static string PowerPointKeyFor2010 = "{048EB43E-2059-422F-95E0-557DA96038AF}";
+        public static string WordKeyFor2010 = "{00020906-0000-0000-C000-000000000046}";
+        public static string ExcelKeyFor2010 = "{00020812-0000-0000-C000-000000000046}";
+        public static string AccessKeyFor2010 = "{73A4C9C1-D68D-11D0-98BF-00A0C90DC8D9}";
+
+        public static string PowerPointKeyFor2013 = "{048EB43E-2059-422F-95E0-557DA96038AF}";
+        public static string WordKeyFor2013 = "{00020906-0000-0000-C000-000000000046}";
+        public static string ExcelKeyFor2013 = "{00020812-0000-0000-C000-000000000046}";
+        public static string AccessKeyFor2013 = "{73A4C9C1-D68D-11D0-98BF-00A0C90DC8D9}";
+
+        public static string MicrosoftExcel97_2003Sheet = "{00020820-0000-0000-C000-000000000046}";
+        public static string MicrosoftPowerPoint97_2003Show = "{64818D10-4F9B-11CF-86EA-00AA00B929E8}";
+    }
+}

@@ -1,0 +1,213 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+
+namespace FileServerRelease
+{
+    public partial class DataBaseView : Form
+    {
+        public string connectString { set; get; }
+        public string fileServerName { set; get; }
+
+        public DataBaseView()
+        {
+            InitializeComponent();
+        }
+
+        public DataBaseView(string _connectString, string _fileServerName)
+        {
+            this.connectString = _connectString;
+            this.fileServerName = _fileServerName;
+            InitializeComponent();
+        }
+
+        
+
+        private void btnShutDown_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void DataBaseView_Load(object sender, EventArgs e)
+        {
+            gridViewLoadData();
+        }
+
+        #region 辅助函数
+        private void gridViewLoadData()
+        {
+            System.Data.SqlClient.SqlConnection connecction = null;
+            try
+            {
+                connecction = new System.Data.SqlClient.SqlConnection(connectString);
+                connecction.Open();
+                System.Data.SqlClient.SqlCommand command = connecction.CreateCommand();
+                StringBuilder builder = new StringBuilder();
+
+                builder.AppendLine("USE [" + fileServerName + "]");
+                builder.AppendLine("select * from DataNodeServer");
+                command.CommandText = builder.ToString();
+                var dataReader = command.ExecuteReader();
+                var dataNodeServerIpList = new Dictionary<int, DataServerData>();
+                while (dataReader.Read())
+                {
+                    var tempData = new DataServerData();
+                    tempData.serverIp = dataReader.GetString(1);
+                    tempData.serverName = dataReader.GetString(2);
+                    tempData.serverPort = dataReader.GetString(3);
+                    dataNodeServerIpList.Add(dataReader.GetInt32(0), tempData);
+                }
+                dataReader.Close();
+                builder.Remove(0, builder.Length);
+                builder.AppendLine("USE [" + fileServerName + "]");
+                builder.AppendLine("select * from BusinessSystem");
+                command.CommandText = builder.ToString();
+                var busSysList = new Dictionary<int, string>();
+                var busReader = command.ExecuteReader();
+
+                while (busReader.Read())
+                {
+                    busSysList.Add(busReader.GetInt32(0), busReader.GetString(1));
+                }
+
+                busReader.Close();
+                builder.Remove(0, builder.Length);
+                builder.AppendLine("USE [" + fileServerName + "]");
+                builder.AppendLine("select * from RegisterBusinessSystem");
+                command.CommandText = builder.ToString();
+                var regSystemList = new Dictionary<int, regSystemData>();
+                var regReader = command.ExecuteReader();
+
+                while (regReader.Read())
+                {
+                    var regData = new regSystemData();
+                    regData.dataNodeId = regReader.GetInt32(2);
+                    regData.busSystemId = regReader.GetInt32(1);
+
+                    regSystemList.Add(regReader.GetInt32(0), regData);
+                }
+                regReader.Close();
+
+                foreach (var dataServer in dataNodeServerIpList)
+                {
+                    //所有注册到本地址的系统
+                    var curRegSystems = regSystemList.Where(t => t.Value.dataNodeId == dataServer.Key).Select(t => t.Value.busSystemId).ToList();
+                    var curSystems = busSysList.Where(t => curRegSystems.Contains(t.Key)).ToList();
+
+                    var tempServerRow = new string[] { dataServer.Key.ToString(), dataServer.Value.serverName, dataServer.Value.serverIp, dataServer.Value.serverPort };
+                    dtDataServerGridView.Rows.Add(tempServerRow);
+
+                    if (curSystems.Count > 0)
+                    {
+                        foreach (var tempSystem in curSystems)
+                        {
+                            var tempSystemRow = new string[] { tempSystem.Key.ToString(), tempSystem.Value, "已注册", dataServer.Value.serverIp };
+                            dtSystemGridView.Rows.Add(tempSystemRow);
+                        }
+
+                    }
+                }
+
+                var noRegSysList = busSysList.Where(t => !regSystemList.Select(x => x.Value.busSystemId).Contains(t.Key)).ToList();
+
+                foreach (var tempSys in noRegSysList)
+                {
+                    var tempSystemRow = new string[] { tempSys.Key.ToString(), tempSys.Value, "未注册", "", "未注册" };
+                    dtSystemGridView.Rows.Add(tempSystemRow);
+                }
+
+            }
+            catch
+            {
+                MessageBox.Show("连接不成功");
+                return;
+            }
+            finally
+            {
+                if (connecction != null && connecction.State != System.Data.ConnectionState.Closed)
+                {
+                    connecction.Close();
+                }
+            }
+        }
+
+        public class regSystemData
+        {
+            public int dataNodeId { set; get; }
+            public int busSystemId { set; get; }
+        }
+
+        public class DataServerData
+        {
+            public string serverName { set; get; }
+            public string serverIp { set; get; }
+            public string serverPort { set; get; }
+            public string interFaceClass { set; get; }
+            public string dataBaseConnStr { set; get; }
+        }
+        #endregion
+
+        private void DeleteItem_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("确定删除？", "注意", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning) == DialogResult.OK)
+            {
+                var selectRows = dtSystemGridView.SelectedRows;
+
+                
+                var sqlString = string.Empty;
+                sqlString += string.Format("USE [{0}] \r\n", fileServerName);
+
+                for (int i = 0; i < selectRows.Count; i++)
+                {
+                    sqlString += string.Format("delete from RegisterBusinessSystem where busSystemId={0} \r\n", selectRows[i].Cells[0].Value);
+                    sqlString += string.Format("delete from BusinessSystem where busSystemId={0} \r\n", selectRows[i].Cells[0].Value);
+                }
+
+                sqlString += "GO";
+
+                var runSql = new RunSqlFile(connectString);
+                var result = runSql.ExecuteSQLFileString(sqlString);
+
+                if (result)
+                {
+                    for (int i = 0; i < selectRows.Count; i++)
+                    {
+                        dtSystemGridView.Rows.Remove(selectRows[i]);
+                    }
+                    MessageBox.Show("删除成功");
+                }
+                else
+                {
+                    MessageBox.Show("删除失败");
+                }
+            }
+        }
+
+        private void dtSystemGridView_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                if (e.RowIndex >= 0)
+                {
+                    //若行已是选中状态就不再进行设置
+                    if (dtSystemGridView.Rows[e.RowIndex].Selected == false)
+                    {
+                        dtSystemGridView.ClearSelection();
+                        dtSystemGridView.Rows[e.RowIndex].Selected = true;
+                    }
+
+                    //弹出操作菜单
+                    systemContextMenuS.Show(MousePosition.X, MousePosition.Y);
+                }
+            }
+        }
+
+
+       
+    }
+}

@@ -1,0 +1,26 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Management;
+using ROOT.CIMV2.Win32;
+
+namespace FileServerRelease.DComCnfg.PermissionAccessor
+{
+    public class LaunchPermissionAccessor : PermissionAccessor
+    {
+        public LaunchPermissionAccessor(string AppId) : base(AppId)
+        {
+        }
+
+        protected override uint GetSecurityDescriptor(out ManagementBaseObject outSd)
+        {
+            return this.dCOMApplicationSetting.GetLaunchSecurityDescriptor(out outSd);
+        }
+
+        protected override void SetSecurityDescriptor(SecurityDescriptor sd)
+        {
+            this.dCOMApplicationSetting.SetLaunchSecurityDescriptor(sd.LateBoundObject);
+        }
+    }
+}

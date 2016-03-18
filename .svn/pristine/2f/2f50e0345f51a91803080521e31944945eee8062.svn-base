@@ -1,0 +1,30 @@
+USE [master]
+GO
+
+IF EXISTS(SELECT 1 FROM sysdatabases WHERE NAME=N'FileDataServer')
+BEGIN
+    DROP DATABASE FileDataServer   --如果数据库存在先删掉数据库
+END
+GO
+
+CREATE DATABASE FileDataServer
+ON
+PRIMARY  --创建主数据库文件
+(
+    NAME='FileDataServer',
+    FILENAME='C:\Database\FileDataServer.dbf',
+    SIZE=5MB,
+    MaxSize=UNLIMITED,
+    FileGrowth=1MB
+)
+LOG ON --创建日志文件
+(
+    NAME='FileDataServer_log',
+    FILENAME='C:\Database\FileDataServer_log.ldf',
+    Size=2MB,
+    MaxSize=UNLIMITED,
+    FileGrowth=10%
+)
+GO
+
+

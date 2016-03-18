@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+namespace FileServerRelease
+{
+    public class BusinessSystem
+    {
+        public string name { get; set; }
+        public string busIpAddress { get; set; }
+        public string guid { get; set; }
+        public string sysIpAddress { get; set; }
+        public string interfaceStr { get; set; }
+        public string connectString { get; set; }
+
+        public BusinessSystem(string name, string busIpAddress, string guid, string sysIpAddress, string interfaceStr, string connectString)
+        {
+            this.name = name;
+            this.busIpAddress = busIpAddress;
+            this.guid = guid;
+            this.sysIpAddress = sysIpAddress;
+            this.interfaceStr = interfaceStr;
+            this.connectString = connectString;
+        }
+    }
+}

@@ -1,0 +1,44 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+using System.Management;
+using ROOT.CIMV2.Win32;
+
+namespace FileServerRelease.DComCnfg.PermissionAccessor.Extension
+{
+    public static class PermissionAccessorExtension
+    {
+
+        public static List<AppRightView> getRights(this PermissionAccessor PAccessor)
+        {
+            List<AppRightView> list = new List<AppRightView>();
+            try
+            {
+                ManagementBaseObject[] AceArray = PAccessor.getPermission();
+
+
+                if (AceArray != null)
+                {
+                    foreach (ManagementBaseObject ACEManageObj in AceArray)
+                    {
+                        Ace ace = new Ace(ACEManageObj);
+                        Trustee trustee = new Trustee(ace.Trustee);
+                        list.Add(new AppRightView { AppName = PAccessor.AppName, AccountName = trustee.Name, AccessMask = Convert.ToString(ace.AccessMask, 2) });
+                    }
+                }
+            }
+            catch (ManagementException ex)
+            {
+                list.Add(new AppRightView { AppName = "未知appName", AccountName = "appId不存在或者无权限", AccessMask = "appId不存在或者无权限" });
+            }
+            catch (Exception ex)
+            {
+                list.Add(new AppRightView { AppName = "未知appName", AccountName = "appId不存在或者无权限", AccessMask = "appId不存在或者无权限" });
+            }
+            return list;
+        }
+
+    }
+}

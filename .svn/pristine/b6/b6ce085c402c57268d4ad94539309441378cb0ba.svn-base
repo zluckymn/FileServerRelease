@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<BusinessSystem>
+  <System>
+    <Name>中海投资</Name>
+    <BusIpAddress>192.0.0.168:80</BusIpAddress>
+    <Guid>73345DB5-DFE5-41F8-B37E-7D83335AZHTZ</Guid>
+    <SysIpAddress>192.0.0.169</SysIpAddress>
+    <InterfaceStr>BusinessInfo.A3UpdateBusinessInfo</InterfaceStr>
+    <ConnectString>mongodb://sa:dba@192.0.0.169/ZHTZ</ConnectString>
+  </System>
+  <System>
+    <Name>中海宏洋</Name>
+    <BusIpAddress>192.168.1.222:8098</BusIpAddress>
+    <Guid>958AEDDF-04F0-4702-B5F6-FC300262F96D</Guid>
+    <SysIpAddress>192.168.1.222</SysIpAddress>
+    <InterfaceStr>BusinessInfo.A3UpdateBusinessInfo</InterfaceStr>
+    <ConnectString>mongodb://sa:dba@192.168.1.230/ZHHY</ConnectString>
+  </System>
+  <System>
+    <Name>侨鑫</Name>
+    <BusIpAddress>192.168.1.222:8201</BusIpAddress>
+    <Guid>84C7D7E3-26C2-479F-B67F-F240E506CEQX</Guid>
+    <SysIpAddress>192.168.1.222</SysIpAddress>
+    <InterfaceStr>BusinessInfo.A3UpdateBusinessInfo</InterfaceStr>
+    <ConnectString>mongodb://sa:dba@192.168.1.230/QXINIT</ConnectString>
+  </System>
+  <System>
+    <Name>侨鑫市调</Name>
+    <BusIpAddress>192.168.1.222:8100</BusIpAddress>
+    <Guid>84C7D7E3-26C2-479F-B67F-F240E506QXSD</Guid>
+    <SysIpAddress>192.168.1.222</SysIpAddress>
+    <InterfaceStr>BusinessInfo.A3UpdateBusinessInfo</InterfaceStr>
+    <ConnectString>mongodb://sa:dba@192.168.1.230/QXINIT</ConnectString>
+  </System>
+  <System>
+    <Name>三盛地产</Name>
+    <BusIpAddress>192.168.1.222:9500</BusIpAddress>
+    <Guid>958AEDDF-04F0-4702-B5F6-FC300262F96D</Guid>
+    <SysIpAddress>192.168.1.222</SysIpAddress>
+    <InterfaceStr>BusinessInfo.A3UpdateBusinessInfo</InterfaceStr>
+    <ConnectString>mongodb://sa:dba@192.168.1.230/SS</ConnectString>
+  </System>
+  <System>
+    <Name>新城1期设计管理系统</Name>
+    <BusIpAddress>192.168.1.200:8003</BusIpAddress>
+    <Guid>FD486D31-B51B-4c8a-A106-4F25AF89DD38</Guid>
+    <SysIpAddress>192.168.1.222</SysIpAddress>
+    <InterfaceStr>BusinessInfo.UpdateBusinessInfo</InterfaceStr>
+    <ConnectString>Data Source=192.168.1.200;User ID=sa;Password=dba;Initial Catalog=XC_demo;</ConnectString>
+  </System>
+  <System>
+    <Name>龙光地产</Name>
+    <BusIpAddress>192.168.1.200:8001</BusIpAddress>
+    <Guid>BD3BF586-A073-452d-B0FF-9F48DE73DFLG</Guid>
+    <SysIpAddress>192.168.1.200</SysIpAddress>
+    <InterfaceStr>BusinessInfo.UpdateBusinessInfo</InterfaceStr>
+    <ConnectString>Data Source=192.168.1.200;User ID=sa;Password=dba;Initial Catalog=Autolink2.0_LG;</ConnectString>
+  </System>
+
+
+</BusinessSystem> 

@@ -1,0 +1,106 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Data.SqlClient;
+using System.IO;
+
+namespace FileServerRelease
+{
+    class RunSqlFile
+    {
+        public string sqlFilePath;
+        public string conectString;
+        public RunSqlFile(string conStr)
+        {
+            this.conectString = conStr;
+        }
+        public bool ExecuteSQLFile(String sqlFileName)
+        {
+            sqlFilePath = sqlFileName;
+            SqlConnection connecction = null;
+            try
+            {
+                connecction = new SqlConnection(conectString);
+
+                SqlCommand command = connecction.CreateCommand();
+                connecction.Open();
+
+                using (FileStream stream = new FileStream(sqlFileName, FileMode.Open, FileAccess.ReadWrite))
+                {
+                    StreamReader reader = new StreamReader(stream, Encoding.Default);
+                    StringBuilder builder = new StringBuilder();
+                    String strLine = "";
+                    while ((strLine = reader.ReadLine()) != null)
+                    {
+                        if (strLine.Trim().ToUpper() != @"GO")
+                        {
+                            builder.AppendLine(strLine);
+                        }
+                        else
+                        {
+                            command.CommandText = builder.ToString();
+                            command.ExecuteNonQuery();
+                            builder.Remove(0, builder.Length);
+                        }
+                    }
+                    stream.Dispose();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+            finally
+            {
+                if (connecction != null && connecction.State != System.Data.ConnectionState.Closed)
+                {
+                    connecction.Close();
+                }
+            }
+        }
+
+        public bool ExecuteSQLFileString(String sqlStr)
+        {
+            SqlConnection connecction = null;
+            try
+            {
+                connecction = new SqlConnection(conectString);
+
+                SqlCommand command = connecction.CreateCommand();
+                connecction.Open();
+
+                var sqlStrArray = sqlStr.Split(new string[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+                StringBuilder builder = new StringBuilder();
+                foreach (var tempStr in sqlStrArray)
+                {
+                    if (tempStr.Trim().ToUpper() != @"GO")
+                    {
+                        builder.AppendLine(tempStr);
+                    }
+                    else
+                    {
+                        command.CommandText = builder.ToString();
+                        command.ExecuteNonQuery();
+                        builder.Remove(0, builder.Length);
+                    }
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+            finally
+            {
+                if (connecction != null && connecction.State != System.Data.ConnectionState.Closed)
+                {
+                    connecction.Close();
+                }
+            }
+        }
+    }
+}
